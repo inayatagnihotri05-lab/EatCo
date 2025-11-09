@@ -1,3 +1,18 @@
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f5fff7;
+  color: #333;
+  text-align: center;
+}
+
+section {
+  padding: 3rem 1rem;
+  max-width: 800px;
+  margin: auto;
+  opacity: 1; /* make sure visible */
+}
 /* General style */
 body {
   font-family: "Poppins", sans-serif;
@@ -104,4 +119,5 @@ html {
 .btn:hover {
   background-color: #256d47;
 }
+
 
