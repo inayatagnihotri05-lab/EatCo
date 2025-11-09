@@ -1,32 +1,47 @@
+/* EatCo 🌿 Style File */
+
 body {
-  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #f5fff5;
+  color: #333;
   text-align: center;
-  background-color: #e8f5e9;
-  color: #2e7d32;
-  padding: 20px;
 }
 
 header {
-  background: #a5d6a7;
-  padding: 10px;
-  border-radius: 12px;
+  background-color: #4caf50;
+  color: white;
+  padding: 1.5rem 0;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
 }
 
-input {
-  padding: 10px;
-  margin: 10px;
-  border: 2px solid #66bb6a;
-  border-radius: 8px;
+section {
+  padding: 2rem;
 }
 
 button {
-  background: #388e3c;
+  background-color: #4caf50;
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 1rem 2rem;
+  border-radius: 25px;
   cursor: pointer;
+  font-size: 1rem;
+  transition: 0.3s;
 }
+
 button:hover {
-  background: #2e7d32;
+  background-color: #388e3c;
+  transform: scale(1.05);
+}
+
+footer {
+  background-color: #2e7d32;
+  color: white;
+  padding: 1rem 0;
+  font-size: 0.9rem;
+  margin-top: 3rem;
 }
