@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- Navbar -->
   <nav>
     <h2 class="logo">EatCo 🌿</h2>
     <ul>
@@ -14,16 +16,57 @@
       <li><a href="#about">About</a></li>
       <li><a href="#mission">Mission</a></li>
       <li><a href="#join">Join</a></li>
+      <li><a href="#footprint">Carbon Checker</a></li>
     </ul>
   </nav>
 
- <section id="home" class="hero">
-  <h1>Welcome to EatCo 🌱</h1>
-  <p>Building a world where every bite counts — for you and the planet.</p>
-  <a href="#join" class="btn">Join the Movement</a>
-</section>
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <h1>Welcome to EatCo 🌱</h1>
+    <p>Building a world where every bite counts — for you and the planet.</p>
+    <a href="#join" class="btn">Join the Movement</a>
+  </section>
 
-
+  <!-- About Section -->
   <section id="about">
     <h2>Mindful. Local. Sustainable.</h2>
-    <p>EatCo promotes eco-friendly eating habits — reduc
+    <p>EatCo promotes eco-friendly eating habits — reducing waste, supporting farmers, and making sustainability simple and delicious.</p>
+  </section>
+
+  <!-- Mission Section -->
+  <section id="mission">
+    <h2>Our Mission</h2>
+    <ul>
+      <li>🌾 Sustainable Agriculture – Supporting local, seasonal, and organic food systems.</li>
+      <li>🍴 Zero-Waste Eating – Turning leftovers into art and reducing food waste.</li>
+      <li>🌍 Carbon Awareness – Helping people track and reduce their food footprint.</li>
+    </ul>
+  </section>
+
+  <!-- Join Section -->
+  <section id="join">
+    <h2>Join the Movement 🌍</h2>
+    <p>Be part of the eco-food revolution. Let’s make every meal meaningful.</p>
+  </section>
+
+  <!-- Carbon Footprint Checker -->
+  <section id="footprint" style="text-align:center; margin: 3rem auto;">
+    <h2>🌾 Food Carbon Footprint Checker</h2>
+    <p>Type a food item to estimate its carbon footprint.</p>
+    
+    <input type="text" id="foodInput" placeholder="e.g. rice, chicken, apple" style="padding:10px; border-radius:8px; border:1px solid #ccc; width:60%; max-width:300px;">
+    <button onclick="checkFootprint()" style="padding:10px 15px; border:none; border-radius:8px; background-color:#2e8b57; color:white;">Check</button>
+
+    <p id="result" style="margin-top:1.5rem; font-size:1.2rem;"></p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 EatCo | Made with 💚 by Inayat Agnihotri</p>
+  </footer>
+
+  <!-- Link to JS -->
+  <script src="script.js"></script>
+</body>
+</html>
+
