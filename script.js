@@ -1,14 +1,9 @@
-function checkEcoScore() {
-  const food = document.getElementById("foodInput").value.toLowerCase();
-  const result = document.getElementById("result");
-  
-  const scores = {
-    beef: "🚫 High carbon footprint",
-    chicken: "⚠️ Moderate impact",
-    vegetables: "✅ Eco-friendly",
-    tofu: "🌿 Very sustainable",
-    rice: "⚠️ Water-intensive crop"
-  };
-
-  result.textContent = scores[food] || "🤔 No data available, try another food!";
-}
+// Smooth scroll animation
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function(e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href')).scrollIntoView({
+      behavior: 'smooth'
+    });
+  });
+});
