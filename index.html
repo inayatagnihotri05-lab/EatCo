@@ -7,18 +7,28 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>EatCo 🌿</h1>
+  <nav>
+    <h2 class="logo">EatCo 🌿</h2>
+    <ul>
+      <li><a href="#home">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#mission">Mission</a></li>
+      <li><a href="#join">Join</a></li>
+    </ul>
+  </nav>
+
+  <header id="home">
+    <h1>Welcome to EatCo 🌱</h1>
     <p class="tagline">Building a world where every bite counts — for you and the planet.</p>
   </header>
 
-  <section class="hero">
+  <section class="hero" id="about">
     <h2>Mindful. Local. Sustainable.</h2>
     <p>EatCo promotes eco-friendly eating habits — reducing waste, supporting farmers, and making sustainability simple and delicious.</p>
     <button class="join-btn">Join the Movement 🌍</button>
   </section>
 
-  <section class="mission">
+  <section class="mission" id="mission">
     <h2>Our Mission</h2>
     <div class="cards">
       <div class="card">
@@ -36,8 +46,16 @@
     </div>
   </section>
 
+  <section id="join" class="hero">
+    <h2>Join the EatCo Movement</h2>
+    <p>Be part of the eco-food revolution. Let’s make every meal meaningful and every choice count.</p>
+    <button class="join-btn">Sign Up 💚</button>
+  </section>
+
   <footer>
     <p>© 2025 EatCo | Made with 💚 by <strong>Inayat Agnihotri</strong></p>
   </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
