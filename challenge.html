@@ -166,6 +166,105 @@
     function confetti() {
       alert("🎉 You did it! You’re officially Zero Waste Certified by EatCo!");
     }
+<!-- EcoPoints Tracker -->
+<div id="ecoTracker">
+  <p>🌱 EcoPoints: <span id="ecoPoints">0</span>/100</p>
+  <div class="bar">
+    <div id="progress"></div>
+  </div>
+</div>
+
+<!-- Confetti animation -->
+<canvas id="confettiCanvas"></canvas>
+
+<script>
+let points = 0;
+
+function updatePoints() {
+  const progress = document.getElementById("progress");
+  const ecoPoints = document.getElementById("ecoPoints");
+  progress.style.width = points + "%";
+  ecoPoints.textContent = points;
+  
+  // Confetti when full!
+  if (points >= 100) {
+    launchConfetti();
+  }
+}
+
+function completeChallenge() {
+  if (points < 100) {
+    points += 25;
+    updatePoints();
+  }
+}
+
+// Confetti function
+function launchConfetti() {
+  const duration = 2 * 1000;
+  const end = Date.now() + duration;
+
+  (function frame() {
+    const timeLeft = end - Date.now();
+    if (timeLeft <= 0) return;
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti");
+    confetti.style.left = Math.random() * 100 + "vw";
+    confetti.style.background = `hsl(${Math.random() * 360}, 70%, 60%)`;
+    document.body.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 2000);
+    requestAnimationFrame(frame);
+  })();
+}
+</script>
+
+<style>
+#ecoTracker {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #ffffffdd;
+  border: 2px solid #2e8b57;
+  border-radius: 12px;
+  padding: 10px 15px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.bar {
+  width: 100px;
+  height: 8px;
+  background: #eee;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+#progress {
+  height: 8px;
+  background: linear-gradient(90deg, #6ee7b7, #2e8b57);
+  border-radius: 5px;
+  width: 0%;
+  transition: 0.3s;
+}
+
+.confetti {
+  position: fixed;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: fall 2s linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+</style>
 
     updateProgress();
   </script>
