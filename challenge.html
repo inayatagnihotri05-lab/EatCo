@@ -265,6 +265,36 @@ function launchConfetti() {
   }
 }
 </style>
+<!-- EcoPoints Tracker -->
+<div id="ecoTracker" style="position:fixed;bottom:20px;right:20px;background:#2e8b57;color:white;padding:10px 15px;border-radius:12px;font-size:14px;box-shadow:0 2px 10px rgba(0,0,0,0.2);z-index:999;">
+  🌱 EcoPoints: <span id="ecoPoints">0</span>/100
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script>
+  let points = 0;
+  function addPoints(amount) {
+    points += amount;
+    document.getElementById("ecoPoints").textContent = points;
+    if (points >= 100) {
+      launchConfetti();
+    }
+  }
+
+  function launchConfetti() {
+    const duration = 3 * 1000;
+    const end = Date.now() + duration;
+    (function frame() {
+      confetti({
+        particleCount: 6,
+        startVelocity: 30,
+        spread: 360,
+        origin: { x: Math.random(), y: Math.random() - 0.2 }
+      });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    })();
+  }
+</script>
 
     updateProgress();
   </script>
