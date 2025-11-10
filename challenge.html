@@ -40,8 +40,8 @@
     .week {
       background-color: #fff;
       margin: 1rem auto;
-      padding: 1rem;
-      border-radius: 12px;
+      padding: 1.2rem;
+      border-radius: 14px;
       width: 80%;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       text-align: left;
@@ -55,6 +55,12 @@
 
     .week-content {
       display: none;
+      margin-top: 0.5rem;
+    }
+
+    .funfact {
+      font-style: italic;
+      color: #3e8b67;
       margin-top: 0.5rem;
     }
 
@@ -91,8 +97,9 @@
   <div class="week" onclick="toggleWeek('week1')">
     <h2>Week 1 – The “What Even Is Waste?” Era</h2>
     <div id="week1" class="week-content">
-      <p>🧠 Food waste releases <b>methane</b> — 25× stronger than CO₂!  
-      Track your trash and find your biggest waste culprits.</p>
+      <p>🧠 Start by noticing what you throw away every day — leftover chips, half-eaten fruit, or that sad sandwich crust. 
+      Take notes for a week and see your patterns!</p>
+      <p class="funfact">⚗️ Fun Fact: When food rots in landfills, it creates <b>methane gas</b> — 25× stronger than CO₂ in trapping heat!</p>
       <button onclick="markDone(1)">✅ Mark Week 1 as Done</button>
     </div>
   </div>
@@ -101,7 +108,8 @@
   <div class="week" onclick="toggleWeek('week2')">
     <h2>Week 2 – Smart Swaps & Snack Hacks</h2>
     <div id="week2" class="week-content">
-      <p>💡 Bring your own cup, swap packaged snacks for fruits, and store leftovers in jars!</p>
+      <p>💡 Time to glow up your snack game! Try reusable water bottles, ditch plastic forks, and swap packaged chips for fresh fruit or homemade popcorn.</p>
+      <p class="funfact">🍎 Fun Fact: A single-use plastic bottle can take up to <b>450 years</b> to decompose — your reusable one can last that long too!</p>
       <button onclick="markDone(2)">✅ Mark Week 2 as Done</button>
     </div>
   </div>
@@ -110,7 +118,9 @@
   <div class="week" onclick="toggleWeek('week3')">
     <h2>Week 3 – DIY & Glow-Up</h2>
     <div id="week3" class="week-content">
-      <p>♻️ Turn orange peels into cleaners or T-shirts into tote bags! Reuse = less carbon energy loop.</p>
+      <p>🎨 Upcycle old T-shirts into tote bags, turn peels into eco-cleaners, or plant veggie scraps to regrow them. 
+      You’re now officially part scientist, part eco-artist.</p>
+      <p class="funfact">🔬 Science Drop: Reusing saves “embedded energy” — the hidden electricity & water used in production.</p>
       <button onclick="markDone(3)">✅ Mark Week 3 as Done</button>
     </div>
   </div>
@@ -119,7 +129,8 @@
   <div class="week" onclick="toggleWeek('week4')">
     <h2>Week 4 – Zero Waste Party Mode</h2>
     <div id="week4" class="week-content">
-      <p>🎉 Host a zero-waste potluck or clothing swap with friends! Celebrate low-waste living.</p>
+      <p>🎉 Wrap it up with a zero-waste event — host a thrift swap, a clean-plate dinner, or a “trash to treasure” art challenge with friends.</p>
+      <p class="funfact">🌍 Fun Fact: The average teen creates 67 kg of food waste a year — your small actions can cut that by 30%!</p>
       <button onclick="markDone(4)">✅ Mark Week 4 as Done</button>
     </div>
   </div>
