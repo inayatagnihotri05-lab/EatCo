@@ -122,6 +122,20 @@ footer {
 html {
   scroll-behavior: smooth;
 }
+.btn {
+  background-color: #2e8b57;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
 
 
 
