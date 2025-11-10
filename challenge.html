@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EatCo Challenge 🌱</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background: #f0fff4;
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+      padding: 2rem;
+      color: #2f4f4f;
+    }
+
+    h1 {
+      color: #2e8b57;
+      margin-bottom: 1rem;
+    }
+
+    .progress-bar {
+      width: 80%;
+      height: 20px;
+      background: #dcdcdc;
+      border-radius: 10px;
+      margin: 20px auto;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #66bb6a, #2e8b57);
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+
+    .week {
+      background: white;
+      margin: 1rem auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      width: 80%;
+      padding: 1rem;
+      text-align: left;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .week:hover {
+      transform: scale(1.02);
+    }
+
+    .details {
+      display: none;
+      padding: 0.5rem 1rem;
+      border-top: 1px solid #ccc;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .done-btn {
+      background: #2e8b57;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .done-btn.completed {
+      background: #aaa;
+      cursor: default;
+    }
+
+    a.back {
+      display: inline-block;
+      margin-top: 2rem;
+      color: #2e8b57;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+  </style>
+</head>
+<body>
+  <h1>🌿 EatCo Zero Waste Challenge</h1>
+  <p>Track your progress, learn the science, and make zero waste a vibe ✨</p>
+
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+  <div id="weeks"></div>
+
+  <a href="index.html" class="back">← Back to Home</a>
+
+  <script>
+    const weeksData = [
+      {
+        title: "Week 1: The ‘What Even Is Waste?’ Era",
+        details: "🧠 Science: When food rots, it releases methane — 25x stronger than CO₂!<br>💡 Action: Track your trash for 3 days. Find out what & why you waste most.",
+      },
+      {
+        title: "Week 2: Smart Swaps & Snack Hacks",
+        details: "♻️ Science: Packaging = microplastics.<br>💡 Action: Carry a bottle, skip wrappers, bring reusable containers.",
+      },
+      {
+        title: "Week 3: Cook It, Don’t Chuck It",
+        details: "🔥 Science: 30% of global food is wasted.<br>💡 Action: Repurpose leftovers — make wraps, soups, or smoothies!",
+      },
+      {
+        title: "Week 4: Share the Impact",
+        details: "🌍 Science: Community sharing reduces waste networks.<br>💡 Action: Host a zero-waste lunch or share a hack online.",
+      }
+    ];
+
+    const container = document.getElementById('weeks');
+    const progressFill = document.getElementById('progressFill');
+
+    let completed = JSON.parse(localStorage.getItem('completedWeeks')) || [];
+
+    function renderWeeks() {
+      container.innerHTML = "";
+      weeksData.forEach((week, i) => {
+        const div = document.createElement('div');
+        div.className = 'week';
+        div.innerHTML = `
+          <h3>${week.title}</h3>
+          <div class="details" id="details${i}">${week.details}</div>
+          <button class="done-btn ${completed.includes(i) ? 'completed' : ''}" onclick="toggleComplete(${i})">
+            ${completed.includes(i) ? '✅ Completed' : 'Mark as Done'}
+          </button>
+        `;
+        div.addEventListener('click', (e) => {
+          if (!e.target.classList.contains('done-btn')) {
+            const details = document.getElementById('details' + i);
+            details.style.display = details.style.display === 'block' ? 'none' : 'block';
+          }
+        });
+        container.appendChild(div);
+      });
+      updateProgress();
+    }
+
+    function toggleComplete(i) {
+      if (completed.includes(i)) return;
+      completed.push(i);
+      localStorage.setItem('completedWeeks', JSON.stringify(completed));
+      renderWeeks();
+    }
+
+    function updateProgress() {
+      const percent = (completed.length / weeksData.length) * 100;
+      progressFill.style.width = percent + '%';
+      if (percent === 100) alert('🎉 Congrats! You completed the EatCo Zero Waste Challenge!');
+    }
+
+    renderWeeks();
+  </script>
+</body>
+</html>
