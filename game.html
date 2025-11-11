@@ -8,15 +8,18 @@
     body {
       margin: 0;
       overflow: hidden;
-      background: linear-gradient(to bottom, #c9f7c5, #ffffff);
       font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to bottom, #c9f7c5, #ffffff);
+      position: relative;
     }
+
     canvas {
       display: block;
       margin: auto;
       background: url('https://i.imgur.com/ox2cG5z.png') repeat-x;
       background-size: cover;
     }
+
     #score {
       position: absolute;
       top: 20px;
@@ -28,15 +31,30 @@
       border-radius: 10px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
+
+    #popup {
+      position: absolute;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.9);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 1rem;
+      display: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
   <div id="score">Score: 0</div>
+  <div id="popup"></div>
   <canvas id="gameCanvas" width="800" height="400"></canvas>
 
   <script>
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
+    const popup = document.getElementById("popup");
 
     let player = { x: 50, y: 300, size: 40, vy: 0, jump: -10, gravity: 0.5 };
     let obstacles = [];
@@ -44,6 +62,14 @@
     let score = 0;
     let gameSpeed = 4;
     let ground = 350;
+
+    const facts = {
+      "🍎": "Eating local apples saves transport CO₂ emissions!",
+      "🥦": "Broccoli is super low carbon & packed with vitamins!",
+      "♻️": "Collecting recyclables keeps waste out of landfills!"
+    };
+
+    const ecoItems = ["🍎","🥦","♻️"];
 
     function drawPlayer() {
       ctx.fillStyle = "#3eb489";
@@ -61,7 +87,8 @@
 
     function spawnItem() {
       if (Math.random() < 0.015) {
-        items.push({ x: 800, y: ground - 50, size: 20 });
+        let emoji = ecoItems[Math.floor(Math.random() * ecoItems.length)];
+        items.push({ x: 800, y: ground - 50, size: 20, emoji: emoji });
       }
     }
 
@@ -77,13 +104,13 @@
         player.vy = 0;
       }
 
-      // Draw & move obstacles
+      // Draw obstacles
       ctx.fillStyle = "#444";
       obstacles.forEach((o, i) => {
         o.x -= gameSpeed;
         ctx.fillRect(o.x, o.y - o.height, o.width, o.height);
 
-        if (o.x + o.width < 0) obstacles.splice(i, 1);
+        if (o.x + o.width < 0) obstacles.splice(i,1);
 
         // Collision
         if (o.x < player.x + player.size &&
@@ -94,22 +121,24 @@
         }
       });
 
-      // Draw & move items
-      ctx.fillStyle = "#f5b342";
-      items.forEach((it, i) => {
+      // Draw eco items
+      ctx.font = "25px Arial";
+      items.forEach((it,i)=>{
         it.x -= gameSpeed;
-        ctx.beginPath();
-        ctx.arc(it.x, it.y, it.size, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillText(it.emoji,it.x,it.y);
 
-        if (it.x + it.size < 0) items.splice(i, 1);
+        if (it.x + it.size < 0) items.splice(i,1);
 
+        // Collision with player
         if (it.x < player.x + player.size &&
             it.x + it.size > player.x - player.size &&
             player.y + player.size > it.y - it.size) {
-          items.splice(i, 1);
           score += 10;
           document.getElementById("score").textContent = "Score: " + score;
+          popup.innerText = facts[it.emoji] || "You collected an eco item!";
+          popup.style.display = "block";
+          setTimeout(()=>{ popup.style.display = "none"; },2000);
+          items.splice(i,1);
         }
       });
 
@@ -119,10 +148,10 @@
     }
 
     function jump() {
-      if (player.y === ground) player.vy = player.jump;
+      if(player.y === ground) player.vy = player.jump;
     }
 
-    document.addEventListener("keydown", jump);
+    document.addEventListener("keydown",(e)=>{ if(e.code==="Space") jump(); });
     document.addEventListener("touchstart", jump);
 
     update();
