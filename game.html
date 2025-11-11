@@ -56,11 +56,11 @@
     const ctx = canvas.getContext("2d");
     const popup = document.getElementById("popup");
 
-    let player = { x: 50, y: 300, size: 40, vy: 0, jump: -10, gravity: 0.5 };
+    let player = { x: 50, y: 300, size: 40, vy: 0, jump: -12, gravity: 0.5, emoji: "🏃‍♂️" };
     let obstacles = [];
     let items = [];
     let score = 0;
-    let gameSpeed = 4;
+    let gameSpeed = 5; // medium difficulty
     let ground = 350;
 
     const facts = {
@@ -70,25 +70,26 @@
     };
 
     const ecoItems = ["🍎","🥦","♻️"];
+    const trashItems = ["🥤","🍟","🗑️"];
 
     function drawPlayer() {
-      ctx.fillStyle = "#3eb489";
-      ctx.beginPath();
-      ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.closePath();
+      ctx.font = "35px Arial";
+      ctx.fillText(player.emoji, player.x, player.y);
     }
 
     function spawnObstacle() {
       if (Math.random() < 0.02) {
-        obstacles.push({ x: 800, y: ground, width: 30, height: 30 });
+        let trash = trashItems[Math.floor(Math.random() * trashItems.length)];
+        let yPos = ground;
+        if(trash === "🥤") yPos = ground - 20;
+        obstacles.push({ x: 800, y: yPos, size: 30, emoji: trash });
       }
     }
 
     function spawnItem() {
       if (Math.random() < 0.015) {
-        let emoji = ecoItems[Math.floor(Math.random() * ecoItems.length)];
-        items.push({ x: 800, y: ground - 50, size: 20, emoji: emoji });
+        let eco = ecoItems[Math.floor(Math.random() * ecoItems.length)];
+        items.push({ x: 800, y: ground - 50, size: 25, emoji: eco });
       }
     }
 
@@ -105,39 +106,39 @@
       }
 
       // Draw obstacles
-      ctx.fillStyle = "#444";
-      obstacles.forEach((o, i) => {
+      ctx.font = "30px Arial";
+      obstacles.forEach((o,i)=>{
         o.x -= gameSpeed;
-        ctx.fillRect(o.x, o.y - o.height, o.width, o.height);
+        ctx.fillText(o.emoji,o.x,o.y);
 
-        if (o.x + o.width < 0) obstacles.splice(i,1);
+        if(o.x + o.size < 0) obstacles.splice(i,1);
 
         // Collision
         if (o.x < player.x + player.size &&
-            o.x + o.width > player.x - player.size &&
-            player.y + player.size > o.y - o.height) {
+            o.x + o.size > player.x - player.size &&
+            player.y + player.size > o.y - o.size) {
           alert("💀 You hit trash! Try again!");
           document.location.reload();
         }
       });
 
       // Draw eco items
-      ctx.font = "25px Arial";
+      ctx.font = "30px Arial";
       items.forEach((it,i)=>{
         it.x -= gameSpeed;
         ctx.fillText(it.emoji,it.x,it.y);
 
-        if (it.x + it.size < 0) items.splice(i,1);
+        if(it.x + it.size < 0) items.splice(i,1);
 
-        // Collision with player
-        if (it.x < player.x + player.size &&
-            it.x + it.size > player.x - player.size &&
-            player.y + player.size > it.y - it.size) {
+        // Collision
+        if(it.x < player.x + player.size &&
+           it.x + it.size > player.x - player.size &&
+           player.y + player.size > it.y - it.size){
           score += 10;
           document.getElementById("score").textContent = "Score: " + score;
           popup.innerText = facts[it.emoji] || "You collected an eco item!";
           popup.style.display = "block";
-          setTimeout(()=>{ popup.style.display = "none"; },2000);
+          setTimeout(()=>{popup.style.display="none";},2000);
           items.splice(i,1);
         }
       });
@@ -151,8 +152,8 @@
       if(player.y === ground) player.vy = player.jump;
     }
 
-    document.addEventListener("keydown",(e)=>{ if(e.code==="Space") jump(); });
-    document.addEventListener("touchstart", jump);
+    document.addEventListener("keydown",(e)=>{if(e.code==="Space") jump();});
+    document.addEventListener("touchstart",jump);
 
     update();
   </script>
