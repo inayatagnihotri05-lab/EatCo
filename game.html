@@ -1,161 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Eco Run 🌿 | EatCo</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to bottom, #c9f7c5, #ffffff);
-      position: relative;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eco Run 🌿 | EatCo</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom, #c9f7c5, #ffffff);
+  }
 
-    canvas {
-      display: block;
-      margin: auto;
-      background: url('https://i.imgur.com/ox2cG5z.png') repeat-x;
-      background-size: cover;
-    }
+  canvas {
+    display: block;
+    margin: 0 auto;
+    background: #87ceeb; /* sky blue */
+  }
 
-    #score {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      font-size: 1.5rem;
-      color: #2e8b57;
-      background: white;
-      padding: 8px 12px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
+  #score {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 1.8rem;
+    color: #2e8b57;
+    background: white;
+    padding: 10px 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
 
-    #popup {
-      position: absolute;
-      bottom: 80px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255,255,255,0.9);
-      padding: 10px 20px;
-      border-radius: 10px;
-      font-size: 1rem;
-      display: none;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    }
-  </style>
+  #popup {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.95);
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    display: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+</style>
 </head>
 <body>
-  <div id="score">Score: 0</div>
-  <div id="popup"></div>
-  <canvas id="gameCanvas" width="800" height="400"></canvas>
+<div id="score">Score: 0</div>
+<div id="popup"></div>
+<canvas id="gameCanvas" width="1000" height="500"></canvas>
 
-  <script>
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    const popup = document.getElementById("popup");
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+const popup = document.getElementById("popup");
 
-    let player = { x: 50, y: 300, size: 40, vy: 0, jump: -12, gravity: 0.5, emoji: "🏃‍♂️" };
-    let obstacles = [];
-    let items = [];
-    let score = 0;
-    let gameSpeed = 5; // medium difficulty
-    let ground = 350;
+let player = { x: 80, y: 400, size: 50, vy: 0, jump: -12, gravity: 0.6, emoji: "🏃‍♂️" };
+let obstacles = [];
+let items = [];
+let score = 0;
+let gameSpeed = 6; // medium difficulty
+let ground = 450;
 
-    const facts = {
-      "🍎": "Eating local apples saves transport CO₂ emissions!",
-      "🥦": "Broccoli is super low carbon & packed with vitamins!",
-      "♻️": "Collecting recyclables keeps waste out of landfills!"
-    };
+const facts = {
+  "🍎": "Eating local apples saves transport CO₂ emissions!",
+  "🥦": "Broccoli is super low carbon & packed with vitamins!",
+  "♻️": "Collecting recyclables keeps waste out of landfills!"
+};
 
-    const ecoItems = ["🍎","🥦","♻️"];
-    const trashItems = ["🥤","🍟","🗑️"];
+const ecoItems = ["🍎","🥦","♻️"];
+const trashItems = ["🥤","🍟","🗑️"];
 
-    function drawPlayer() {
-      ctx.font = "35px Arial";
-      ctx.fillText(player.emoji, player.x, player.y);
+// Draw player
+function drawPlayer() {
+  ctx.font = player.size + "px Arial";
+  ctx.fillText(player.emoji, player.x, player.y);
+}
+
+// Spawn trash obstacles
+function spawnObstacle() {
+  if (Math.random() < 0.02) {
+    let trash = trashItems[Math.floor(Math.random()*trashItems.length)];
+    let yPos = ground;
+    if(trash === "🥤") yPos = ground - 20;
+    obstacles.push({ x: canvas.width, y: yPos, size: 40, emoji: trash });
+  }
+}
+
+// Spawn eco items
+function spawnItem() {
+  if (Math.random() < 0.015) {
+    let eco = ecoItems[Math.floor(Math.random()*ecoItems.length)];
+    items.push({ x: canvas.width, y: ground - 50, size: 40, emoji: eco });
+  }
+}
+
+function update() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // Draw ground
+  ctx.fillStyle = "#2e8b57";
+  ctx.fillRect(0, ground, canvas.width, canvas.height-ground);
+
+  drawPlayer();
+
+  player.y += player.vy;
+  player.vy += player.gravity;
+
+  if(player.y > ground) {
+    player.y = ground;
+    player.vy = 0;
+  }
+
+  // Draw obstacles
+  ctx.font = "40px Arial";
+  obstacles.forEach((o,i)=>{
+    o.x -= gameSpeed;
+    ctx.fillText(o.emoji,o.x,o.y);
+
+    if(o.x + o.size < 0) obstacles.splice(i,1);
+
+    // Collision
+    if(o.x < player.x + player.size &&
+       o.x + o.size > player.x - player.size &&
+       player.y + player.size > o.y - o.size){
+      alert("💀 You hit trash! Try again!");
+      document.location.reload();
     }
+  });
 
-    function spawnObstacle() {
-      if (Math.random() < 0.02) {
-        let trash = trashItems[Math.floor(Math.random() * trashItems.length)];
-        let yPos = ground;
-        if(trash === "🥤") yPos = ground - 20;
-        obstacles.push({ x: 800, y: yPos, size: 30, emoji: trash });
-      }
+  // Draw eco items
+  items.forEach((it,i)=>{
+    it.x -= gameSpeed;
+    ctx.fillText(it.emoji,it.x,it.y);
+
+    if(it.x + it.size < 0) items.splice(i,1);
+
+    // Collision
+    if(it.x < player.x + player.size &&
+       it.x + it.size > player.x - player.size &&
+       player.y + player.size > it.y - it.size){
+      score += 10;
+      document.getElementById("score").textContent = "Score: "+score;
+      popup.innerText = facts[it.emoji] || "You collected an eco item!";
+      popup.style.display = "block";
+      setTimeout(()=>{popup.style.display="none";},2000);
+      items.splice(i,1);
     }
+  });
 
-    function spawnItem() {
-      if (Math.random() < 0.015) {
-        let eco = ecoItems[Math.floor(Math.random() * ecoItems.length)];
-        items.push({ x: 800, y: ground - 50, size: 25, emoji: eco });
-      }
-    }
+  spawnObstacle();
+  spawnItem();
+  requestAnimationFrame(update);
+}
 
-    function update() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      drawPlayer();
+function jump() {
+  if(player.y === ground) player.vy = player.jump;
+}
 
-      player.y += player.vy;
-      player.vy += player.gravity;
+document.addEventListener("keydown",(e)=>{if(e.code==="Space") jump();});
+document.addEventListener("touchstart",jump);
 
-      if (player.y > ground) {
-        player.y = ground;
-        player.vy = 0;
-      }
-
-      // Draw obstacles
-      ctx.font = "30px Arial";
-      obstacles.forEach((o,i)=>{
-        o.x -= gameSpeed;
-        ctx.fillText(o.emoji,o.x,o.y);
-
-        if(o.x + o.size < 0) obstacles.splice(i,1);
-
-        // Collision
-        if (o.x < player.x + player.size &&
-            o.x + o.size > player.x - player.size &&
-            player.y + player.size > o.y - o.size) {
-          alert("💀 You hit trash! Try again!");
-          document.location.reload();
-        }
-      });
-
-      // Draw eco items
-      ctx.font = "30px Arial";
-      items.forEach((it,i)=>{
-        it.x -= gameSpeed;
-        ctx.fillText(it.emoji,it.x,it.y);
-
-        if(it.x + it.size < 0) items.splice(i,1);
-
-        // Collision
-        if(it.x < player.x + player.size &&
-           it.x + it.size > player.x - player.size &&
-           player.y + player.size > it.y - it.size){
-          score += 10;
-          document.getElementById("score").textContent = "Score: " + score;
-          popup.innerText = facts[it.emoji] || "You collected an eco item!";
-          popup.style.display = "block";
-          setTimeout(()=>{popup.style.display="none";},2000);
-          items.splice(i,1);
-        }
-      });
-
-      spawnObstacle();
-      spawnItem();
-      requestAnimationFrame(update);
-    }
-
-    function jump() {
-      if(player.y === ground) player.vy = player.jump;
-    }
-
-    document.addEventListener("keydown",(e)=>{if(e.code==="Space") jump();});
-    document.addEventListener("touchstart",jump);
-
-    update();
-  </script>
+update();
+</script>
 </body>
 </html>
