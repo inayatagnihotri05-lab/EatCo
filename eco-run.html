@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eco Run 🌿 | EatCo</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #c9f7c5, #ffffff);
+      font-family: 'Poppins', sans-serif;
+    }
+    canvas {
+      display: block;
+      margin: auto;
+      background: url('https://i.imgur.com/ox2cG5z.png') repeat-x;
+      background-size: cover;
+    }
+    #score {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 1.5rem;
+      color: #2e8b57;
+      background: white;
+      padding: 8px 12px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <div id="score">Score: 0</div>
+  <canvas id="gameCanvas" width="800" height="400"></canvas>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    let player = { x: 50, y: 300, size: 40, vy: 0, jump: -10, gravity: 0.5 };
+    let obstacles = [];
+    let items = [];
+    let score = 0;
+    let gameSpeed = 4;
+    let ground = 350;
+
+    function drawPlayer() {
+      ctx.fillStyle = "#3eb489";
+      ctx.beginPath();
+      ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function spawnObstacle() {
+      if (Math.random() < 0.02) {
+        obstacles.push({ x: 800, y: ground, width: 30, height: 30 });
+      }
+    }
+
+    function spawnItem() {
+      if (Math.random() < 0.015) {
+        items.push({ x: 800, y: ground - 50, size: 20 });
+      }
+    }
+
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawPlayer();
+
+      player.y += player.vy;
+      player.vy += player.gravity;
+
+      if (player.y > ground) {
+        player.y = ground;
+        player.vy = 0;
+      }
+
+      // Draw & move obstacles
+      ctx.fillStyle = "#444";
+      obstacles.forEach((o, i) => {
+        o.x -= gameSpeed;
+        ctx.fillRect(o.x, o.y - o.height, o.width, o.height);
+
+        if (o.x + o.width < 0) obstacles.splice(i, 1);
+
+        // Collision
+        if (o.x < player.x + player.size &&
+            o.x + o.width > player.x - player.size &&
+            player.y + player.size > o.y - o.height) {
+          alert("💀 You hit trash! Try again!");
+          document.location.reload();
+        }
+      });
+
+      // Draw & move items
+      ctx.fillStyle = "#f5b342";
+      items.forEach((it, i) => {
+        it.x -= gameSpeed;
+        ctx.beginPath();
+        ctx.arc(it.x, it.y, it.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (it.x + it.size < 0) items.splice(i, 1);
+
+        if (it.x < player.x + player.size &&
+            it.x + it.size > player.x - player.size &&
+            player.y + player.size > it.y - it.size) {
+          items.splice(i, 1);
+          score += 10;
+          document.getElementById("score").textContent = "Score: " + score;
+        }
+      });
+
+      spawnObstacle();
+      spawnItem();
+      requestAnimationFrame(update);
+    }
+
+    function jump() {
+      if (player.y === ground) player.vy = player.jump;
+    }
+
+    document.addEventListener("keydown", jump);
+    document.addEventListener("touchstart", jump);
+
+    update();
+  </script>
+</body>
+</html>
