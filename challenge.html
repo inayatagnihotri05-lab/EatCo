@@ -3,172 +3,210 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EatCo 🌿 Zero-Waste Challenge</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>EatCo Challenge Tracker</title>
   <style>
     body {
-      font-family: "Poppins", sans-serif;
-      background-color: #f4fff7;
-      color: #222;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f0fff4, #d7fbe8);
       margin: 0;
       padding: 0;
+      color: #333;
       text-align: center;
     }
 
-    header {
-      background: #2e8b57;
-      color: white;
-      padding: 1rem;
-    }
-
     h1 {
+      margin-top: 2rem;
+      color: #2e8b57;
       font-size: 2rem;
-      margin: 0;
+      font-weight: 700;
     }
 
     .challenge-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
       padding: 2rem;
       max-width: 1000px;
-      margin: auto;
+      margin: 0 auto;
     }
 
     .challenge-card {
       background: white;
       border-radius: 16px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      transition: 0.3s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 1.2rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
     .challenge-card:hover {
-      transform: translateY(-5px);
+      transform: scale(1.03);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.15);
     }
 
-    .challenge-card h3 {
-      margin-bottom: 0.5rem;
-      color: #2e8b57;
+    .challenge-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #166534;
     }
 
-    .description {
+    .challenge-desc {
       font-size: 0.95rem;
-      color: #444;
-      margin-top: 0.5rem;
-      line-height: 1.4;
+      margin: 0.6rem 0;
+      color: #333;
     }
 
-    input[type="checkbox"] {
-      transform: scale(1.3);
-      margin-top: 1rem;
+    .challenge-check {
+      transform: scale(1.4);
       cursor: pointer;
+      margin-top: 8px;
+      accent-color: #2e8b57;
     }
 
-    .progress-container {
-      width: 80%;
-      margin: 2rem auto;
-      background: #d3f8df;
+    /* Progress bar */
+    #progressWrap {
+      width: 90%;
+      max-width: 800px;
+      margin: 1.5rem auto;
+      text-align: center;
+    }
+
+    #progressText {
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    #progressOuter {
+      background: #eee;
       border-radius: 10px;
       overflow: hidden;
-      height: 20px;
+      height: 16px;
     }
 
-    .progress-bar {
-      height: 20px;
+    #progressBar {
+      height: 16px;
       width: 0%;
-      background: #2e8b57;
+      background: linear-gradient(90deg,#6ee7b7,#2e8b57);
       transition: width 0.4s ease;
-    }
-
-    footer {
-      margin-top: 3rem;
-      padding: 1rem;
-      font-size: 0.9rem;
-      color: #555;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🌎 Zero-Waste Challenge Tracker</h1>
-    <p>Each week = one tiny eco upgrade 🌱</p>
-  </header>
+  <h1>🌱 EatCo Challenge Tracker</h1>
 
   <div class="challenge-container">
     <div class="challenge-card">
-      <h3>Week 1: The Bottle Swap 💧</h3>
-      <p class="description">
-        Ditch single-use plastic bottles for a reusable one!  
-        🔬 *Fact:* It takes up to **450 years** for one plastic bottle to decompose.  
-        Imagine saving the planet with every sip 😎
-      </p>
+      <div class="challenge-title">Week 1: Zero-Waste Snack Swap 🍎</div>
+      <div class="challenge-desc">
+        Ditch the plastic wrappers this week! Try carrying homemade snacks or fruits. 
+        Fun fact: plastic can take up to <b>500 years</b> to decompose — your apple core decomposes in 2 weeks!
+      </div>
       <input type="checkbox" class="challenge-check" />
     </div>
 
     <div class="challenge-card">
-      <h3>Week 2: Leftover Remix 🍲</h3>
-      <p class="description">
-        Turn your leftovers into something new!  
-        🧠 *Fact:* Food waste creates methane, a gas 28x stronger than CO₂.  
-        Be the chef who saves the planet (and your snacks)! 👩‍🍳
-      </p>
+      <div class="challenge-title">Week 2: Meatless Monday 🌿</div>
+      <div class="challenge-desc">
+        Go plant-powered for one day! Skipping meat for just a day saves over <b>1,500 liters of water</b> — 
+        that’s about 10 bathtubs of water. Science says: plants emit way less CO₂!
+      </div>
       <input type="checkbox" class="challenge-check" />
     </div>
 
     <div class="challenge-card">
-      <h3>Week 3: Local Legends 🌾</h3>
-      <p class="description">
-        Buy food grown near you — fewer travel miles = less carbon!  
-        🚜 *Fact:* Local produce cuts emissions by up to **60%**.  
-        Support your local farmer = save the Earth + economy 💪
-      </p>
+      <div class="challenge-title">Week 3: Cold Water Wash 💧</div>
+      <div class="challenge-desc">
+        Wash your clothes in cold water to save energy! Heating water uses a ton of electricity — 
+        science says it can reduce your laundry’s carbon footprint by <b>90%</b> 😱.
+      </div>
       <input type="checkbox" class="challenge-check" />
     </div>
 
     <div class="challenge-card">
-      <h3>Week 4: The Tote Life 🛍️</h3>
-      <p class="description">
-        Carry a tote bag instead of plastic ones!  
-        🎒 *Fact:* 1 plastic bag = 1000 years in a landfill 😳  
-        Be the tote-toting trendsetter 🧃
-      </p>
+      <div class="challenge-title">Week 4: BYO Cup ☕</div>
+      <div class="challenge-desc">
+        Bring your own reusable cup or bottle! Each reusable cup can replace <b>365 disposables</b> a year. 
+        Bonus: hot drinks stay hotter longer thanks to thermodynamics 🔥.
+      </div>
       <input type="checkbox" class="challenge-check" />
     </div>
 
     <div class="challenge-card">
-      <h3>Week 5: Zero Waste Snack Attack 🍌</h3>
-      <p class="description">
-        Buy snacks in bulk or make your own!  
-        🥨 *Fact:* Packaging waste = almost **30%** of total global trash.  
-        Homemade popcorn hits different (and greener) 🍿
-      </p>
+      <div class="challenge-title">Week 5: Compost Crew 🌍</div>
+      <div class="challenge-desc">
+        Start a mini compost! Microbes in compost turn food waste into soil food — 
+        a living science experiment that cuts methane emissions by <b>50%</b>!
+      </div>
+      <input type="checkbox" class="challenge-check" />
+    </div>
+
+    <div class="challenge-card">
+      <div class="challenge-title">Week 6: Lights Out 🔋</div>
+      <div class="challenge-desc">
+        Turn off lights for an hour daily — your eyes rest and your planet thanks you. 
+        LEDs save up to <b>85%</b> energy compared to bulbs from your parents’ era.
+      </div>
       <input type="checkbox" class="challenge-check" />
     </div>
   </div>
 
-  <div class="progress-container">
-    <div class="progress-bar" id="progressBar"></div>
+  <!-- Progress section -->
+  <div id="progressWrap">
+    <div id="progressText">Progress: 0%</div>
+    <div id="progressOuter">
+      <div id="progressBar"></div>
+    </div>
   </div>
 
-  <footer>
-    <p>© 2025 EatCo 🌿 | Built by Inayat Agnihotri | Every click = less waste 🌎</p>
-  </footer>
-
+  <!-- Confetti + Script -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script>
-    const checks = document.querySelectorAll('.challenge-check');
+    const checkboxes = Array.from(document.querySelectorAll('.challenge-check'));
     const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
 
-    checks.forEach(check => {
-      check.addEventListener('change', updateProgress);
-    });
+    // load saved state
+    const saved = JSON.parse(localStorage.getItem('eatco_checks') || '[]');
+    if (saved.length && checkboxes.length) {
+      checkboxes.forEach((cb, i) => {
+        if (saved[i]) cb.checked = true;
+      });
+    }
 
     function updateProgress() {
-      const total = checks.length;
-      const completed = [...checks].filter(c => c.checked).length;
-      const percent = (completed / total) * 100;
+      const total = checkboxes.length || 1;
+      const checkedCount = checkboxes.filter(cb => cb.checked).length;
+      const percent = Math.round((checkedCount / total) * 100);
+
       progressBar.style.width = percent + '%';
+      progressText.textContent = 'Progress: ' + percent + '%';
+
+      const state = checkboxes.map(cb => cb.checked);
+      localStorage.setItem('eatco_checks', JSON.stringify(state));
+
+      const alreadyCelebrated = localStorage.getItem('eatco_celebrated') === '1';
+      if (percent === 100 && !alreadyCelebrated) {
+        launchConfetti();
+        localStorage.setItem('eatco_celebrated', '1');
+      }
     }
+
+    function launchConfetti() {
+      const duration = 2000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 60,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#6ee7b7','#2e8b57','#1abc9c','#16a085']
+        });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
+    }
+
+    checkboxes.forEach(cb => cb.addEventListener('change', updateProgress));
+    updateProgress();
   </script>
 </body>
 </html>
