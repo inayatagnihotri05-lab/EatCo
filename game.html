@@ -1,167 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eco Run 🌿 | EatCo</title>
-<style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    font-family: 'Poppins', sans-serif;
-    background: linear-gradient(to bottom, #c9f7c5, #ffffff);
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoRun 🌎</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #8be0a4;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+    }
 
-  canvas {
-    display: block;
-    margin: 0 auto;
-    background: #87ceeb; /* sky blue */
-  }
+    h1 {
+      color: #1f513f;
+      margin-top: 10px;
+    }
 
-  #score {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 1.8rem;
-    color: #2e8b57;
-    background: white;
-    padding: 10px 15px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-  }
+    #gameContainer {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      height: 500px;
+      overflow: hidden;
+      border: 5px solid #1f513f;
+      border-radius: 10px;
+      background: url('https://i.imgur.com/4NJ9F6W.png') repeat-x; /* Cartoon street */
+      background-size: cover;
+      animation: moveStreet 4s linear infinite;
+    }
 
-  #popup {
-    position: absolute;
-    bottom: 80px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(255,255,255,0.95);
-    padding: 12px 20px;
-    border-radius: 12px;
-    font-size: 1.1rem;
-    display: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  }
-</style>
+    @keyframes moveStreet {
+      from { background-position: 0 0; }
+      to { background-position: -800px 0; }
+    }
+
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    #instructions {
+      color: #155e2c;
+      margin: 10px;
+      font-size: 1rem;
+    }
+
+    #fact {
+      color: #fff;
+      background: rgba(0,0,0,0.6);
+      padding: 8px 15px;
+      border-radius: 8px;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+    }
+  </style>
 </head>
 <body>
-<div id="score">Score: 0</div>
-<div id="popup"></div>
-<canvas id="gameCanvas" width="1000" height="500"></canvas>
+  <h1>EcoRun 🌍 — Save the Planet in Style</h1>
+  <div id="gameContainer">
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
+    <div id="fact"></div>
+  </div>
+  <p id="instructions">Press SPACE or TAP to jump 🌿</p>
 
-<script>
-const canvas = document.getElementById("gameCanvas");
-const ctx = canvas.getContext("2d");
-const popup = document.getElementById("popup");
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const factBox = document.getElementById('fact');
 
-let player = { x: 80, y: 400, size: 50, vy: 0, jump: -12, gravity: 0.6, emoji: "🏃‍♂️" };
-let obstacles = [];
-let items = [];
-let score = 0;
-let gameSpeed = 6; // medium difficulty
-let ground = 450;
+    let player = { x: 100, y: 400, size: 50, jumping: false, velocity: 0 };
+    const gravity = 0.8;
+    const ground = 450;
 
-const facts = {
-  "🍎": "Eating local apples saves transport CO₂ emissions!",
-  "🥦": "Broccoli is super low carbon & packed with vitamins!",
-  "♻️": "Collecting recyclables keeps waste out of landfills!"
-};
+    let obstacles = [];
+    let ecoItems = [];
+    let score = 0;
 
-const ecoItems = ["🍎","🥦","♻️"];
-const trashItems = ["🥤","🍟","🗑️"];
+    const ecoFacts = [
+      "🍎 Eating local reduces CO₂ by 13%! ",
+      "🥦 Broccoli absorbs carbon while growing.",
+      "♻️ Recycling 1 can saves enough energy to power a bulb for 3 hours!",
+      "🚴 Cycling instead of driving reduces emissions by 80%.",
+      "🌍 Plant-based meals can cut carbon by 60%."
+    ];
 
-// Draw player
-function drawPlayer() {
-  ctx.font = player.size + "px Arial";
-  ctx.fillText(player.emoji, player.x, player.y);
-}
-
-// Spawn trash obstacles
-function spawnObstacle() {
-  if (Math.random() < 0.02) {
-    let trash = trashItems[Math.floor(Math.random()*trashItems.length)];
-    let yPos = ground;
-    if(trash === "🥤") yPos = ground - 20;
-    obstacles.push({ x: canvas.width, y: yPos, size: 40, emoji: trash });
-  }
-}
-
-// Spawn eco items
-function spawnItem() {
-  if (Math.random() < 0.015) {
-    let eco = ecoItems[Math.floor(Math.random()*ecoItems.length)];
-    items.push({ x: canvas.width, y: ground - 50, size: 40, emoji: eco });
-  }
-}
-
-function update() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  // Draw ground
-  ctx.fillStyle = "#2e8b57";
-  ctx.fillRect(0, ground, canvas.width, canvas.height-ground);
-
-  drawPlayer();
-
-  player.y += player.vy;
-  player.vy += player.gravity;
-
-  if(player.y > ground) {
-    player.y = ground;
-    player.vy = 0;
-  }
-
-  // Draw obstacles
-  ctx.font = "40px Arial";
-  obstacles.forEach((o,i)=>{
-    o.x -= gameSpeed;
-    ctx.fillText(o.emoji,o.x,o.y);
-
-    if(o.x + o.size < 0) obstacles.splice(i,1);
-
-    // Collision
-    if(o.x < player.x + player.size &&
-       o.x + o.size > player.x - player.size &&
-       player.y + player.size > o.y - o.size){
-      alert("💀 You hit trash! Try again!");
-      document.location.reload();
+    function jump() {
+      if (!player.jumping) {
+        player.jumping = true;
+        player.velocity = -15;
+      }
     }
-  });
 
-  // Draw eco items
-  items.forEach((it,i)=>{
-    it.x -= gameSpeed;
-    ctx.fillText(it.emoji,it.x,it.y);
+    document.addEventListener('keydown', (e) => { if (e.code === 'Space') jump(); });
+    document.addEventListener('touchstart', jump);
 
-    if(it.x + it.size < 0) items.splice(i,1);
-
-    // Collision
-    if(it.x < player.x + player.size &&
-       it.x + it.size > player.x - player.size &&
-       player.y + player.size > it.y - it.size){
-      score += 10;
-      document.getElementById("score").textContent = "Score: "+score;
-      popup.innerText = facts[it.emoji] || "You collected an eco item!";
-      popup.style.display = "block";
-      setTimeout(()=>{popup.style.display="none";},2000);
-      items.splice(i,1);
+    function showFact() {
+      const fact = ecoFacts[Math.floor(Math.random() * ecoFacts.length)];
+      factBox.innerText = fact;
+      factBox.style.display = 'block';
+      setTimeout(() => factBox.style.display = 'none', 2000);
     }
-  });
 
-  spawnObstacle();
-  spawnItem();
-  requestAnimationFrame(update);
-}
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-function jump() {
-  if(player.y === ground) player.vy = player.jump;
-}
+      // Player
+      player.y += player.velocity;
+      player.velocity += gravity;
+      if (player.y > ground) {
+        player.y = ground;
+        player.jumping = false;
+      }
 
-document.addEventListener("keydown",(e)=>{if(e.code==="Space") jump();});
-document.addEventListener("touchstart",jump);
+      ctx.fillStyle = '#2e8b57';
+      ctx.beginPath();
+      ctx.arc(player.x, player.y, player.size / 2, 0, Math.PI * 2);
+      ctx.fill();
 
-update();
-</script>
+      // Obstacles
+      if (Math.random() < 0.02) {
+        obstacles.push({ x: canvas.width, y: ground, size: 40 });
+      }
+      obstacles.forEach((ob, i) => {
+        ob.x -= 6;
+        ctx.fillStyle = '#b32d00';
+        ctx.fillRect(ob.x, ob.y, ob.size, ob.size);
+        if (ob.x < -ob.size) obstacles.splice(i, 1);
+        if (player.x + player.size > ob.x && player.x < ob.x + ob.size && player.y + player.size > ob.y) {
+          alert('Game Over! Final Score: ' + score);
+          location.reload();
+        }
+      });
+
+      // Eco items
+      if (Math.random() < 0.015) {
+        ecoItems.push({ x: canvas.width, y: ground - 100, size: 30 });
+      }
+      ecoItems.forEach((item, i) => {
+        item.x -= 6;
+        ctx.fillStyle = '#4caf50';
+        ctx.beginPath();
+        ctx.arc(item.x, item.y, item.size / 2, 0, Math.PI * 2);
+        ctx.fill();
+        if (item.x < -item.size) ecoItems.splice(i, 1);
+        if (player.x + player.size > item.x && player.x < item.x + item.size && player.y + player.size > item.y) {
+          score++;
+          ecoItems.splice(i, 1);
+          showFact();
+        }
+      });
+
+      ctx.fillStyle = '#1f513f';
+      ctx.font = '20px Poppins';
+      ctx.fillText('Score: ' + score, 20, 30);
+
+      requestAnimationFrame(update);
+    }
+
+    update();
+  </script>
 </body>
 </html>
