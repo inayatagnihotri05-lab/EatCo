@@ -18,6 +18,7 @@
 
     h1 { color: #1f513f; margin-top: 10px; }
 
+    /* Game container */
     #gameContainer {
       position: relative;
       width: 100%;
@@ -29,6 +30,7 @@
       background: linear-gradient(to top, #dfeee1 0%, #cbefd3 40%, #b6f0c2 100%);
     }
 
+    /* Road base */
     #gameContainer::before {
       content: "";
       position: absolute;
@@ -40,6 +42,7 @@
       z-index: 1;
     }
 
+    /* Road stripes */
     #gameContainer::after {
       content: "";
       position: absolute;
@@ -50,6 +53,7 @@
       background-image: linear-gradient(90deg, transparent 0 40px, #f6e58d 40px 60px);
       background-size: 160px 10px;
       z-index: 2;
+      opacity: 0.95;
       animation: moveStripe 2s linear infinite;
     }
 
@@ -58,21 +62,14 @@
       to { transform: translateX(-160px); }
     }
 
-    #gameCanvas {
+    canvas {
       position: relative;
       z-index: 3;
-      display: block;
       width: 100%;
       height: 100%;
     }
 
-    #instructions {
-      color: #155e2c;
-      margin: 10px;
-      font-size: 1rem;
-      text-align: center;
-    }
-
+    #instructions { color: #155e2c; margin: 10px; font-size: 1rem; }
     #fact {
       color: #fff;
       background: rgba(0,0,0,0.6);
@@ -86,20 +83,17 @@
       z-index: 5;
     }
 
-    #winMessage {
-      display: none;
+    #score {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(255,255,255,0.9);
-      padding: 40px;
-      border-radius: 16px;
-      text-align: center;
+      top: 12px;
+      left: 12px;
       font-size: 1.5rem;
-      color: #155e2c;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      z-index: 10;
+      color: #2e8b57;
+      background: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      z-index: 6;
     }
   </style>
 </head>
@@ -108,7 +102,6 @@
   <div id="gameContainer">
     <canvas id="gameCanvas" width="800" height="500"></canvas>
     <div id="fact"></div>
-    <div id="winMessage">🎉 You Won! 🌱 <br> Great job saving the planet! <br><br> Final Score: <span id="finalScore"></span></div>
   </div>
   <p id="instructions">Press SPACE or TAP to jump 🌿</p>
 
@@ -116,31 +109,27 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const factBox = document.getElementById('fact');
-    const winMessage = document.getElementById('winMessage');
-    const finalScore = document.getElementById('finalScore');
 
     let player = { x: 100, y: 400, size: 50, jumping: false, velocity: 0 };
-    const gravity = 0.8;
+    const gravity = 0.6;  // ↓ lighter gravity
     const ground = 450;
+
     let obstacles = [];
     let ecoItems = [];
     let score = 0;
-    const WIN_SCORE = 15;
 
     const ecoFacts = [
-      "🍎 Eating local reduces CO₂ by 13%!",
+      "🍎 Eating local reduces CO₂ by 13%! ",
       "🥦 Broccoli absorbs carbon while growing.",
-      "♻️ Recycling one can saves enough energy to power a bulb for 3 hours!",
-      "🚴 Biking instead of driving cuts your carbon footprint by 80%.",
-      "🌍 Plant-based meals can cut carbon by 60%.",
-      "🌾 Composting turns waste into soil magic!",
-      "🚰 Refill, don’t landfill — save 50 plastic bottles a month!"
+      "♻️ Recycling 1 can saves enough energy to power a bulb for 3 hours!",
+      "🚴 Cycling instead of driving reduces emissions by 80%.",
+      "🌍 Plant-based meals can cut carbon by 60%."
     ];
 
     function jump() {
       if (!player.jumping) {
         player.jumping = true;
-        player.velocity = -15;
+        player.velocity = -18;  // ↑ stronger jump
       }
     }
 
@@ -151,54 +140,13 @@
       const fact = ecoFacts[Math.floor(Math.random() * ecoFacts.length)];
       factBox.innerText = fact;
       factBox.style.display = 'block';
-      setTimeout(() => factBox.style.display = 'none', 2500);
-    }
-
-    function confetti() {
-      for (let i = 0; i < 150; i++) {
-        const conf = document.createElement('div');
-        conf.style.position = 'fixed';
-        conf.style.top = Math.random() * 100 + '%';
-        conf.style.left = Math.random() * 100 + '%';
-        conf.style.width = '8px';
-        conf.style.height = '8px';
-        conf.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
-        conf.style.borderRadius = '50%';
-        conf.style.animation = `fall ${2 + Math.random() * 3}s linear`;
-        document.body.appendChild(conf);
-        setTimeout(() => conf.remove(), 3000);
-      }
-    }
-
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes fall {
-        to {
-          transform: translateY(100vh) rotate(720deg);
-          opacity: 0;
-        }
-      }
-    `;
-    document.head.appendChild(style);
-
-    function resizeCanvas() {
-      canvas.width = document.getElementById('gameContainer').clientWidth;
-      canvas.height = document.getElementById('gameContainer').clientHeight;
-    }
-
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    function winGame() {
-      winMessage.style.display = 'block';
-      finalScore.textContent = score;
-      confetti();
+      setTimeout(() => factBox.style.display = 'none', 2000);
     }
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Player physics
+      // Player
       player.y += player.velocity;
       player.velocity += gravity;
       if (player.y > ground) {
@@ -206,56 +154,45 @@
         player.jumping = false;
       }
 
-      // Player
       ctx.fillStyle = '#2e8b57';
       ctx.beginPath();
       ctx.arc(player.x, player.y, player.size / 2, 0, Math.PI * 2);
       ctx.fill();
 
-      // Obstacles
-      ifif (Math.random() < 0.01) {
-
+      // Obstacles (spawn slower + move slower)
+      if (Math.random() < 0.01) {  // ↓ less frequent
         obstacles.push({ x: canvas.width, y: ground, size: 40 });
       }
-
       obstacles.forEach((ob, i) => {
-       ob.x -= 6;
-
+        ob.x -= 4;  // ↓ slower movement
         ctx.fillStyle = '#b32d00';
-        ctx.fillRect(ob.x, ob.y - ob.size, ob.size, ob.size);
+        ctx.fillRect(ob.x, ob.y, ob.size, ob.size);
         if (ob.x < -ob.size) obstacles.splice(i, 1);
-
-        if (player.x + player.size / 2 > ob.x && player.x - player.size / 2 < ob.x + ob.size && player.y + player.size / 2 > ob.y - ob.size) {
-          alert('💀 Game Over! Final Score: ' + score);
+        if (player.x + player.size > ob.x && player.x < ob.x + ob.size && player.y + player.size > ob.y) {
+          alert('Game Over! Final Score: ' + score);
           location.reload();
         }
       });
 
-      // Eco items
-      if (Math.random() < 0.015) {
+      // Eco items (appear more often)
+      if (Math.random() < 0.03) {
         ecoItems.push({ x: canvas.width, y: ground - 100, size: 30 });
       }
-
       ecoItems.forEach((item, i) => {
-        item.x -= 6;
+        item.x -= 4;
         ctx.fillStyle = '#4caf50';
         ctx.beginPath();
         ctx.arc(item.x, item.y, item.size / 2, 0, Math.PI * 2);
         ctx.fill();
         if (item.x < -item.size) ecoItems.splice(i, 1);
-
-        if (player.x + player.size / 2 > item.x - item.size / 2 &&
-            player.x - player.size / 2 < item.x + item.size / 2 &&
-            player.y + player.size / 2 > item.y - item.size / 2) {
+        if (player.x + player.size > item.x && player.x < item.x + item.size && player.y + player.size > item.y) {
           score++;
           ecoItems.splice(i, 1);
           showFact();
-          if (score >= WIN_SCORE) {
-            winGame();
-          }
         }
       });
 
+      // Score display
       ctx.fillStyle = '#1f513f';
       ctx.font = '20px Poppins';
       ctx.fillText('Score: ' + score, 20, 30);
