@@ -213,12 +213,14 @@
       ctx.fill();
 
       // Obstacles
-      if (Math.random() < 0.02) {
+      ifif (Math.random() < 0.01) {
+
         obstacles.push({ x: canvas.width, y: ground, size: 40 });
       }
 
       obstacles.forEach((ob, i) => {
-        ob.x -= 6;
+       ob.x -= 6;
+
         ctx.fillStyle = '#b32d00';
         ctx.fillRect(ob.x, ob.y - ob.size, ob.size, ob.size);
         if (ob.x < -ob.size) obstacles.splice(i, 1);
