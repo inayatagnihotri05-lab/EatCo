@@ -5,62 +5,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EcoRun 🌎</title>
   <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: #8be0a4;
-      font-family: 'Poppins', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100vh;
-    }
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(to bottom, #b4f0c6 0%, #eafaf0 60%);
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+  }
 
-    h1 {
-      color: #1f513f;
-      margin-top: 10px;
-    }
+  h1 { color: #1f513f; margin-top: 10px; }
 
-    #gameContainer {
-      position: relative;
-      width: 100%;
-      max-width: 800px;
-      height: 500px;
-      overflow: hidden;
-      border: 5px solid #1f513f;
-      border-radius: 10px;
-      background: url('https://i.imgur.com/4NJ9F6W.png') repeat-x; /* Cartoon street */
-      background-size: cover;
-      animation: moveStreet 4s linear infinite;
-    }
+  /* Game container with CSS "moving street" */
+  #gameContainer {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    height: 560px;
+    overflow: hidden;
+    border: 4px solid #1f513f;
+    border-radius: 12px;
+    background: linear-gradient(to top, #dfeee1 0%, #cbefd3 40%, #b6f0c2 100%);
+  }
 
-    @keyframes moveStreet {
-      from { background-position: 0 0; }
-      to { background-position: -800px 0; }
-    }
+  /* moving road layer */
+  #gameContainer::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 170px; /* road height */
+    background: linear-gradient(#5a5a5a, #4a4a4a);
+    z-index: 1;
+    transform: translateZ(0);
+  }
 
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-    }
+  /* road stripes layer */
+  #gameContainer::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 85px;
+    width: 200%;
+    height: 10px;
+    background-image: linear-gradient(90deg, transparent 0 40px, #f6e58d 40px 60px);
+    background-size: 160px 10px;
+    z-index: 2;
+    opacity: 0.95;
+    animation: moveStripe 2s linear infinite;
+  }
 
-    #instructions {
-      color: #155e2c;
-      margin: 10px;
-      font-size: 1rem;
-    }
+  @keyframes moveStripe {
+    from { transform: translateX(0); }
+    to { transform: translateX(-160px); }
+  }
 
-    #fact {
-      color: #fff;
-      background: rgba(0,0,0,0.6);
-      padding: 8px 15px;
-      border-radius: 8px;
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: none;
+  canvas {
+   // make canvas match container size (responsive)
+const container = document.getElementById('gameContainer');
+function resizeCanvas() {
+  canvas.width = container.clientWidth;
+  canvas.height = container.clientHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas(); // initial
+
+  }
+
+  #instructions { color: #155e2c; margin: 10px; font-size: 1rem; }
+  #fact {
+    color: #fff;
+    background: rgba(0,0,0,0.6);
+    padding: 8px 15px;
+    border-radius: 8px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    z-index: 5;
+  }
+
+  /* Score styling */
+  #score {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 1.5rem;
+    color: #2e8b57;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    z-index: 6;
+  }
+</style>
+
     }
   </style>
 </head>
