@@ -18,7 +18,6 @@
 
     h1 { color: #1f513f; margin-top: 10px; }
 
-    /* Game container */
     #gameContainer {
       position: relative;
       width: 100%;
@@ -30,7 +29,6 @@
       background: linear-gradient(to top, #dfeee1 0%, #cbefd3 40%, #b6f0c2 100%);
     }
 
-    /* Road base */
     #gameContainer::before {
       content: "";
       position: absolute;
@@ -42,7 +40,6 @@
       z-index: 1;
     }
 
-    /* Road stripes */
     #gameContainer::after {
       content: "";
       position: absolute;
@@ -105,18 +102,22 @@
   </div>
   <p id="instructions">Press SPACE or TAP to jump 🌿</p>
 
+  <!-- 🎉 Confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const factBox = document.getElementById('fact');
 
     let player = { x: 100, y: 400, size: 50, jumping: false, velocity: 0 };
-    const gravity = 0.6;  // ↓ lighter gravity
+    const gravity = 0.6;
     const ground = 450;
 
     let obstacles = [];
     let ecoItems = [];
     let score = 0;
+    let gameOver = false;
 
     const ecoFacts = [
       "🍎 Eating local reduces CO₂ by 13%! ",
@@ -129,7 +130,7 @@
     function jump() {
       if (!player.jumping) {
         player.jumping = true;
-        player.velocity = -18;  // ↑ stronger jump
+        player.velocity = -18;
       }
     }
 
@@ -143,7 +144,39 @@
       setTimeout(() => factBox.style.display = 'none', 2000);
     }
 
+    function celebrate() {
+      gameOver = true;
+      const duration = 3 * 1000;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 7,
+          angle: 60,
+          spread: 100,
+          origin: { x: 0 },
+          colors: ['#2e8b57', '#81c784', '#c5e1a5']
+        });
+        confetti({
+          particleCount: 7,
+          angle: 120,
+          spread: 100,
+          origin: { x: 1 },
+          colors: ['#2e8b57', '#81c784', '#c5e1a5']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        } else {
+          alert("🌍 You Win! The planet thanks you 💚");
+          location.reload();
+        }
+      })();
+    }
+
     function update() {
+      if (gameOver) return;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Player
@@ -159,22 +192,22 @@
       ctx.arc(player.x, player.y, player.size / 2, 0, Math.PI * 2);
       ctx.fill();
 
-      // Obstacles (spawn slower + move slower)
-      if (Math.random() < 0.01) {  // ↓ less frequent
+      // Obstacles
+      if (Math.random() < 0.01) {
         obstacles.push({ x: canvas.width, y: ground, size: 40 });
       }
       obstacles.forEach((ob, i) => {
-        ob.x -= 4;  // ↓ slower movement
+        ob.x -= 4;
         ctx.fillStyle = '#b32d00';
         ctx.fillRect(ob.x, ob.y, ob.size, ob.size);
         if (ob.x < -ob.size) obstacles.splice(i, 1);
         if (player.x + player.size > ob.x && player.x < ob.x + ob.size && player.y + player.size > ob.y) {
-          alert('Game Over! Final Score: ' + score);
+          alert('💥 Game Over! Final Score: ' + score);
           location.reload();
         }
       });
 
-      // Eco items (appear more often)
+      // Eco items
       if (Math.random() < 0.03) {
         ecoItems.push({ x: canvas.width, y: ground - 100, size: 30 });
       }
@@ -196,6 +229,11 @@
       ctx.fillStyle = '#1f513f';
       ctx.font = '20px Poppins';
       ctx.fillText('Score: ' + score, 20, 30);
+
+      // Win condition 🎉
+      if (score >= 10) {
+        celebrate();
+      }
 
       requestAnimationFrame(update);
     }
