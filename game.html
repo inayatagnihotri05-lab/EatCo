@@ -5,106 +5,90 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EcoRun 🌎</title>
   <style>
-<style>
-  body {
-    margin: 0;
-    overflow: hidden;
-    background: linear-gradient(to bottom, #b4f0c6 0%, #eafaf0 60%);
-    font-family: 'Poppins', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-  }
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom, #b4f0c6 0%, #eafaf0 60%);
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+    }
 
-  h1 { color: #1f513f; margin-top: 10px; }
+    h1 { color: #1f513f; margin-top: 10px; }
 
-  /* Game container with CSS "moving street" */
-  #gameContainer {
-    position: relative;
-    width: 100%;
-    max-width: 1000px;
-    height: 560px;
-    overflow: hidden;
-    border: 4px solid #1f513f;
-    border-radius: 12px;
-    background: linear-gradient(to top, #dfeee1 0%, #cbefd3 40%, #b6f0c2 100%);
-  }
+    /* Game container with moving road */
+    #gameContainer {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      height: 560px;
+      overflow: hidden;
+      border: 4px solid #1f513f;
+      border-radius: 12px;
+      background: linear-gradient(to top, #dfeee1 0%, #cbefd3 40%, #b6f0c2 100%);
+    }
 
-  /* moving road layer */
-  #gameContainer::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 170px; /* road height */
-    background: linear-gradient(#5a5a5a, #4a4a4a);
-    z-index: 1;
-    transform: translateZ(0);
-  }
+    /* moving road layer */
+    #gameContainer::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 170px;
+      background: linear-gradient(#5a5a5a, #4a4a4a);
+      z-index: 1;
+      transform: translateZ(0);
+    }
 
-  /* road stripes layer */
-  #gameContainer::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 85px;
-    width: 200%;
-    height: 10px;
-    background-image: linear-gradient(90deg, transparent 0 40px, #f6e58d 40px 60px);
-    background-size: 160px 10px;
-    z-index: 2;
-    opacity: 0.95;
-    animation: moveStripe 2s linear infinite;
-  }
+    /* moving road stripes */
+    #gameContainer::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 85px;
+      width: 200%;
+      height: 10px;
+      background-image: linear-gradient(90deg, transparent 0 40px, #f6e58d 40px 60px);
+      background-size: 160px 10px;
+      z-index: 2;
+      opacity: 0.95;
+      animation: moveStripe 2s linear infinite;
+    }
 
-  @keyframes moveStripe {
-    from { transform: translateX(0); }
-    to { transform: translateX(-160px); }
-  }
+    @keyframes moveStripe {
+      from { transform: translateX(0); }
+      to { transform: translateX(-160px); }
+    }
 
-  canvas {
-   // make canvas match container size (responsive)
-const container = document.getElementById('gameContainer');
-function resizeCanvas() {
-  canvas.width = container.clientWidth;
-  canvas.height = container.clientHeight;
-}
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas(); // initial
+    #gameCanvas {
+      position: relative;
+      z-index: 3;
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
 
-  }
+    #instructions {
+      color: #155e2c;
+      margin: 10px;
+      font-size: 1rem;
+      text-align: center;
+    }
 
-  #instructions { color: #155e2c; margin: 10px; font-size: 1rem; }
-  #fact {
-    color: #fff;
-    background: rgba(0,0,0,0.6);
-    padding: 8px 15px;
-    border-radius: 8px;
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: none;
-    z-index: 5;
-  }
-
-  /* Score styling */
-  #score {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    font-size: 1.5rem;
-    color: #2e8b57;
-    background: white;
-    padding: 8px 12px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    z-index: 6;
-  }
-</style>
-
+    #fact {
+      color: #fff;
+      background: rgba(0,0,0,0.6);
+      padding: 8px 15px;
+      border-radius: 8px;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      z-index: 5;
     }
   </style>
 </head>
@@ -130,11 +114,13 @@ resizeCanvas(); // initial
     let score = 0;
 
     const ecoFacts = [
-      "🍎 Eating local reduces CO₂ by 13%! ",
+      "🍎 Eating local reduces CO₂ by 13%!",
       "🥦 Broccoli absorbs carbon while growing.",
-      "♻️ Recycling 1 can saves enough energy to power a bulb for 3 hours!",
-      "🚴 Cycling instead of driving reduces emissions by 80%.",
-      "🌍 Plant-based meals can cut carbon by 60%."
+      "♻️ Recycling one can saves enough energy to power a bulb for 3 hours!",
+      "🚴 Biking instead of driving cuts your carbon footprint by 80%.",
+      "🌍 Plant-based meals can cut carbon by 60%.",
+      "🌾 Composting turns waste into soil magic!",
+      "🚰 Refill, don’t landfill — save 50 plastic bottles a month!"
     ];
 
     function jump() {
@@ -151,13 +137,21 @@ resizeCanvas(); // initial
       const fact = ecoFacts[Math.floor(Math.random() * ecoFacts.length)];
       factBox.innerText = fact;
       factBox.style.display = 'block';
-      setTimeout(() => factBox.style.display = 'none', 2000);
+      setTimeout(() => factBox.style.display = 'none', 2500);
     }
+
+    function resizeCanvas() {
+      canvas.width = document.getElementById('gameContainer').clientWidth;
+      canvas.height = document.getElementById('gameContainer').clientHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
 
     function update() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Player
+      // Player physics
       player.y += player.velocity;
       player.velocity += gravity;
       if (player.y > ground) {
@@ -165,6 +159,7 @@ resizeCanvas(); // initial
         player.jumping = false;
       }
 
+      // Player
       ctx.fillStyle = '#2e8b57';
       ctx.beginPath();
       ctx.arc(player.x, player.y, player.size / 2, 0, Math.PI * 2);
@@ -174,13 +169,16 @@ resizeCanvas(); // initial
       if (Math.random() < 0.02) {
         obstacles.push({ x: canvas.width, y: ground, size: 40 });
       }
+
       obstacles.forEach((ob, i) => {
         ob.x -= 6;
         ctx.fillStyle = '#b32d00';
-        ctx.fillRect(ob.x, ob.y, ob.size, ob.size);
+        ctx.fillRect(ob.x, ob.y - ob.size, ob.size, ob.size);
         if (ob.x < -ob.size) obstacles.splice(i, 1);
-        if (player.x + player.size > ob.x && player.x < ob.x + ob.size && player.y + player.size > ob.y) {
-          alert('Game Over! Final Score: ' + score);
+
+        // Collision
+        if (player.x + player.size / 2 > ob.x && player.x - player.size / 2 < ob.x + ob.size && player.y + player.size / 2 > ob.y - ob.size) {
+          alert('💀 Game Over! Final Score: ' + score);
           location.reload();
         }
       });
@@ -189,6 +187,7 @@ resizeCanvas(); // initial
       if (Math.random() < 0.015) {
         ecoItems.push({ x: canvas.width, y: ground - 100, size: 30 });
       }
+
       ecoItems.forEach((item, i) => {
         item.x -= 6;
         ctx.fillStyle = '#4caf50';
@@ -196,13 +195,18 @@ resizeCanvas(); // initial
         ctx.arc(item.x, item.y, item.size / 2, 0, Math.PI * 2);
         ctx.fill();
         if (item.x < -item.size) ecoItems.splice(i, 1);
-        if (player.x + player.size > item.x && player.x < item.x + item.size && player.y + player.size > item.y) {
+
+        // Collect item
+        if (player.x + player.size / 2 > item.x - item.size / 2 &&
+            player.x - player.size / 2 < item.x + item.size / 2 &&
+            player.y + player.size / 2 > item.y - item.size / 2) {
           score++;
           ecoItems.splice(i, 1);
           showFact();
         }
       });
 
+      // Score
       ctx.fillStyle = '#1f513f';
       ctx.font = '20px Poppins';
       ctx.fillText('Score: ' + score, 20, 30);
