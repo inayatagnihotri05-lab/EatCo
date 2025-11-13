@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EcoRun 🌿 — EatCo</title>
+
+  <style>
+    :root{
+      --accent:#2e8b57;
+      --bg1:#b4f0c6;
+      --bg2:#eafaf0;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: 'Poppins', system-ui, sans-serif;
+      background: linear-gradient(to bottom, var(--bg1) 0%, var(--bg2) 60%);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      min-height:100vh;
+    }
+
+    h1{ color: #1f513f; margin: 14px 0 6px; font-size:20px; }
+
+    /* game container with "moving street" */
+    #gameContainer{
+      position:relative;
+      width:100%;
+      max-width:900px;
+      height:560px;
+      border:4px solid #1f513f;
+      border-radius:12px;
+      overflow:hidden;
+      background: linear-gradient(to top, #dfeee1 0%, #cbefd3 40%, #b6f0c2 100%);
+      margin-bottom:12px;
+    }
+
+    /* road block */
+    #gameContainer::before{
+      content:"";
+      position:absolute; left:0; right:0; bottom:0;
+      height:170px;
+      background: linear-gradient(#5a5a5a,#4a4a4a);
+      z-index:1;
+    }
+
+    /* moving stripes */
+    #gameContainer::after{
+      content:""; position:absolute; left:0; bottom:85px;
+      width:200%; height:10px;
+      background-image: linear-gradient(90deg, transparent 0 40px, #f6e58d 40px 60px);
+      background-size:160px 10px;
+      z-index:2; opacity:.95;
+      animation: moveStripe 2s linear infinite;
+    }
+    @keyframes moveStripe{ from{transform:translateX(0)} to{transform:translateX(-160px)} }
+
+    /* canvas covers on top */
+    #gameCanvas{
+      position:absolute; left:0; top:0; width:100%; height:100%;
+      z-index:3; display:block;
+    }
+
+    #instructions{ color:#155e2c; font-size:14px; margin:6px; text-align:center; }
+
+    /* fact popup */
+    #fact{
+      display:none;
+      position:absolute; left:50%; transform:translateX(-50%);
+      bottom:20px; background:rgba(0,0,0,0.7); color:white;
+      padding:10px 14px; border-radius:10px; z-index:6; max-width:85%;
+      text-align:center; font-size:14px;
+    }
+
+    /* win overlay */
+    #winOverlay{
+      display:none;
+      position:absolute; z-index:11; left:50%; top:50%;
+      transform:translate(-50%,-50%); background:rgba(255,255,255,0.95);
+      padding:26px; border-radius:14px; text-align:center; width:80%; max-width:420px;
+      box-shadow:0 8px 30px rgba(0,0,0,0.15);
+    }
+    #winOverlay h2{ margin:0 0 8px; color:var(--accent) }
+    .btn{
+      display:inline-block; margin-top:10px; padding:8px 14px; border-radius:10px;
+      text-decoration:none; color:white; background:var(--accent); border:none; cursor:pointer;
+      font-weight:600;
+    }
+    .btn.secondary{ background:#6aa87b; margin-left:10px }
+
+    /* score box */
+    #scoreBox{
+      position:absolute; top:12px; left:12px; z-index:7;
+      background:white; padding:8px 12px; border-radius:10px; font-weight:700;
+      color: #155e2c; box-shadow:0 2px 7px rgba(0,0,0,0.12);
+    }
+
+    /* small controls row */
+    #controls{
+      margin-bottom:14px; display:flex; gap:8px; align-items:center; font-size:14px;
+    }
+    #muteBtn { background:#fff; border:1px solid #e6f0ea; padding:6px 8px; border-radius:8px; cursor:pointer; }
+
+    @media (max-width:480px){
+      #gameContainer{ height:420px }
+    }
+  </style>
+</head>
+<body>
+  <h1>EcoRun 🌍 — Save the Planet in Style</h1>
+
+  <div id="controls">
+    <div style="color:#155e2c; font-weight:600; margin-right:8px;">Controls:</div>
+    <div style="background:white;padding:6px 8px;border-radius:8px;">Space / Tap</div>
+    <button id="muteBtn" aria-label="Mute (no audio yet)">🔈 Mute</button>
+  </div>
+
+  <div id="gameContainer">
+    <canvas id="gameCanvas"></canvas>
+    <div id="scoreBox">Score: 0 | Best: 0</div>
+    <div id="fact"></div>
+
+    <div id="winOverlay" role="dialog" aria-hidden="true">
+      <h2>🎉 You Saved the Planet!</h2>
+      <p id="winText">Final score: 0</p>
+      <div style="margin-top:12px">
+        <button id="playAgain" class="btn">Play Again</button>
+        <button id="shareBtn" class="btn secondary">Share Score</button>
+      </div>
+    </div>
+  </div>
+
+  <p id="instructions">Press <b>SPACE</b> (or tap) to jump — collect eco items, avoid trash. 🌱</p>
+
+  <!-- confetti lib -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+  (() => {
+    // --- config ---
+    const WIN_SCORE = 10;        // score needed to win
+    const OB_SPAWN_CHANCE = 0.01; // lower = easier
+    const ITEM_SPAWN_CHANCE = 0.03;
+    const SPEED = 4.2;           // base object speed
+    // --------------
+
+    const canvas = document.getElementById('gameCanvas');
+    const container = document.getElementById('gameContainer');
+    const ctx = canvas.getContext('2d');
+    const factBox = document.getElementById('fact');
+    const scoreBox = document.getElementById('scoreBox');
+    const winOverlay = document.getElementById('winOverlay');
+    const winText = document.getElementById('winText');
+    const playAgainBtn = document.getElementById('playAgain');
+    const shareBtn = document.getElementById('shareBtn');
+    const muteBtn = document.getElementById('muteBtn');
+
+    // responsive canvas
+    function resize(){
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // game state
+    let player = { x: 120, y: 0, r: 36, vy:0, jumping:false };
+    let groundY = canvas.height - 110;
+    player.y = groundY;
+    const gravity = 0.6;
+
+    let obstacles = [];
+    let items = [];
+    let score = 0;
+    let best = parseInt(localStorage.getItem('eatco_best')||'0',10) || 0;
+    let running = true;
+    scoreBox.textContent = `Score: ${score} | Best: ${best}`;
+
+    // eco facts
+    const ECO_FACTS = [
+      "🍎 Eating local reduces CO₂ by 13%!",
+      "🥦 Broccoli absorbs carbon while growing.",
+      "♻️ Recycling one can saves enough energy to power a bulb for 3 hours!",
+      "🚴 Biking instead of driving cuts emissions by 80%.",
+      "🌍 Plant-based meals can cut carbon by 60%."
+    ];
+
+    // control: jump on space or tap
+    function jump(){
+      if (!player.jumping){
+        player.jumping = true;
+        player.vy = -13 - Math.random()*4; // small variation
+      }
+    }
+    document.addEventListener('keydown', e => { if (e.code === 'Space') jump(); });
+    document.addEventListener('touchstart', e => { jump(); });
+
+    // spawn functions
+    function maybeSpawnObstacle(){
+      if (Math.random() < OB_SPAWN_CHANCE) {
+        const size = 36 + Math.round(Math.random()*18);
+        obstacles.push({ x: canvas.width + 30, y: groundY, size, speed: SPEED + Math.random()*1.4 });
+      }
+    }
+    function maybeSpawnItem(){
+      if (Math.random() < ITEM_SPAWN_CHANCE) {
+        // spawn higher sometimes
+        const y = groundY - (60 + Math.round(Math.random()*80));
+        items.push({ x: canvas.width + 30, y, size: 28 + Math.round(Math.random()*8), speed: SPEED - 0.6 + Math.random()*1.2 });
+      }
+    }
+
+    // show fact popup
+    let factTimeout = null;
+    function showFact(){
+      const f = ECO_FACTS[Math.floor(Math.random()*ECO_FACTS.length)];
+      factBox.textContent = f;
+      factBox.style.display = 'block';
+      clearTimeout(factTimeout);
+      factTimeout = setTimeout(()=>factBox.style.display='none', 2200);
+    }
+
+    // confetti celebration
+    function doConfetti(){
+      const duration = 2.5 * 1000;
+      const end = Date.now() + duration;
+      (function frame(){
+        confetti({
+          particleCount: 8,
+          startVelocity: 35,
+          spread: 160,
+          ticks: 60,
+          origin: { x: Math.random(), y: Math.random()*0.6 },
+          colors: ['#2e8b57','#81c784','#c5e1a5','#ffd166']
+        });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
+    }
+
+    function gameWin(){
+      running = false;
+      winText.textContent = `Final score: ${score}`;
+      winOverlay.style.display = 'block';
+      doConfetti();
+      if (score > best) {
+        best = score;
+        localStorage.setItem('eatco_best', best);
+        scoreBox.textContent = `Score: ${score} | Best: ${best}`;
+      }
+    }
+
+    playAgainBtn.addEventListener('click', ()=> location.reload());
+    shareBtn.addEventListener('click', ()=>{
+      const shareText = `I scored ${score} on EcoRun — playing on EatCo! 🌿 Try it: ${location.href}`;
+      if (navigator.share) navigator.share({title:'EcoRun score', text:shareText}).catch(()=>alert(shareText));
+      else { navigator.clipboard.writeText(shareText).then(()=>alert('Score copied to clipboard — share it!')); }
+    });
+
+    // mute toggle (no sounds included yet)
+    let muted = false;
+    muteBtn.addEventListener('click', ()=> {
+      muted = !muted;
+      muteBtn.textContent = muted ? '🔇 Muted' : '🔈 Mute';
+    });
+
+    // collision helpers
+    function rectsCollide(ax,ay,aw,ah, bx,by,bw,bh){
+      return !(ax > bx + bw || ax + aw < bx || ay > by + bh || ay + ah < by);
+    }
+
+    // main loop
+    function update(){
+      if (!running) return;
+      // resize & adjust ground (in case of window change)
+      resize();
+      groundY = canvas.height - 110;
+      if (player.y > groundY) { player.y = groundY; player.vy = 0; player.jumping = false; }
+
+      // physics
+      player.vy += gravity;
+      player.y += player.vy;
+
+      // clear
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      // draw player (emoji)
+      ctx.font = `${player.r}px serif`;
+      ctx.textAlign = 'center';
+      ctx.fillText('🏃‍♂️', player.x, player.y + player.r/4);
+
+      // spawn
+      maybeSpawnObstacle();
+      maybeSpawnItem();
+
+      // obstacles
+      for (let i = obstacles.length-1; i>=0; i--){
+        const ob = obstacles[i];
+        ob.x -= ob.speed;
+        ctx.fillStyle = '#b32d00';
+        // draw emoji trash for variety
+        ctx.font = `${ob.size}px serif`;
+        const trashEmoji = ['🥤','🍟','🗑️'][Math.floor(Math.random()*3)];
+        ctx.fillText(trashEmoji, ob.x, ob.y);
+        // collision box approximate
+        if (rectsCollide(player.x - player.r/2, player.y - player.r/2, player.r, player.r, ob.x - ob.size/2, ob.y - ob.size, ob.size, ob.size)){
+          // hit
+          running = false;
+          setTimeout(()=> alert(`💥 Game Over! Final Score: ${score}`), 50);
+          setTimeout(()=> location.reload(), 80);
+          return;
+        }
+        if (ob.x < -80) obstacles.splice(i,1);
+      }
+
+      // items
+      for (let i = items.length-1; i>=0; i--){
+        const it = items[i];
+        it.x -= it.speed;
+        ctx.font = `${it.size}px serif`;
+        const ecoEmoji = ['🍎','🥦','♻️'][Math.floor(Math.random()*3)];
+        ctx.fillText(ecoEmoji, it.x, it.y);
+        if (rectsCollide(player.x - player.r/2, player.y - player.r/2, player.r, player.r, it.x - it.size/2, it.y - it.size/2, it.size, it.size)){
+          score += 1;
+          showFact();
+          items.splice(i,1);
+          scoreBox.textContent = `Score: ${score} | Best: ${best}`;
+          if (score >= WIN_SCORE) { gameWin(); return; }
+        }
+        if (it.x < -80) items.splice(i,1);
+      }
+
+      // HUD
+      ctx.fillStyle = '#1f513f';
+      ctx.font = '18px Poppins, sans-serif';
+      ctx.fillText(`Score: ${score}`, 20, 30);
+
+      requestAnimationFrame(update);
+    }
+
+    // start
+    update();
+
+  })();
+  </script>
+</body>
+</html>
