@@ -20,7 +20,7 @@
       color: white;
     }
 
-    h1 { font-size: 2.5rem; }
+    h1 { font-size: 2.5rem; margin-bottom: 0.3rem; }
     p { font-size: 1.1rem; }
 
     .buzz-container {
@@ -40,9 +40,7 @@
       transition: transform 0.2s ease;
     }
 
-    .buzz-card:hover {
-      transform: scale(1.03);
-    }
+    .buzz-card:hover { transform: scale(1.03); }
 
     .buzz-title {
       font-size: 1.3rem;
@@ -66,6 +64,37 @@
       color: #4a4a4a;
     }
 
+    /* Live Feed Section */
+    .live-feed {
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 15px;
+      margin: 1rem auto;
+      max-width: 1000px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+
+    .live-feed h2 {
+      text-align: center;
+      color: #1a4d2e;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .news-item {
+      border-left: 5px solid #56ab2f;
+      padding-left: 10px;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .news-item span {
+      display: block;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
     /* Submit Button */
     .submit-section {
       text-align: center;
@@ -84,9 +113,7 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
-    .submit-btn:hover {
-      background-color: #23963e;
-    }
+    .submit-btn:hover { background-color: #23963e; }
 
     .submit-note {
       color: #333;
@@ -98,52 +125,57 @@
 <body>
   <header>
     <h1>EcoBuzz 🔥</h1>
-    <p>Your weekly dose of Gen Z sustainability news, trends, and mini memes.</p>
+    <p>Your weekly dose of Gen Z sustainability news, trends & memes.</p>
   </header>
 
+  <!-- 🔹 Featured Buzz -->
   <section class="buzz-container">
-    <!-- Real story -->
     <div class="buzz-card">
       <div class="buzz-tag">🌍 Real Impact</div>
       <div class="buzz-title">India’s Cool Roof Mission</div>
-      <p>India is painting rooftops white to reflect sunlight and reduce city heat! Each 100m² saves 1.3 tons of CO₂ yearly. The idea? Simple physics + paint = cooler planet.</p>
-      <div class="buzz-footer">Source: UNEP Report 2025</div>
+      <p>India is painting rooftops white to reflect sunlight and cut urban heat! Every 100 m² saves 1.3 tons CO₂ a year. Simple physics + paint = cooler planet.</p>
+      <div class="buzz-footer">Source: UNEP 2025</div>
     </div>
 
-    <!-- Funny fact -->
     <div class="buzz-card">
       <div class="buzz-tag">😂 Eco Meme</div>
-      <div class="buzz-title">Gen Z vs. Plastic Straws</div>
-      <p>We ditched plastic straws but still buy iced coffee in plastic cups. Make it make sense ☕🌎</p>
+      <div class="buzz-title">Gen Z vs Plastic Straws</div>
+      <p>We banned straws but still sip iced coffee in plastic cups. Priorities ☕🌎</p>
       <div class="buzz-footer">#ZeroWasteGoals</div>
     </div>
 
-    <!-- New tech -->
     <div class="buzz-card">
       <div class="buzz-tag">⚡ Innovation</div>
       <div class="buzz-title">AI Trash Sorters Are Here!</div>
-      <p>Smart AI bins can now identify 90% of waste types — from bottles to banana peels. This could reduce landfill waste by 40% in cities like Bangalore.</p>
+      <p>Smart bins can ID 90% of waste types — bottles, peels, cartons — cutting landfill waste by 40% in cities like Bangalore.</p>
       <div class="buzz-footer">Source: MIT Tech Review</div>
     </div>
 
-    <!-- Challenge -->
     <div class="buzz-card">
       <div class="buzz-tag">💪 Weekly Challenge</div>
       <div class="buzz-title">“One Green Meal” Challenge</div>
-      <p>Pick one meal today that’s fully plant-based — tag it #EcoBuzzChallenge. Bonus: You’ll save about 2kg of CO₂ emissions. 🥗</p>
+      <p>Eat one plant-based meal today and tag #EcoBuzzChallenge. Bonus: ~2 kg CO₂ saved per meal 🥗</p>
       <div class="buzz-footer">Join the movement 🌿</div>
     </div>
   </section>
 
-  <!-- ✅ Only ONE Submit Section -->
+  <!-- 🔹 Live Feed -->
+  <section class="live-feed">
+    <h2>🌱 Live Eco Feed</h2>
+    <div id="news-feed">
+      <div class="news-item">🌾 “Students in Pune build a solar water purifier” <span>Source: Down To Earth (India)</span></div>
+      <div class="news-item">💡 “London Fashion Week features upcycled designs only” <span>Source: BBC Green Section</span></div>
+      <div class="news-item">🚲 “Bangalore adds 50 km of bike lanes in 2025 for zero-emission commutes” <span>Source: The Hindu</span></div>
+    </div>
+  </section>
+
+  <!-- 🔹 Submit Section -->
   <div class="submit-section">
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdnPpHgttV__hambpLlDzVR8G7wrrjsdCsFoG_6pCWhebrkfQ/viewform?usp=header"
-       target="_blank"
-       class="submit-btn">
+       target="_blank" class="submit-btn">
       🚀 Submit Your Buzz
     </a>
-    <p class="submit-note">Share your eco stories, memes, or reports — and get featured!</p>
+    <p class="submit-note">Share your eco stories, memes or mini-reports to get featured next week!</p>
   </div>
-
 </body>
 </html>
