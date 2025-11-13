@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoFeed 🌎 | EatCo</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to bottom, #e7f9ee, #c8f0d1);
+      margin: 0;
+      padding: 0;
+      color: #1f513f;
+    }
+
+    header {
+      background: #2e8b57;
+      color: white;
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 1.8rem;
+      letter-spacing: 1px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card-content {
+      padding: 1rem 1.2rem;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #2e8b57;
+    }
+
+    .card p {
+      color: #444;
+      font-size: 0.95rem;
+    }
+
+    .source {
+      margin-top: 10px;
+      display: inline-block;
+      font-size: 0.85rem;
+      color: #2e8b57;
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1rem;
+      color: #155e2c;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>🌱 EcoFeed — Gen Z Green News</header>
+
+  <main>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1606741961869-96ef09c9b889?auto=format&fit=crop&w=800&q=60" alt="Plant-based food" />
+      <div class="card-content">
+        <h3>🥦 Teens Lead Plant-Based Revolution</h3>
+        <p>Gen Z is driving a huge shift toward sustainable, plant-based meals—making eco-eating cooler than ever.</p>
+        <a class="source" href="#">#EcoTrend</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=60" alt="Recycling tech" />
+      <div class="card-content">
+        <h3>♻️ AI Robots Sorting Waste</h3>
+        <p>Startups are using AI to recognize and recycle trash automatically—turning waste into new resources.</p>
+        <a class="source" href="#">#TechForEarth</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=800&q=60" alt="Solar panels" />
+      <div class="card-content">
+        <h3>☀️ Solar Energy Hits Every Roof</h3>
+        <p>Affordable mini-solar kits let families power homes sustainably—even in small towns!</p>
+        <a class="source" href="#">#FutureBright</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1565374395542-0ce13ef2316e?auto=format&fit=crop&w=800&q=60" alt="Eco meme" />
+      <div class="card-content">
+        <h3>😂 Meme of the Week</h3>
+        <p>“When you bring a metal straw to a party — 🌍 says thank you!”</p>
+        <a class="source" href="#">#EcoMeme</a>
+      </div>
+    </div>
+  </main>
+
+  <footer>© 2025 EatCo — Making Sustainability Trendy 🌿</footer>
+</body>
+</html>
