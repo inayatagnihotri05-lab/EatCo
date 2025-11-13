@@ -1,114 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EcoBuzz 🌿 | EatCo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoBuzz 🌎 | EatCo</title>
+  <link rel="stylesheet" href="style.css">
   <style>
     body {
-      font-family: "Poppins", sans-serif;
+      font-family: 'Poppins', sans-serif;
+      background: #eaf8f0;
       margin: 0;
-      background: #e9f7ef;
-      color: #1b4332;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      padding: 0;
+      color: #1a4d2e;
     }
 
-    h1 {
-      margin: 20px;
-      font-size: 2rem;
-      color: #2d6a4f;
-    }
-
-    .feed {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 90%;
-      max-width: 800px;
-      margin-bottom: 40px;
-    }
-
-    .card {
-      background: #fff;
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      transition: 0.3s ease;
-    }
-    .card:hover { transform: scale(1.02); }
-
-    .card img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 10px;
-    }
-
-    .poll button {
-      margin: 5px;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 20px;
-      background: #74c69d;
+    header {
+      text-align: center;
+      padding: 2rem;
+      background: linear-gradient(to right, #6dd5a0, #56ab2f);
       color: white;
-      cursor: pointer;
-      font-weight: bold;
     }
-    .poll button:hover { background: #52b788; }
 
-    .fact {
-      background: #d8f3dc;
-      padding: 15px;
-      border-left: 5px solid #52b788;
-      border-radius: 10px;
-      font-size: 1rem;
+    h1 { font-size: 2.5rem; }
+    p { font-size: 1.1rem; }
+
+    .buzz-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 2rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .buzz-card {
+      background: white;
+      border-radius: 15px;
+      padding: 1.2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .buzz-card:hover {
+      transform: scale(1.03);
+    }
+
+    .buzz-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .buzz-tag {
+      font-size: 0.9rem;
+      background: #c9f7da;
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 8px;
+      margin-bottom: 0.7rem;
+      color: #20603d;
+    }
+
+    .buzz-footer {
+      margin-top: 0.7rem;
+      font-size: 0.9rem;
+      color: #4a4a4a;
     }
   </style>
 </head>
 <body>
-  <h1>EcoBuzz 🌎 — Fresh, Fun, and Planet-Approved!</h1>
+  <header>
+    <h1>EcoBuzz 🔥</h1>
+    <p>Your weekly dose of Gen Z sustainability news, trends, and mini memes.</p>
+  </header>
 
-  <div class="feed">
-
-    <!-- Meme/innovation post -->
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1597303886755-85a1b0e7f6e1?auto=format&fit=crop&w=800&q=80" alt="Eco Gadget">
-      <h3>🪴 Solar Water Bottle?!</h3>
-      <p>This cool bottle uses sunlight to purify water in minutes — clean sip, zero waste 💧☀️</p>
+  <section class="buzz-container">
+    <!-- Real story -->
+    <div class="buzz-card">
+      <div class="buzz-tag">🌍 Real Impact</div>
+      <div class="buzz-title">India’s Cool Roof Mission</div>
+      <p>India is painting rooftops white to reflect sunlight and reduce city heat! Each 100m² saves 1.3 tons of CO₂ yearly. The idea? Simple physics + paint = cooler planet.</p>
+      <div class="buzz-footer">Source: UNEP Report 2025</div>
     </div>
 
-    <!-- Poll post -->
-    <div class="card poll">
-      <h3>♻️ Would you try a week with no plastic?</h3>
-      <button onclick="vote(this, 'Yes')">✅ Yes</button>
-      <button onclick="vote(this, 'No')">🙅‍♀️ No way</button>
-      <p id="pollResult" style="margin-top:10px;font-weight:bold;"></p>
+    <!-- Funny fact -->
+    <div class="buzz-card">
+      <div class="buzz-tag">😂 Eco Meme</div>
+      <div class="buzz-title">Gen Z vs. Plastic Straws</div>
+      <p>We ditched plastic straws but still buy iced coffee in plastic cups. Make it make sense ☕🌎</p>
+      <div class="buzz-footer">#ZeroWasteGoals</div>
     </div>
 
-    <!-- Fun Fact -->
-    <div class="card fact">
-      🌍 Did you know? If every teen swapped 1 fast-food meal a week for home-cooked, we’d save **over 1.2M tons** of CO₂ yearly!
+    <!-- New tech -->
+    <div class="buzz-card">
+      <div class="buzz-tag">⚡ Innovation</div>
+      <div class="buzz-title">AI Trash Sorters Are Here!</div>
+      <p>Smart AI bins can now identify 90% of waste types — from bottles to banana peels. This could reduce landfill waste by 40% in cities like Bangalore.</p>
+      <div class="buzz-footer">Source: MIT Tech Review</div>
     </div>
 
-    <!-- Meme 2 -->
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1524594154908-edd0acfa5f4f?auto=format&fit=crop&w=800&q=80" alt="Eco Meme">
-      <h3>😂 When you forget your tote bag again...</h3>
-      <p>Mother Earth’s like: “Bestie, not the plastic again 😩🌍”</p>
+    <!-- Challenge -->
+    <div class="buzz-card">
+      <div class="buzz-tag">💪 Weekly Challenge</div>
+      <div class="buzz-title">“One Green Meal” Challenge</div>
+      <p>Pick one meal today that’s fully plant-based — tag it #EcoBuzzChallenge. Bonus: You’ll save about 2kg of CO₂ emissions. 🥗</p>
+      <div class="buzz-footer">Join the movement 🌿</div>
     </div>
-
-    <!-- Tip -->
-    <div class="card fact">
-      💡 EcoTip: Unplug chargers when not in use — “vampire energy” sucks up to 10% of your bill ⚡
-    </div>
-
-  </div>
-
-  <script>
-    function vote(button, choice) {
-      document.getElementById("pollResult").innerText = `You voted: ${choice}!`;
-    }
-  </script>
+  </section>
 </body>
 </html>
+
