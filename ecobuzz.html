@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoBuzz 🌿 | EatCo</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      background: #e9f7ef;
+      color: #1b4332;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 20px;
+      font-size: 2rem;
+      color: #2d6a4f;
+    }
+
+    .feed {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 90%;
+      max-width: 800px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: 0.3s ease;
+    }
+    .card:hover { transform: scale(1.02); }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .poll button {
+      margin: 5px;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 20px;
+      background: #74c69d;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .poll button:hover { background: #52b788; }
+
+    .fact {
+      background: #d8f3dc;
+      padding: 15px;
+      border-left: 5px solid #52b788;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>EcoBuzz 🌎 — Fresh, Fun, and Planet-Approved!</h1>
+
+  <div class="feed">
+
+    <!-- Meme/innovation post -->
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1597303886755-85a1b0e7f6e1?auto=format&fit=crop&w=800&q=80" alt="Eco Gadget">
+      <h3>🪴 Solar Water Bottle?!</h3>
+      <p>This cool bottle uses sunlight to purify water in minutes — clean sip, zero waste 💧☀️</p>
+    </div>
+
+    <!-- Poll post -->
+    <div class="card poll">
+      <h3>♻️ Would you try a week with no plastic?</h3>
+      <button onclick="vote(this, 'Yes')">✅ Yes</button>
+      <button onclick="vote(this, 'No')">🙅‍♀️ No way</button>
+      <p id="pollResult" style="margin-top:10px;font-weight:bold;"></p>
+    </div>
+
+    <!-- Fun Fact -->
+    <div class="card fact">
+      🌍 Did you know? If every teen swapped 1 fast-food meal a week for home-cooked, we’d save **over 1.2M tons** of CO₂ yearly!
+    </div>
+
+    <!-- Meme 2 -->
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1524594154908-edd0acfa5f4f?auto=format&fit=crop&w=800&q=80" alt="Eco Meme">
+      <h3>😂 When you forget your tote bag again...</h3>
+      <p>Mother Earth’s like: “Bestie, not the plastic again 😩🌍”</p>
+    </div>
+
+    <!-- Tip -->
+    <div class="card fact">
+      💡 EcoTip: Unplug chargers when not in use — “vampire energy” sucks up to 10% of your bill ⚡
+    </div>
+
+  </div>
+
+  <script>
+    function vote(button, choice) {
+      document.getElementById("pollResult").innerText = `You voted: ${choice}!`;
+    }
+  </script>
+</body>
+</html>
