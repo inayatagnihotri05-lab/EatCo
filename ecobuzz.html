@@ -13,6 +13,29 @@
       color: #1a4d2e;
     }
 
+    /* 🌿 Navbar */
+    nav {
+      background: #2e8b57;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav h2 {
+      color: white;
+      margin: 0;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 15px;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+    nav a:hover {
+      opacity: 0.7;
+    }
+
     header {
       text-align: center;
       padding: 2rem;
@@ -23,10 +46,6 @@
     h1 {
       font-size: 2.5rem;
       margin-bottom: 0.3rem;
-    }
-
-    p {
-      font-size: 1.1rem;
     }
 
     .buzz-container {
@@ -50,29 +69,23 @@
       transform: scale(1.03);
     }
 
+    .buzz-tag {
+      font-size: 0.9rem;
+      background: #c9f7da;
+      padding: 5px 10px;
+      border-radius: 8px;
+      margin-bottom: 0.7rem;
+      color: #20603d;
+      display: inline-block;
+    }
+
     .buzz-title {
       font-size: 1.3rem;
       font-weight: bold;
       margin-bottom: 0.5rem;
     }
 
-    .buzz-tag {
-      font-size: 0.9rem;
-      background: #c9f7da;
-      display: inline-block;
-      padding: 5px 10px;
-      border-radius: 8px;
-      margin-bottom: 0.7rem;
-      color: #20603d;
-    }
-
-    .buzz-footer {
-      margin-top: 0.7rem;
-      font-size: 0.9rem;
-      color: #4a4a4a;
-    }
-
-    /* 🌿 Live Feed Section */
+    /* 🌿 Live Feed */
     .live-feed {
       background: #ffffff;
       padding: 2rem;
@@ -94,7 +107,6 @@
       padding-left: 10px;
       margin-bottom: 1rem;
       font-size: 1rem;
-      line-height: 1.5;
     }
 
     .news-item span {
@@ -125,46 +137,64 @@
       background-color: #23963e;
     }
 
-    .submit-note {
-      color: #333;
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
+    /* Back Button */
+    .back-home {
+      display: block;
+      text-align: center;
+      margin-bottom: 20px;
+      text-decoration: none;
+      color: #2e8b57;
+      font-size: 1.1rem;
+      font-weight: bold;
     }
   </style>
 </head>
+
 <body>
+
+  <!-- 🌿 Navbar -->
+  <nav>
+    <h2>EatCo 🌿</h2>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="challenge.html">Challenge</a>
+      <a href="ecorun.html">EcoRun</a>
+      <a href="ecobuzz.html">EcoBuzz</a>
+    </div>
+  </nav>
+
   <header>
     <h1>EcoBuzz 🔥</h1>
     <p>Your weekly dose of Gen Z sustainability news, trends & memes.</p>
   </header>
 
-  <!-- 🔹 Featured Buzz -->
+  <!-- 🔹 Main Cards -->
   <section class="buzz-container">
     <div class="buzz-card">
       <div class="buzz-tag">🌍 Real Impact</div>
       <div class="buzz-title">India’s Cool Roof Mission</div>
-      <p>India is painting rooftops white to reflect sunlight and cut urban heat! Every 100 m² saves 1.3 tons CO₂ a year. Simple physics + paint = cooler planet.</p>
+      <p>India is painting rooftops white to reflect sunlight and reduce urban heat! Every 100m² saves 1.3 tons of CO₂.</p>
       <div class="buzz-footer">Source: UNEP 2025</div>
     </div>
 
     <div class="buzz-card">
       <div class="buzz-tag">😂 Eco Meme</div>
       <div class="buzz-title">Gen Z vs Plastic Straws</div>
-      <p>We banned straws but still sip iced coffee in plastic cups. Priorities ☕🌎</p>
+      <p>We banned straws but still drink iced coffee in plastic cups. Priorities ☕🌎</p>
       <div class="buzz-footer">#ZeroWasteGoals</div>
     </div>
 
     <div class="buzz-card">
       <div class="buzz-tag">⚡ Innovation</div>
       <div class="buzz-title">AI Trash Sorters Are Here!</div>
-      <p>Smart bins can ID 90% of waste types — bottles, peels, cartons — cutting landfill waste by 40% in cities like Bangalore.</p>
+      <p>Smart bins can ID 90% of waste types — reducing landfill waste by 40% in cities like Bangalore.</p>
       <div class="buzz-footer">Source: MIT Tech Review</div>
     </div>
 
     <div class="buzz-card">
       <div class="buzz-tag">💪 Weekly Challenge</div>
       <div class="buzz-title">“One Green Meal” Challenge</div>
-      <p>Eat one plant-based meal today and tag #EcoBuzzChallenge. Bonus: ~2 kg CO₂ saved per meal 🥗</p>
+      <p>Eat one plant-based meal today. Saves ~2 kg CO₂ per meal 🥗</p>
       <div class="buzz-footer">Join the movement 🌿</div>
     </div>
   </section>
@@ -173,19 +203,23 @@
   <section class="live-feed">
     <h2>🌱 Live Eco Feed</h2>
     <div id="news-feed">
-      <div class="news-item">🌾 “Students in Pune build a solar water purifier” <span>Source: Down To Earth (India)</span></div>
-      <div class="news-item">💡 “London Fashion Week features upcycled designs only” <span>Source: BBC Green Section</span></div>
-      <div class="news-item">🚲 “Bangalore adds 50 km of bike lanes in 2025 for zero-emission commutes” <span>Source: The Hindu</span></div>
+      <div class="news-item">🌾 “Students in Pune build a solar water purifier” <span>— Down To Earth</span></div>
+      <div class="news-item">💡 “London Fashion Week goes fully upcycled” <span>— BBC Green</span></div>
+      <div class="news-item">🚲 “Bangalore adds 50 km of bike lanes in 2025” <span>— The Hindu</span></div>
     </div>
   </section>
 
-  <!-- 🔹 Submit Section -->
+  <!-- 🔹 Submit -->
   <div class="submit-section">
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdnPpHgttV__hambpLlDzVR8G7wrrjsdCsFoG_6pCWhebrkfQ/viewform?usp=header"
-       target="_blank" class="submit-btn">
+    <a 
+      href="https://docs.google.com/forms/d/e/1FAIpQLSdnPpHgttV__hambpLlDzVR8G7wrrjsdCsFoG_6pCWhebrkfQ/viewform"
+      target="_blank"
+      class="submit-btn"
+    >
       🚀 Submit Your Buzz
     </a>
-    <p class="submit-note">Share your eco stories, memes or mini-reports to get featured next week!</p>
+    <p class="submit-note">Share your eco stories, memes or mini-reports to get featured!</p>
   </div>
+
 </body>
 </html>
