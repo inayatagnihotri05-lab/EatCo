@@ -13,6 +13,7 @@
       color: #1a4d2e;
     }
 
+    /* 🌿 Navbar */
     nav {
       background: #2e8b57;
       padding: 15px 20px;
@@ -20,7 +21,10 @@
       justify-content: space-between;
       align-items: center;
     }
-    nav h2 { color: white; margin: 0; }
+    nav h2 {
+      color: white;
+      margin: 0;
+    }
     nav a {
       color: white;
       text-decoration: none;
@@ -28,7 +32,9 @@
       font-size: 1rem;
       transition: 0.3s;
     }
-    nav a:hover { opacity: 0.7; }
+    nav a:hover {
+      opacity: 0.7;
+    }
 
     header {
       text-align: center;
@@ -37,8 +43,12 @@
       color: white;
     }
 
-    h1 { font-size: 2.5rem; margin-bottom: 0.3rem; }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.3rem;
+    }
 
+    /* Cards */
     .buzz-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -55,7 +65,10 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       transition: transform 0.2s ease;
     }
-    .buzz-card:hover { transform: scale(1.03); }
+
+    .buzz-card:hover {
+      transform: scale(1.03);
+    }
 
     .buzz-tag {
       font-size: 0.9rem;
@@ -81,6 +94,7 @@
       object-fit: cover;
     }
 
+    /* 🌿 Live Feed */
     .live-feed {
       background: #ffffff;
       padding: 2rem;
@@ -110,35 +124,7 @@
       color: #777;
     }
 
-    /* 🌿 Meme Generator */
-    .meme-box {
-      background: white;
-      padding: 2rem;
-      max-width: 700px;
-      margin: 2rem auto;
-      border-radius: 15px;
-      text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    #meme-img {
-      width: 100%;
-      border-radius: 15px;
-      max-height: 450px;
-      object-fit: cover;
-      margin-bottom: 15px;
-    }
-    .meme-btn {
-      background: #2e8b57;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      border: none;
-      cursor: pointer;
-      font-size: 1.1rem;
-      transition: 0.3s;
-    }
-    .meme-btn:hover { background: #256f46; }
-
+    /* 🚀 Submit Button */
     .submit-section {
       text-align: center;
       margin: 40px 0;
@@ -155,13 +141,17 @@
       transition: 0.3s;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
-    .submit-btn:hover { background-color: #23963e; }
+
+    .submit-btn:hover {
+      background-color: #23963e;
+    }
 
   </style>
 </head>
 
 <body>
 
+  <!-- 🌿 Navbar -->
   <nav>
     <h2>EatCo 🌿</h2>
     <div>
@@ -174,31 +164,87 @@
 
   <header>
     <h1>EcoBuzz 🔥</h1>
-    <p>Your weekly dose of Gen Z sustainability news, trends & memes.</p>
+    <p>Your weekly dose of Gen Z sustainability news, trends & updates.</p>
   </header>
 
-  <!-- Existing Cards -->
+  <!-- 🔹 Main Cards -->
   <section class="buzz-container">
-    <!-- (your 4 cards stay the same — I didn’t change anything) -->
-    <!-- … … … -->
+
+    <div class="buzz-card">
+      <img src="https://images.unsplash.com/photo-1529927066849-54f0f5a78c73?q=80" class="buzz-img">
+      <div class="buzz-tag">🌍 Real Impact</div>
+      <div class="buzz-title">India’s Cool Roof Mission</div>
+      <p>India is painting rooftops white to reflect sunlight and reduce urban heat! Every 100m² saves 1.3 tons of CO₂.</p>
+      <div class="buzz-footer">Source: UNEP 2025</div>
+    </div>
+
+    <div class="buzz-card">
+      <img src="https://images.unsplash.com/photo-1553531384-411a0f8970e8?q=80" class="buzz-img">
+      <div class="buzz-tag">🌿 Lifestyle</div>
+      <div class="buzz-title">Plastic-Free Cafés Rise in India</div>
+      <p>Colleges across Mumbai & Bangalore are switching to steel tumblers and bamboo spoons.</p>
+      <div class="buzz-footer">#ZeroWaste</div>
+    </div>
+
+    <div class="buzz-card">
+      <img src="https://images.unsplash.com/photo-1618477388954-7855f8d969da?q=80" class="buzz-img">
+      <div class="buzz-tag">⚡ Innovation</div>
+      <div class="buzz-title">AI Trash Sorters Are Here!</div>
+      <p>Smart bins can ID 90% of waste types — reducing landfill waste by 40% in cities like Bangalore.</p>
+      <div class="buzz-footer">Source: MIT Tech Review</div>
+    </div>
+
+    <div class="buzz-card">
+      <img src="https://images.unsplash.com/photo-1510627498534-cf7e9002facc?q=80" class="buzz-img">
+      <div class="buzz-tag">💪 Weekly Challenge</div>
+      <div class="buzz-title">“One Green Meal” Challenge</div>
+      <p>Eat one plant-based meal today. Saves ~2 kg CO₂ per meal 🥗</p>
+      <div class="buzz-footer">Join the movement 🌿</div>
+    </div>
+
   </section>
 
   <!-- 🔹 Live Feed -->
   <section class="live-feed">
     <h2>🌱 Live Eco Feed</h2>
     <div id="news-feed">
-      <!-- (your news items stay the same) -->
+
+      <div class="news-item">🌾 “Students in Pune build a solar water purifier”
+        <span>— Down To Earth</span>
+      </div>
+
+      <div class="news-item">💡 “London Fashion Week goes fully upcycled”
+        <span>— BBC Green</span>
+      </div>
+
+      <div class="news-item">🚲 “Bangalore adds 50 km of bike lanes in 2025”
+        <span>— The Hindu</span>
+      </div>
+
+      <div class="news-item">🔥 “World’s first 100% solar-powered airport expands in Kochi”
+        <span>— The Guardian</span>
+      </div>
+
+      <div class="news-item">🌱 “2025 declared highest global tree-planting year”
+        <span>— UNEP News</span>
+      </div>
+
+      <div class="news-item">⚡ “Japan launches microplastic-free textile standard”
+        <span>— Reuters Green</span>
+      </div>
+
+      <div class="news-item">🌊 “Scientists discover ocean bacteria that dissolves plastic naturally”
+        <span>— Nature Climate Journal</span>
+      </div>
+
+      <div class="news-item">🍃 “India launches Green Credit Program for composting citizens”
+        <span>— Economic Times</span>
+      </div>
+
     </div>
   </section>
 
-  <!-- 🌿 NEW: Auto Meme Generator -->
-  <section class="meme-box">
-    <h2>😂 Eco-Meme Generator</h2>
-    <img id="meme-img" src="" alt="Eco Meme">
-    <button class="meme-btn" onclick="generateMeme()">Generate New Meme</button>
-  </section>
-
-  <!-- Submit -->
+  <!-- 🔹 Submit -->
   <div class="submit-section">
     <a 
       href="https://docs.google.com/forms/d/e/1FAIpQLSdnPpHgttV__hambpLlDzVR8G7wrrjsdCsFoG_6pCWhebrkfQ/viewform"
@@ -207,29 +253,8 @@
     >
       🚀 Submit Your Buzz
     </a>
-    <p class="submit-note">Share your eco stories, memes or mini-reports to get featured!</p>
+    <p class="submit-note">Share your eco stories, photos or mini-reports to get featured!</p>
   </div>
-
-  <!-- 🌿 JavaScript Meme Generator -->
-  <script>
-    const memes = [
-      "https://i.imgflip.com/7xj2sl.jpg",
-      "https://i.imgflip.com/92t3cx.jpg",
-      "https://i.imgflip.com/8a8u4q.jpg",
-      "https://i.imgflip.com/8c2ziy.jpg",
-      "https://i.imgflip.com/8b8tsj.jpg",
-      "https://i.imgflip.com/8aoy0p.jpg",
-      "https://i.imgflip.com/8c35b7.jpg"
-    ];
-
-    function generateMeme() {
-      const meme = memes[Math.floor(Math.random() * memes.length)];
-      document.getElementById("meme-img").src = meme;
-    }
-
-    // Load one meme at page load
-    generateMeme();
-  </script>
 
 </body>
 </html>
