@@ -43,36 +43,25 @@
       color: #20603d;
     }
 
-    .buzz-footer {
-      margin-top: 0.7rem;
-      font-size: 0.9rem;
-      color: #4a4a4a;
-    }
-
-    .submit-section {
+    .quiz-section {
       text-align: center;
-      margin: 40px 0;
+      margin: 40px auto;
     }
 
-    .submit-btn {
-      background-color: #28a745;
+    .quiz-btn {
+      display: inline-block;
+      padding: 14px 24px;
+      background: #3ac47a;
       color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
+      border-radius: 10px;
       text-decoration: none;
+      font-weight: bold;
       font-size: 1.1rem;
-      font-weight: 600;
-      transition: 0.3s;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      transition: 0.3s ease;
     }
 
-    .submit-btn:hover { background-color: #23963e; }
-
-    .submit-note {
-      color: #333;
-      font-size: 0.9rem;
-      margin-top: 0.5rem;
-    }
+    .quiz-btn:hover { background: #34b169; }
   </style>
 </head>
 
@@ -134,18 +123,12 @@
   <!-- EcoBuzz Button -->
   <a href="ecobuzz.html" class="btn">🌿 EcoBuzz</a>
 
-  <a href="eco-quiz.html" style="
-  display: inline-block;
-  padding: 12px 20px;
-  background: #3ac47a;
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-">
-  Take the Eco Personality Quiz 🌿
-</a>
-
+  <!-- QUIZ SECTION -->
+  <section class="quiz-section">
+    <h2>🌿 Eco Personality Quiz</h2>
+    <p>Find out what type of Eco Warrior you are!</p>
+    <a href="eco-quiz.html" class="quiz-btn">Take the Quiz 🌱</a>
+  </section>
 
   <!-- Carbon Footprint Checker -->
   <section id="footprint" style="text-align:center; margin: 3rem auto;">
