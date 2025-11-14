@@ -2,11 +2,80 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, 
-    initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EatCo 🌿</title>
   <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* --- EcoBuzz Styling --- */
+    .buzz-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 2rem;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .buzz-card {
+      background: white;
+      border-radius: 15px;
+      padding: 1.2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .buzz-card:hover { transform: scale(1.03); }
+
+    .buzz-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .buzz-tag {
+      font-size: 0.9rem;
+      background: #c9f7da;
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 8px;
+      margin-bottom: 0.7rem;
+      color: #20603d;
+    }
+
+    .buzz-footer {
+      margin-top: 0.7rem;
+      font-size: 0.9rem;
+      color: #4a4a4a;
+    }
+
+    .submit-section {
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .submit-btn {
+      background-color: #28a745;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+      transition: 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .submit-btn:hover { background-color: #23963e; }
+
+    .submit-note {
+      color: #333;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+  </style>
 </head>
+
 <body>
 
   <!-- Navbar -->
@@ -21,20 +90,20 @@
     </ul>
   </nav>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <section id="home" class="hero">
     <h1>Welcome to EatCo 🌱</h1>
     <p>Building a world where every bite counts — for you and the planet.</p>
     <a href="#join" class="btn">Join the Movement</a>
   </section>
 
-  <!-- About Section -->
+  <!-- About -->
   <section id="about">
     <h2>Mindful. Local. Sustainable.</h2>
     <p>EatCo promotes eco-friendly eating habits — reducing waste, supporting farmers, and making sustainability simple and delicious.</p>
   </section>
 
-  <!-- Mission Section -->
+  <!-- Mission -->
   <section id="mission">
     <h2>Our Mission</h2>
     <ul>
@@ -44,34 +113,86 @@
     </ul>
   </section>
 
-  <!-- Join Section -->
- <!-- Join Section -->
-<section id="join">
-  <h2>Join the Movement 🌍</h2>
-  <p>Be part of the eco-food revolution. Let’s make every meal meaningful.</p>
-  <a href="challenge.html" class="btn" target="_blank">🚀 Join the Zero Waste Challenge</a>
-</section>
+  <!-- Join -->
+  <section id="join">
+    <h2>Join the Movement 🌍</h2>
+    <p>Be part of the eco-food revolution. Let’s make every meal meaningful.</p>
+    <a href="challenge.html" class="btn" target="_blank">🚀 Join the Zero Waste Challenge</a>
+  </section>
+
+  <!-- Game -->
   <div style="text-align:center; margin: 40px 0;">
-  <a href="ecorun.html" 
-     style="background-color:#2e8b57; color:white; padding:15px 30px; 
-            border-radius:10px; text-decoration:none; font-size:1.2em; 
-            box-shadow:0 4px 10px rgba(0,0,0,0.2); transition:0.3s;">
-    🎮 Play EcoRun — Save the Planet!
-  </a>
-</div>
+    <a href="ecorun.html"
+      style="background-color:#2e8b57; color:white; padding:15px 30px;
+             border-radius:10px; text-decoration:none; font-size:1.2em;
+             box-shadow:0 4px 10px rgba(0,0,0,0.2); transition:0.3s;">
+      🎮 Play EcoRun — Save the Planet!
+    </a>
+  </div>
 
-<a href="ecobuzz.html" class="btn">🌿 EcoBuzz</a>
-
+  <!-- EcoBuzz Button -->
+  <a href="ecobuzz.html" class="btn">🌿 EcoBuzz</a>
 
   <!-- Carbon Footprint Checker -->
   <section id="footprint" style="text-align:center; margin: 3rem auto;">
     <h2>🌾 Food Carbon Footprint Checker</h2>
     <p>Type a food item to estimate its carbon footprint.</p>
-    
-    <input type="text" id="foodInput" placeholder="e.g. rice, chicken, apple" style="padding:10px; border-radius:8px; border:1px solid #ccc; width:60%; max-width:300px;">
-    <button onclick="checkFootprint()" style="padding:10px 15px; border:none; border-radius:8px; background-color:#2e8b57; color:white;">Check</button>
+
+    <input type="text" id="foodInput" placeholder="e.g. rice, chicken, apple"
+      style="padding:10px; border-radius:8px; border:1px solid #ccc; width:60%; max-width:300px;">
+    <button onclick="checkFootprint()"
+      style="padding:10px 15px; border:none; border-radius:8px; background-color:#2e8b57; color:white;">
+      Check
+    </button>
 
     <p id="result" style="margin-top:1.5rem; font-size:1.2rem;"></p>
+  </section>
+
+  <!-- ⭐⭐⭐ ECOBUZZ SECTION ADDED HERE ⭐⭐⭐ -->
+  <section id="eco-buzz">
+    <h2 style="text-align:center; margin-top:2rem;">EcoBuzz 🔥</h2>
+
+    <section class="buzz-container">
+
+      <div class="buzz-card">
+        <div class="buzz-tag">🌍 Real Impact</div>
+        <div class="buzz-title">India’s Cool Roof Mission</div>
+        <p>India is painting rooftops white to reflect sunlight and cut urban heat! Every 100 m² saves 1.3 tons CO₂ a year.</p>
+        <div class="buzz-footer">Source: UNEP 2025</div>
+      </div>
+
+      <div class="buzz-card">
+        <div class="buzz-tag">😂 Eco Meme</div>
+        <div class="buzz-title">Gen Z vs Plastic Straws</div>
+        <p>We banned straws but still sip iced coffee in plastic cups. Priorities ☕🌎</p>
+        <div class="buzz-footer">#ZeroWasteGoals</div>
+      </div>
+
+      <div class="buzz-card">
+        <div class="buzz-tag">⚡ Innovation</div>
+        <div class="buzz-title">AI Trash Sorters Are Here!</div>
+        <p>Smart bins can ID 90% of waste types — cutting landfill by 40% in cities like Bangalore.</p>
+        <div class="buzz-footer">Source: MIT Tech Review</div>
+      </div>
+
+      <div class="buzz-card">
+        <div class="buzz-tag">💪 Weekly Challenge</div>
+        <div class="buzz-title">“One Green Meal”</div>
+        <p>Eat one plant-based meal today and tag #EcoBuzzChallenge. Saves ~2 kg CO₂!</p>
+        <div class="buzz-footer">Join the movement 🌿</div>
+      </div>
+
+    </section>
+
+    <!-- Submit Button -->
+    <div class="submit-section">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdnPpHgttV__hambpLlDzVR8G7wrrjsdCsFoG_6pCWhebrkfQ/viewform?usp=header"
+         class="submit-btn" target="_blank">
+        🚀 Submit Your Buzz
+      </a>
+      <p class="submit-note">Share your eco stories, memes or reports and get featured!</p>
+    </div>
+
   </section>
 
   <!-- Footer -->
@@ -79,8 +200,6 @@
     <p>© 2025 EatCo | Made with 💚 by Inayat Agnihotri</p>
   </footer>
 
-  <!-- Link to JS -->
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
-
