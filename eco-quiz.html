@@ -1,101 +1,47 @@
 import React, { useState } from "react";
+import { motion } from "framer-motion";
 
 // Personality result data
 const resultsMap = {
   thinker: {
     title: "Eco Thinker 🌿",
-    desc: "Calm, mindful, and connected to nature. You make eco choices thoughtfully and inspire others quietly."
+    desc: "Calm, mindful, and connected to nature. You make eco choices thoughtfully and inspire others quietly.",
+    img: "https://i.imgur.com/tn0QbZq.png"
   },
   organizer: {
     title: "Green Queen/King 👑♻️",
-    desc: "The master of order! Recycling bins fear you. You keep everything sorted and eco-efficient."
+    desc: "The master of order! Recycling bins fear you. You keep everything sorted and eco-efficient.",
+    img: "https://i.imgur.com/xgUur5L.png"
   },
   mover: {
     title: "Eco Ninja ⚡🚴",
-    desc: "Active, fast, and always on the go! You reduce carbon footprints without even trying."
+    desc: "Active, fast, and always on the go! You reduce carbon footprints without even trying.",
+    img: "https://i.imgur.com/6lxuM4q.png"
   },
   gamer: {
     title: "Chill Recycler 🎮♻️",
-    desc: "Low effort but high impact. You use tech smartly and save energy like a pro." 
+    desc: "Low effort but high impact. You use tech smartly and save energy like a pro.",
+    img: "https://i.imgur.com/LPYx1lD.png"
   }
 };
 
 export default function EcoPersonalityQuiz() {
   const [step, setStep] = useState(0);
   const [scores, setScores] = useState({ thinker: 0, organizer: 0, mover: 0, gamer: 0 });
+  const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
 
   const questions = [
-    {
-      q: "What's your vibe on a chill day?",
-      options: ["Reading in nature", "Cleaning + organizing", "Biking/Walking", "Gaming or Netflix"]
-    },
-    {
-      q: "What kind of eco task feels easiest to you?",
-      options: [
-        "Reusing jars + bottles",
-        "Sorting waste nicely",
-        "Carrying a reusable bottle everywhere",
-        "Turning off lights + devices"
-      ]
-    },
-    {
-      q: "Which snack matches your energy?",
-      options: ["Fruits or nuts", "Homemade sandwich", "Energy bar", "Chips or chocolate"]
-    },
-    {
-      q: "What’s your ideal school break?",
-      options: ["Sitting under a tree", "Tidying your desk", "Playing sports", "Watching YouTube"]
-    },
-    {
-      q: "Choose a dream home upgrade:",
-      options: [
-        "A big backyard garden",
-        "A perfect recycling corner",
-        "A solar-powered bike",
-        "A smart home with auto energy saving"
-      ]
-    },
-    {
-      q: "Your go-to eco flex?",
-      options: [
-        "I upcycle everything",
-        "My room is always clutter-free",
-        "I walk/cycle the most",
-        "I save electricity like a pro"
-      ]
-    },
-    {
-      q: "What annoys you the MOST?",
-      options: [
-        "People wasting paper",
-        "Messy bins",
-        "Cars honking",
-        "Chargers left plugged in"
-      ]
-    },
-    {
-      q: "Pick a weekend plan:",
-      options: ["Visit a park", "Clean your room", "Go for a run", "Chill with your phone"]
-    },
-    {
-      q: "What’s your dream superpower?",
-      options: [
-        "Talking to trees",
-        "Organizing anything instantly",
-        "Speed like The Flash",
-        "Controlling electricity"
-      ]
-    },
-    {
-      q: "Which school project would you choose?",
-      options: [
-        "Plant a mini garden",
-        "Make a recycling chart",
-        "Walkathon awareness rally",
-        "Energy-saving gadget prototype"
-      ]
-    }
+    { q: "What's your vibe on a chill day?", options: ["Reading in nature", "Cleaning + organizing", "Biking/Walking", "Gaming or Netflix"] },
+    { q: "What kind of eco task feels easiest to you?", options: ["Reusing jars + bottles", "Sorting waste nicely", "Carrying a reusable bottle everywhere", "Turning off lights + devices"] },
+    { q: "Which snack matches your energy?", options: ["Fruits or nuts", "Homemade sandwich", "Energy bar", "Chips or chocolate"] },
+    { q: "What's your ideal school break?", options: ["Sitting under a tree", "Tidying your desk", "Playing sports", "Watching YouTube"] },
+    { q: "Choose a dream home upgrade:", options: ["A big backyard garden", "A perfect recycling corner", "A solar-powered bike", "A smart home with auto energy saving"] },
+    { q: "Your go-to eco flex?", options: ["I upcycle everything", "My room is always clutter-free", "I walk/cycle the most", "I save electricity like a pro"] },
+    { q: "What annoys you the MOST?", options: ["People wasting paper", "Messy bins", "Cars honking", "Chargers left plugged in"] },
+    { q: "Pick a weekend plan:", options: ["Visit a park", "Clean your room", "Go for a run", "Chill with your phone"] },
+    { q: "What's your dream superpower?", options: ["Talking to trees", "Organizing anything instantly", "Speed like The Flash", "Controlling electricity"] },
+    { q: "Which school project would you choose?", options: ["Plant a mini garden", "Make a recycling chart", "Walkathon awareness rally", "Energy-saving gadget prototype"] }
   ];
 
   const handleSelect = (index) => {
@@ -104,40 +50,61 @@ export default function EcoPersonalityQuiz() {
 
     setScores((prev) => ({ ...prev, [chosen]: prev[chosen] + 1 }));
 
-    if (step + 1 === questions.length) {
-      const final = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
-      setResult(resultsMap[final]);
-    }
-
-    setStep(step + 1);
+    setLoading(true);
+    setTimeout(() => {
+      if (step + 1 === questions.length) {
+        const final = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+        setResult(resultsMap[final]);
+      }
+      setStep(step + 1);
+      setLoading(false);
+    }, 700);
   };
 
-  if (result) {
+  if (loading) {
     return (
-      <div className="p-4 max-w-xl mx-auto text-center">
-        <h1 className="text-3xl font-bold mb-4">{result.title}</h1>
-        <p className="text-lg">{result.desc}</p>
+      <div className="flex flex-col items-center justify-center h-64 text-center">
+        <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }} className="w-10 h-10 border-4 border-green-600 border-t-transparent rounded-full" />
+        <p className="mt-4 text-lg text-green-700 font-medium">Thinking eco thoughts...</p>
       </div>
     );
   }
 
+  if (result) {
+    return (
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 max-w-xl mx-auto text-center">
+        <img src={result.img} className="mx-auto w-40 h-40 mb-4 rounded-2xl shadow" />
+        <h1 className="text-3xl font-bold mb-2 text-green-700">{result.title}</h1>
+        <p className="text-lg text-gray-700">{result.desc}</p>
+      </motion.div>
+    );
+  }
+
   return (
-    <div className="p-4 max-w-xl mx-auto">
-      <h2 className="text-xl font-semibold mb-4">{questions[step].q}</h2>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 max-w-xl mx-auto">
+      <h2 className="text-2xl font-semibold mb-4 text-green-800">{questions[step].q}</h2>
 
       <div className="grid gap-3">
         {questions[step].options.map((opt, idx) => (
-          <button
+          <motion.button
             key={idx}
+            whileTap={{ scale: 0.95 }}
             onClick={() => handleSelect(idx)}
-            className="p-3 rounded-xl shadow bg-white hover:bg-gray-100"
+            className="p-3 rounded-2xl shadow bg-white hover:bg-green-100 border border-green-300"
           >
             {opt}
-          </button>
+          </motion.button>
         ))}
       </div>
 
-      <p className="mt-4 text-gray-500">Question {step + 1} / {questions.length}</p>
-    </div>
+      <div className="mt-4 h-3 w-full bg-gray-200 rounded-full overflow-hidden">
+        <div
+          style={{ width: `${((step + 1) / questions.length) * 100}%` }}
+          className="h-full bg-green-500 transition-all"
+        />
+      </div>
+
+      <p className="mt-2 text-gray-600">Question {step + 1} / {questions.length}</p>
+    </motion.div>
   );
 }
