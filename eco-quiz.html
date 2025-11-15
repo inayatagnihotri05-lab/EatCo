@@ -3,47 +3,129 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Combined Content</title>
+  <title>EatCo Eco Quiz</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      line-height: 1.6;
-      margin: 20px;
-      background-color: #f4f4f9;
-      color: #333;
-    }
-    h1, h2, h3 {
-      color: #2d6cdf;
-    }
-    .section {
-      background: #fff;
+      background: #f0fdf4;
+      margin: 0;
       padding: 20px;
-      margin-bottom: 20px;
+      color: #065f46;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #047857;
+    }
+
+    .question-box {
+      margin-top: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+      border: none;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: #10b981;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
     }
-    ul {
-      margin-left: 20px;
+
+    button:hover {
+      background: #059669;
     }
-    .highlight {
-      background: #e3f2ff;
-      padding: 10px;
-      border-left: 4px solid #2d6cdf;
+
+    #result {
+      font-size: 20px;
+      text-align: center;
+      margin-top: 20px;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h1>Formatted Document</h1>
+  <div class="container">
+    <h1>EatCo Eco Quiz 🌿</h1>
 
-  <div class="section">
-    <h2>Content Section 1</h2>
-    <p>This is placeholder text. I will paste your full combined content here once you confirm the HTML layout and style.</p>
+    <div id="quiz-container">
+      <p id="question"></p>
+      <div id="options"></div>
+    </div>
+
+    <p id="result"></p>
   </div>
 
-  <div class="section">
-    <h2>Content Section 2</h2>
-    <p>More placeholder text. Tell me exactly what content should go inside each section.</p>
-  </div>
+  <script>
+    const questions = [
+      {
+        q: "What's your vibe on a chill day?",
+        options: ["Reading in nature", "Cleaning + organizing", "Biking/Walking", "Gaming or Netflix"]
+      },
+      {
+        q: "Pick a dream eco-superpower:",
+        options: ["Talk to animals", "Grow plants instantly", "Control the weather", "Teleport anywhere"]
+      },
+      {
+        q: "Your ideal weekend plan:",
+        options: ["Beach cleanup", "DIY craft", "Cycling trip", "Movie marathon"]
+      }
+    ];
 
+    let step = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      document.getElementById("result").innerHTML = "";
+      const q = questions[step];
+      document.getElementById("question").innerText = q.q;
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+
+      q.options.forEach((opt, index) => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+        btn.onclick = () => next(index);
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function next(answerIndex) {
+      score += answerIndex;
+      step++;
+
+      if (step < questions.length) {
+        loadQuestion();
+      } else {
+        finish();
+      }
+    }
+
+    function finish() {
+      document.getElementById("quiz-container").innerHTML = "";
+
+      let result = "";
+      if (score <= 3) result = "🌱 The Eco Minimalist!";
+      else if (score <= 6) result = "🌿 The Green Creative!";
+      else if (score <= 8) result = "🌍 The Earth Explorer!";
+      else result = "⚡ The Eco-Tech Pro!";
+
+      document.getElementById("result").innerText = result;
+    }
+
+    loadQuestion();
+  </script>
 </body>
 </html>
