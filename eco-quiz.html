@@ -6,59 +6,81 @@
   <title>EatCo Eco Quiz</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f0fdf4;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
       margin: 0;
-      padding: 20px;
-      color: #065f46;
+      padding: 30px;
+      color: #064e3b;
     }
 
     .container {
-      max-width: 600px;
+      max-width: 650px;
       margin: auto;
       background: white;
-      padding: 25px;
-      border-radius: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 35px;
+      border-radius: 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     h1 {
       text-align: center;
       color: #047857;
+      font-size: 32px;
+      margin-bottom: 10px;
     }
 
-    .question-box {
-      margin-top: 20px;
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 25px;
+      color: #065f46;
+    }
+
+    #question {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #064e3b;
     }
 
     button {
       width: 100%;
-      padding: 12px;
-      margin-top: 10px;
+      padding: 14px;
+      margin-top: 12px;
       font-size: 16px;
       border: none;
-      border-radius: 12px;
-      background: #10b981;
-      color: white;
+      border-radius: 14px;
+      background: #34d399;
+      color: #064e3b;
+      font-weight: 600;
       cursor: pointer;
       transition: 0.2s;
     }
 
     button:hover {
-      background: #059669;
+      background: #10b981;
+      transform: translateY(-3px);
     }
 
     #result {
-      font-size: 20px;
+      font-size: 26px;
       text-align: center;
-      margin-top: 20px;
+      margin-top: 25px;
       font-weight: bold;
+      animation: fadeIn 0.5s ease-in-out;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>EatCo Eco Quiz 🌿</h1>
+    <p class="subtitle">Find out your eco personality in just 30 seconds!</p>
 
     <div id="quiz-container">
       <p id="question"></p>
@@ -81,6 +103,14 @@
       {
         q: "Your ideal weekend plan:",
         options: ["Beach cleanup", "DIY craft", "Cycling trip", "Movie marathon"]
+      },
+      {
+        q: "Pick a snack:",
+        options: ["Fruit bowl", "Homemade cookies", "Energy bar", "Chips"]
+      },
+      {
+        q: "What motivates you the most?",
+        options: ["Peace + nature", "Creativity", "Adventure", "Tech + comfort"]
       }
     ];
 
@@ -117,10 +147,10 @@
       document.getElementById("quiz-container").innerHTML = "";
 
       let result = "";
-      if (score <= 3) result = "🌱 The Eco Minimalist!";
-      else if (score <= 6) result = "🌿 The Green Creative!";
-      else if (score <= 8) result = "🌍 The Earth Explorer!";
-      else result = "⚡ The Eco-Tech Pro!";
+      if (score <= 4) result = "🌱 The Eco Minimalist — Calm, peaceful, simple!";
+      else if (score <= 8) result = "🎨 The Green Creative — Artsy + sustainable!";
+      else if (score <= 12) result = "🌍 The Earth Explorer — Adventurous + outdoorsy!";
+      else result = "⚡ The Eco-Tech Pro — Smart, modern, eco-focused!";
 
       document.getElementById("result").innerText = result;
     }
