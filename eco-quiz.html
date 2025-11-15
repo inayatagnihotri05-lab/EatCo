@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Confetti from "react-confetti";
 
-// Personality result data
+// EatCo branding colors
+const BRAND_GREEN = "#2e7d32";
+const BRAND_LIGHT = "#e8f5e9";
+
+// Personality result data with images
 const resultsMap = {
   thinker: {
     title: "Eco Thinker 🌿",
@@ -30,6 +35,7 @@ export default function EcoPersonalityQuiz() {
   const [scores, setScores] = useState({ thinker: 0, organizer: 0, mover: 0, gamer: 0 });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const questions = [
     { q: "What's your vibe on a chill day?", options: ["Reading in nature", "Cleaning + organizing", "Biking/Walking", "Gaming or Netflix"] },
@@ -55,11 +61,20 @@ export default function EcoPersonalityQuiz() {
       if (step + 1 === questions.length) {
         const final = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
         setResult(resultsMap[final]);
+        setShowConfetti(true);
       }
       setStep(step + 1);
       setLoading(false);
-    }, 700);
+    }, 600);
   };
+
+  // 🎉 Hide confetti after 4 seconds
+  useEffect(() => {
+    if (showConfetti) {
+      const t = setTimeout(() => setShowConfetti(false), 4000);
+      return () => clearTimeout(t);
+    }
+  }, [showConfetti]);
 
   if (loading) {
     return (
@@ -73,16 +88,26 @@ export default function EcoPersonalityQuiz() {
   if (result) {
     return (
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 max-w-xl mx-auto text-center">
+        {showConfetti && <Confetti recycle={false} numberOfPieces={300} />}
+
         <img src={result.img} className="mx-auto w-40 h-40 mb-4 rounded-2xl shadow" />
-        <h1 className="text-3xl font-bold mb-2 text-green-700">{result.title}</h1>
+        <h1 className="text-3xl font-bold mb-2" style={{ color: BRAND_GREEN }}>{result.title}</h1>
         <p className="text-lg text-gray-700">{result.desc}</p>
+
+        <button
+          className="mt-5 px-4 py-2 rounded-xl shadow text-white"
+          style={{ backgroundColor: BRAND_GREEN }}
+          onClick={() => window.location.reload()}
+        >
+          Restart Quiz
+        </button>
       </motion.div>
     );
   }
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="p-4 max-w-xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-4 text-green-800">{questions[step].q}</h2>
+      <h2 className="text-2xl font-semibold mb-4" style={{ color: BRAND_GREEN }}>{questions[step].q}</h2>
 
       <div className="grid gap-3">
         {questions[step].options.map((opt, idx) => (
@@ -90,17 +115,19 @@ export default function EcoPersonalityQuiz() {
             key={idx}
             whileTap={{ scale: 0.95 }}
             onClick={() => handleSelect(idx)}
-            className="p-3 rounded-2xl shadow bg-white hover:bg-green-100 border border-green-300"
+            className="p-3 rounded-2xl shadow bg-white border"
+            style={{ borderColor: BRAND_GREEN }}
           >
             {opt}
           </motion.button>
         ))}
       </div>
 
-      <div className="mt-4 h-3 w-full bg-gray-200 rounded-full overflow-hidden">
+      {/* Progress Bar */}
+      <div className="mt-4 h-3 w-full rounded-full overflow-hidden" style={{ backgroundColor: BRAND_LIGHT }}>
         <div
-          style={{ width: `${((step + 1) / questions.length) * 100}%` }}
-          className="h-full bg-green-500 transition-all"
+          style={{ width: `${((step + 1) / questions.length) * 100}%`, backgroundColor: BRAND_GREEN }}
+          className="h-full transition-all"
         />
       </div>
 
