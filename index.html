@@ -5,68 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EatCo 🌿</title>
   <link rel="stylesheet" href="style.css" />
-
   <style>
-    /* --- EcoBuzz Styling --- */
-    .buzz-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      padding: 2rem;
-      max-width: 1100px;
-      margin: auto;
+    .course-btn {
+      display:inline-block;
+      margin-top:15px;
+      padding:14px 24px;
+      background:#0d9c6b;
+      color:white;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:bold;
+      font-size:1.1rem;
+      box-shadow:0 4px 10px rgba(0,0,0,0.15);
+      transition:0.3s ease;
     }
-
-    .buzz-card {
-      background: white;
-      border-radius: 15px;
-      padding: 1.2rem;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease;
-    }
-
-    .buzz-card:hover { transform: scale(1.03); }
-
-    .buzz-title {
-      font-size: 1.3rem;
-      font-weight: bold;
-      margin-bottom: 0.5rem;
-    }
-
-    .buzz-tag {
-      font-size: 0.9rem;
-      background: #c9f7da;
-      display: inline-block;
-      padding: 5px 10px;
-      border-radius: 8px;
-      margin-bottom: 0.7rem;
-      color: #20603d;
-    }
-
-    .quiz-section {
-      text-align: center;
-      margin: 40px auto;
-    }
-
-    .quiz-btn {
-      display: inline-block;
-      padding: 14px 24px;
-      background: #3ac47a;
-      color: white;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1.1rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      transition: 0.3s ease;
-    }
-
-    .quiz-btn:hover { background: #34b169; }
+    .course-btn:hover { background:#0a8259; }
   </style>
 </head>
-
 <body>
-
   <!-- Navbar -->
   <nav>
     <h2 class="logo">EatCo 🌿</h2>
@@ -86,7 +42,7 @@
     <a href="#join" class="btn">Join the Movement</a>
   </section>
 
-  <!-- About (short preview on index) -->
+  <!-- About -->
   <section id="about">
     <h2>Mindful. Local. Sustainable.</h2>
     <p>EatCo promotes eco-friendly eating habits — reducing waste, supporting farmers, and making sustainability simple and delicious.</p>
@@ -107,8 +63,23 @@
   <section id="join">
     <h2>Join the Movement 🌍</h2>
     <p>Be part of the eco-food revolution. Let’s make every meal meaningful.</p>
+
     <a href="challenge.html" class="btn" target="_blank">🚀 Join the Zero Waste Challenge</a>
+
+    <!-- NEW ECO COURSES BUTTON BELOW -->
+    <br><br>
+    <a href="eco_courses_section.html" class="course-btn">📚 Explore Eco Courses</a>
   </section>
+
+  <!-- Eco Courses Button -->
+  <div style="text-align:center; margin: 20px 0;">
+    <a href="eco-courses.html"
+      style="background-color:#27ae60; color:white; padding:15px 30px;
+             border-radius:10px; text-decoration:none; font-size:1.2em;
+             box-shadow:0 4px 10px rgba(0,0,0,0.2); transition:0.3s; display:inline-block; margin-bottom:20px;">
+      📚 Explore Eco Courses
+    </a>
+  </div>
 
   <!-- Game -->
   <div style="text-align:center; margin: 40px 0;">
@@ -123,8 +94,8 @@
   <!-- EcoBuzz Button -->
   <a href="ecobuzz.html" class="btn">🌿 EcoBuzz</a>
 
-  <!-- QUIZ SECTION -->
-  <section class="quiz-section">
+  <!-- Quiz -->
+  <section class="quiz-section" style="text-align:center; margin:40px auto;">
     <h2>🌿 Eco Personality Quiz</h2>
     <p>Find out what type of Eco Warrior you are!</p>
     <a href="eco-quiz.html" class="quiz-btn">Take the Quiz 🌱</a>
@@ -149,7 +120,6 @@
   <footer>
     <p>© 2025 EatCo | Made with 💚 by Inayat Agnihotri</p>
   </footer>
-
 <script src="script.js"></script>
 </body>
 </html>
