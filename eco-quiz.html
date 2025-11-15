@@ -4,10 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EatCo Eco Quiz</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+      background: linear-gradient(135deg, #d1fae5, #86efac);
       margin: 0;
       padding: 30px;
       color: #064e3b;
@@ -18,8 +22,8 @@
       margin: auto;
       background: white;
       padding: 35px;
-      border-radius: 25px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      border-radius: 30px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
       animation: fadeIn 0.6s ease-in-out;
     }
 
@@ -31,8 +35,9 @@
     h1 {
       text-align: center;
       color: #047857;
-      font-size: 32px;
+      font-size: 34px;
       margin-bottom: 10px;
+      font-weight: 700;
     }
 
     .subtitle {
@@ -40,10 +45,19 @@
       font-size: 16px;
       margin-bottom: 25px;
       color: #065f46;
+      font-weight: 500;
+    }
+
+    #progress {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #059669;
     }
 
     #question {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 600;
       margin-bottom: 20px;
       color: #064e3b;
@@ -55,12 +69,16 @@
       margin-top: 12px;
       font-size: 16px;
       border: none;
-      border-radius: 14px;
+      border-radius: 16px;
       background: #34d399;
       color: #064e3b;
       font-weight: 600;
       cursor: pointer;
       transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
     }
 
     button:hover {
@@ -68,48 +86,87 @@
       transform: translateY(-3px);
     }
 
-    #result {
-      font-size: 26px;
+    #result-box {
       text-align: center;
-      margin-top: 25px;
-      font-weight: bold;
-      animation: fadeIn 0.5s ease-in-out;
+      padding: 25px;
+      background: #ecfdf5;
+      border-radius: 20px;
+      margin-top: 20px;
+      animation: fadeIn 0.6s ease-in-out;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
+
+    #result-title {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    #result-desc {
+      font-size: 17px;
+      margin-top: 10px;
+      color: #065f46;
+    }
+
   </style>
 </head>
 <body>
   <div class="container">
     <h1>EatCo Eco Quiz 🌿</h1>
-    <p class="subtitle">Find out your eco personality in just 30 seconds!</p>
+    <p class="subtitle">Find out your eco personality in seconds!</p>
+
+    <p id="progress"></p>
 
     <div id="quiz-container">
       <p id="question"></p>
       <div id="options"></div>
     </div>
 
-    <p id="result"></p>
+    <div id="result-box" style="display:none;"></div>
   </div>
 
   <script>
+    const confetti = () => {
+      for (let i = 0; i < 150; i++) {
+        const particle = document.createElement("div");
+        particle.style.position = "fixed";
+        particle.style.width = "8px";
+        particle.style.height = "8px";
+        particle.style.background = `hsl(${Math.random() * 360}, 70%, 60%)`;
+        particle.style.top = "-10px";
+        particle.style.left = Math.random() * window.innerWidth + "px";
+        particle.style.opacity = 1;
+        particle.style.borderRadius = "50%";
+        particle.style.animation = "fall 1.5s linear forwards";
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 1600);
+      }
+    };
+
     const questions = [
       {
-        q: "What's your vibe on a chill day?",
+        q: "🌤️ What's your vibe on a chill day?",
+        icons: ["📖", "🧹", "🚴", "🎮"],
         options: ["Reading in nature", "Cleaning + organizing", "Biking/Walking", "Gaming or Netflix"]
       },
       {
-        q: "Pick a dream eco-superpower:",
+        q: "🦸 Pick a dream eco-superpower:",
+        icons: ["🐾", "🌱", "⛈️", "⚡"],
         options: ["Talk to animals", "Grow plants instantly", "Control the weather", "Teleport anywhere"]
       },
       {
-        q: "Your ideal weekend plan:",
+        q: "🚀 Your ideal weekend plan:",
+        icons: ["🌊", "🎨", "🚵", "🍿"],
         options: ["Beach cleanup", "DIY craft", "Cycling trip", "Movie marathon"]
       },
       {
-        q: "Pick a snack:",
+        q: "🍎 Pick a snack:",
+        icons: ["🍉", "🍪", "🥜", "🍟"],
         options: ["Fruit bowl", "Homemade cookies", "Energy bar", "Chips"]
       },
       {
-        q: "What motivates you the most?",
+        q: "💚 What motivates you most?",
+        icons: ["🌿", "✨", "🌍", "🤖"],
         options: ["Peace + nature", "Creativity", "Adventure", "Tech + comfort"]
       }
     ];
@@ -118,15 +175,17 @@
     let score = 0;
 
     function loadQuestion() {
-      document.getElementById("result").innerHTML = "";
+      document.getElementById("result-box").style.display = "none";
       const q = questions[step];
+      document.getElementById("progress").innerText = `Question ${step + 1} of ${questions.length}`;
       document.getElementById("question").innerText = q.q;
+
       const optionsDiv = document.getElementById("options");
       optionsDiv.innerHTML = "";
 
       q.options.forEach((opt, index) => {
         const btn = document.createElement("button");
-        btn.innerText = opt;
+        btn.innerHTML = `${q.icons[index]} ${opt}`;
         btn.onclick = () => next(index);
         optionsDiv.appendChild(btn);
       });
@@ -136,26 +195,48 @@
       score += answerIndex;
       step++;
 
-      if (step < questions.length) {
-        loadQuestion();
-      } else {
-        finish();
-      }
+      if (step < questions.length) loadQuestion();
+      else finish();
     }
 
     function finish() {
       document.getElementById("quiz-container").innerHTML = "";
+      document.getElementById("progress").innerHTML = "";
 
-      let result = "";
-      if (score <= 4) result = "🌱 The Eco Minimalist — Calm, peaceful, simple!";
-      else if (score <= 8) result = "🎨 The Green Creative — Artsy + sustainable!";
-      else if (score <= 12) result = "🌍 The Earth Explorer — Adventurous + outdoorsy!";
-      else result = "⚡ The Eco-Tech Pro — Smart, modern, eco-focused!";
+      let title = "";
+      let desc = "";
 
-      document.getElementById("result").innerText = result;
+      if (score <= 4) {
+        title = "🌱 The Eco Minimalist";
+        desc = "You love peace, calmness, and simple nature vibes!";
+      } else if (score <= 8) {
+        title = "🎨 The Green Creative";
+        desc = "You mix creativity with sustainability — aesthetic queen/king!";
+      } else if (score <= 12) {
+        title = "🌍 The Earth Explorer";
+        desc = "Adventure + outdoors + nature = your whole personality!";
+      } else {
+        title = "⚡ The Eco-Tech Pro";
+        desc = "Smart, futuristic, and saves the earth using tech magic!";
+      }
+
+      const box = document.getElementById("result-box");
+      box.style.display = "block";
+      box.innerHTML = `<div id='result-title'>${title}</div><div id='result-desc'>${desc}</div>`;
+
+      confetti();
     }
 
     loadQuestion();
   </script>
+
+  <style>
+    @keyframes fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
 </body>
 </html>
