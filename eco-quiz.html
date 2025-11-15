@@ -13,10 +13,43 @@
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #d1fae5, #86efac);
       margin: 0;
-      padding: 30px;
+      padding: 0;
+      overflow-x: hidden;
       color: #064e3b;
     }
 
+    /* Loading Screen */
+    #loading-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #d1fae5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 9999;
+      animation: fadeOut 1s ease-in-out forwards;
+      animation-delay: 2s;
+    }
+
+    #loading-logo {
+      font-size: 40px;
+      font-weight: 700;
+      color: #047857;
+      animation: bounce 1.2s infinite;
+    }
+
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
+
+    /* Container */
     .container {
       max-width: 650px;
       margin: auto;
@@ -24,7 +57,8 @@
       padding: 35px;
       border-radius: 30px;
       box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-      animation: fadeIn 0.6s ease-in-out;
+      animation: fadeIn 0.7s ease-in-out;
+      margin-top: 40px;
     }
 
     @keyframes fadeIn {
@@ -32,6 +66,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Titles */
     h1 {
       text-align: center;
       color: #047857;
@@ -45,9 +80,9 @@
       font-size: 16px;
       margin-bottom: 25px;
       color: #065f46;
-      font-weight: 500;
     }
 
+    /* Progress */
     #progress {
       text-align: center;
       margin-bottom: 15px;
@@ -56,13 +91,21 @@
       color: #059669;
     }
 
+    /* Question */
     #question {
       font-size: 22px;
       font-weight: 600;
       margin-bottom: 20px;
       color: #064e3b;
+      animation: slideIn 0.5s ease;
     }
 
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Buttons */
     button {
       width: 100%;
       padding: 14px;
@@ -86,6 +129,7 @@
       transform: translateY(-3px);
     }
 
+    /* Result Box */
     #result-box {
       text-align: center;
       padding: 25px;
@@ -96,24 +140,36 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
-    #result-title {
-      font-size: 28px;
-      font-weight: 700;
+    /* Badges */
+    .badge {
+      font-size: 40px;
       margin-bottom: 10px;
     }
 
-    #result-desc {
-      font-size: 17px;
-      margin-top: 10px;
-      color: #065f46;
+    #share-btn {
+      margin-top: 18px;
+      padding: 12px 18px;
+      background: #059669;
+      color: white;
+      border-radius: 14px;
+      font-size: 15px;
+      cursor: pointer;
+      border: none;
     }
 
   </style>
 </head>
 <body>
-  <div class="container">
+
+  <!-- LOADING SCREEN -->
+  <div id="loading-screen">
+    <div id="loading-logo">EatCo 🌿</div>
+    <p>Loading your eco journey...</p>
+  </div>
+
+  <div class="container" id="quiz-area" style="display:none;">
     <h1>EatCo Eco Quiz 🌿</h1>
-    <p class="subtitle">Find out your eco personality in seconds!</p>
+    <p class="subtitle">Find your eco personality!</p>
 
     <p id="progress"></p>
 
@@ -126,6 +182,10 @@
   </div>
 
   <script>
+    setTimeout(() => {
+      document.getElementById("quiz-area").style.display = "block";
+    }, 2000);
+
     const confetti = () => {
       for (let i = 0; i < 150; i++) {
         const particle = document.createElement("div");
@@ -144,38 +204,22 @@
     };
 
     const questions = [
-      {
-        q: "🌤️ What's your vibe on a chill day?",
-        icons: ["📖", "🧹", "🚴", "🎮"],
-        options: ["Reading in nature", "Cleaning + organizing", "Biking/Walking", "Gaming or Netflix"]
-      },
-      {
-        q: "🦸 Pick a dream eco-superpower:",
-        icons: ["🐾", "🌱", "⛈️", "⚡"],
-        options: ["Talk to animals", "Grow plants instantly", "Control the weather", "Teleport anywhere"]
-      },
-      {
-        q: "🚀 Your ideal weekend plan:",
-        icons: ["🌊", "🎨", "🚵", "🍿"],
-        options: ["Beach cleanup", "DIY craft", "Cycling trip", "Movie marathon"]
-      },
-      {
-        q: "🍎 Pick a snack:",
-        icons: ["🍉", "🍪", "🥜", "🍟"],
-        options: ["Fruit bowl", "Homemade cookies", "Energy bar", "Chips"]
-      },
-      {
-        q: "💚 What motivates you most?",
-        icons: ["🌿", "✨", "🌍", "🤖"],
-        options: ["Peace + nature", "Creativity", "Adventure", "Tech + comfort"]
-      }
+      { q: "🌤️ What's your vibe on a chill day?", icons: ["📖","🧹","🚴","🎮"], options: ["Reading in nature","Cleaning + organizing","Biking/Walking","Gaming or Netflix"] },
+      { q: "🦸 Pick a dream eco-superpower:", icons:["🐾","🌱","⛈️","⚡"], options:["Talk to animals","Grow plants instantly","Control the weather","Teleport anywhere"] },
+      { q: "🚀 Your ideal weekend plan:", icons:["🌊","🎨","🚵","🍿"], options:["Beach cleanup","DIY craft","Cycling trip","Movie marathon"] },
+      { q: "🍎 Pick a snack:", icons:["🍉","🍪","🥜","🍟"], options:["Fruit bowl","Homemade cookies","Energy bar","Chips"] },
+      { q: "💚 What motivates you most?", icons:["🌿","✨","🌍","🤖"], options:["Peace + nature","Creativity","Adventure","Tech + comfort"] },
+      { q: "🐢 Which pace fits you?", icons:["🧘","🚶","🏃","🚀"], options:["Slow + calm","Chill walk","Fast learner","Speed + energy"] },
+      { q: "🌳 Pick a place to live:", icons:["🏔️","🏝️","🏙️","🌌"], options:["Mountains","Beach hut","Smart city","Space eco-colony"] },
+      { q: "🔥 Your energy level:", icons:["😴","🙂","⚡","🤖"], options:["Low","Medium","High","Non-stop robot mode"] },
+      { q: "🌈 Choose an aesthetic:", icons:["📚","🌸","⛰️","💻"], options:["Cozy cottagecore","Pastel creative","Adventure wild","Tech minimal"] },
+      { q: "♻️ Biggest eco habit you follow:", icons:["🚰","🛍️","🚌","🔌"], options:["No plastic bottles","Reusable bags","Public transport","Energy saving tech"] }
     ];
 
     let step = 0;
     let score = 0;
 
     function loadQuestion() {
-      document.getElementById("result-box").style.display = "none";
       const q = questions[step];
       document.getElementById("progress").innerText = `Question ${step + 1} of ${questions.length}`;
       document.getElementById("question").innerText = q.q;
@@ -194,7 +238,6 @@
     function next(answerIndex) {
       score += answerIndex;
       step++;
-
       if (step < questions.length) loadQuestion();
       else finish();
     }
@@ -205,29 +248,23 @@
 
       let title = "";
       let desc = "";
+      let badge = "";
 
-      if (score <= 4) {
-        title = "🌱 The Eco Minimalist";
-        desc = "You love peace, calmness, and simple nature vibes!";
-      } else if (score <= 8) {
-        title = "🎨 The Green Creative";
-        desc = "You mix creativity with sustainability — aesthetic queen/king!";
-      } else if (score <= 12) {
-        title = "🌍 The Earth Explorer";
-        desc = "Adventure + outdoors + nature = your whole personality!";
-      } else {
-        title = "⚡ The Eco-Tech Pro";
-        desc = "Smart, futuristic, and saves the earth using tech magic!";
-      }
+      if (score <= 10) { title = "🌱 The Eco Minimalist"; desc = "You love simple nature vibes!"; badge = "🌱"; }
+      else if (score <= 20) { title = "🎨 The Green Creative"; desc = "Eco + aesthetic = you!"; badge = "🎨"; }
+      else if (score <= 28) { title = "🌍 The Earth Explorer"; desc = "Adventure is your eco language!"; badge = "🌍"; }
+      else { title = "⚡ The Eco-Tech Pro"; desc = "Tech + sustainability is your superpower!"; badge = "⚡"; }
 
       const box = document.getElementById("result-box");
       box.style.display = "block";
-      box.innerHTML = `<div id='result-title'>${title}</div><div id='result-desc'>${desc}</div>`;
+      box.innerHTML = `<div class='badge'>${badge}</div><div id='result-title'>${title}</div><div id='result-desc'>${desc}</div><button id='share-btn'>Share Result</button>`;
 
       confetti();
+
+      document.getElementById("share-btn").onclick = () => alert("Screenshot and share your result on Instagram! 🌿✨");
     }
 
-    loadQuestion();
+    setTimeout(loadQuestion, 2000);
   </script>
 
   <style>
