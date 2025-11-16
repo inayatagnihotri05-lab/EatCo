@@ -1,65 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Climate Science — EatCo</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eco Courses 🌿 | EatCo</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    body{font-family:'Poppins',sans-serif;background:linear-gradient(180deg,#f6fff6,#eaf9ef);color:#0f3f2f;margin:0;padding:0}
-    .wrap{max-width:800px;margin:28px auto;background:#fff;border-radius:16px;padding:22px;box-shadow:0 10px 30px rgba(12,50,35,0.08)}
-    h1{color:#2e8b57}
-    .lesson{padding:12px;border-radius:12px;background:#f0fff8;margin:12px 0}
-    .next{display:inline-block;padding:10px 14px;background:#34d399;color:#063927;border-radius:12px;text-decoration:none;font-weight:700}
-    .pdf{background:#2b9bd6;color:#fff;padding:10px 14px;border-radius:12px;text-decoration:none;margin-left:10px}
-    .badge{display:none;margin-top:14px;padding:12px;background:#fff;border-radius:12px;border:2px solid #dff7ea}
+    :root{--brand:#2e8b57;--accent:#34d399;--card:#ffffff}
+    body {font-family:'Poppins',sans-serif;background:linear-gradient(180deg,#effff3,#e6f9ea);margin:0;color:#0f3f2f}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:var(--brand);color:#fff}
+    header .logo{font-weight:700;font-size:20px}
+    nav a{color:#e6fff0;margin-left:14px;text-decoration:none;font-weight:600}
+    .container{max-width:1100px;margin:28px auto;padding:20px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+    .course-card{background:var(--card);border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(15,63,47,0.08);position:relative;overflow:hidden}
+    .course-head{display:flex;align-items:center;gap:12px}
+    .icon{width:56px;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;background:linear-gradient(135deg,#f0fff8,#dff9ef)}
+    .course-title{font-size:20px;font-weight:700;color:var(--brand)}
+    .lessons{margin-top:12px;padding-left:18px}
+    .lessons li{margin:8px 0;color:#174b3a}
+    .actions{display:flex;gap:10px;margin-top:14px;align-items:center}
+    .btn{padding:10px 14px;border-radius:12px;border:none;cursor:pointer;font-weight:700}
+    .btn-green{background:var(--accent);color:#063927}
+    .btn-blue{background:#2b9bd6;color:#fff}
+    .qr{width:84px;height:84px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(15,63,47,0.06)}
+    .badge-pop{position:fixed;left:50%;transform:translateX(-50%);bottom:25px;background:linear-gradient(135deg,#0fffb2,#85ffdc);padding:12px 16px;border-radius:14px;box-shadow:0 8px 30px rgba(15,63,47,0.12);display:flex;gap:12px;align-items:center;display:none}
+    .progress{height:10px;background:#e6f9ea;border-radius:10px;overflow:hidden;margin-top:12px}
+    .progress > div{height:100%;background:linear-gradient(90deg,var(--accent),#0ab26b);width:0%;transition:width 400ms}
+    footer{padding:20px;text-align:center;color:#0f3f2f}
+
+    /* GEN-Z BADGE STYLE */
+    .genz-badge{width:96px;height:96px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:20px;box-shadow:0 10px 30px rgba(0,0,0,0.25);background:linear-gradient(135deg,#ff7ad9,#7a5bff);border:3px solid rgba(255,255,255,0.2);}
+    .badge-grid{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+
+    /* Achievements modal */
+    .ach-modal{position:fixed;right:18px;bottom:18px;width:320px;background:linear-gradient(180deg,#ffffff,#f7fff9);border-radius:14px;padding:14px;box-shadow:0 12px 40px rgba(0,0,0,0.12);display:none}
+    .ach-modal h3{margin:0 0 10px}
+    .ach-item{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;margin-bottom:8px;background:#f0fff8}
+
+    @media(max-width:520px){header{flex-direction:column;gap:8px} .course-head{flex-direction:row;gap:10px}}
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>🔬 Climate Science for Teens</h1>
-    <p>Understand the key science behind climate change — with small equations and real actions.</p>
+  <header>
+    <div class="logo">EatCo 🌿</div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="eco-quiz.html">Quiz</a>
+      <a href="eco-courses.html">Courses</a>
+      <a href="ecobuzz.html">EcoBuzz</a>
+      <a href="ecorun.html">EcoRun</a>
+      <a href="#" id="openAchievements" style="margin-left:18px;background:linear-gradient(90deg,#7a5bff,#ff7ad9);padding:8px 12px;border-radius:10px;color:white;text-decoration:none;">My Achievements</a>
+    </nav>
+  </header>
 
-    <div class="lesson" id="l1">
-      <strong>Lesson 1 — Climate vs Weather</strong>
-      <p>Clear differences and why trends matter.</p>
+  <div class="container">
+    <h1 style="color:var(--brand);margin:6px 0 14px">📚 Eco Courses — Level up your eco skills</h1>
+    <p style="color:#14573d;margin-bottom:18px;">Each course has 5 short lessons, a completion badge (Gen‑Z neon style), QR code quick links, and an achievements area that saves badges in your browser.</p>
+
+    <div class="grid">
+
+      <!-- Course Card template (Eco Habits) -->
+      <div class="course-card" data-course="eco-habits">
+        <div class="course-head">
+          <div class="icon">🌱</div>
+          <div>
+            <div class="course-title">Eco Habits 101</div>
+            <div style="font-size:13px;color:#2b6b52;margin-top:6px">Level: Beginner → Intermediate</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div class="qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https://yourusername.github.io/yourrepo/eco-habits.html" alt="qr" style="width:78px;height:78px;border-radius:8px"></div>
+          </div>
+        </div>
+
+        <ul class="lessons">
+          <li>🧠 Lesson 1: How habits rewire your brain (neuroplasticity intro)</li>
+          <li>🛒 Lesson 2: The science of eco-shopping & reading labels</li>
+          <li>🥗 Lesson 3: Carbon footprint of your plate (mini-calculation)</li>
+          <li>♻️ Lesson 4: Recycling myths busted (scientific facts)</li>
+          <li>🌍 Lesson 5: Build a 7-day scientific habit loop (challenge)</li>
+        </ul>
+
+        <div class="progress" data-prog="eco-habits"><div></div></div>
+
+        <div class="actions">
+          <button class="btn btn-green" onclick="openCourse('eco-habits')">Start Course</button>
+          <button class="btn btn-blue" onclick="saveBadgeAndShow('eco-habits','Eco Habits Master')">Earn Badge</button>
+          <div style="margin-left:auto;font-size:12px;color:#196244">5 lessons • badge available</div>
+        </div>
+      </div>
+
+      <!-- Course Card (Zero Waste) -->
+      <div class="course-card" data-course="zero-waste">
+        <div class="course-head">
+          <div class="icon">♻️</div>
+          <div>
+            <div class="course-title">Zero Waste for Gen Z</div>
+            <div style="font-size:13px;color:#2b6b52;margin-top:6px">Level: Intermediate</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div class="qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https://yourusername.github.io/yourrepo/zero-waste-genz.html" alt="qr" style="width:78px;height:78px;border-radius:8px"></div>
+          </div>
+        </div>
+
+        <ul class="lessons">
+          <li>🔍 Lesson 1: Where trash actually goes (waste flow science)</li>
+          <li>♻️ Lesson 2: The advanced 7 R’s + real impact numbers</li>
+          <li>🥤 Lesson 3: Microplastics & how they enter your body</li>
+          <li>📦 Lesson 4: Designing a zero-waste school system</li>
+          <li>⚡ Lesson 5: 14-day Zero Waste Challenge (tracking)</li>
+        </ul>
+
+        <div class="progress" data-prog="zero-waste"><div></div></div>
+
+        <div class="actions">
+          <button class="btn btn-green" onclick="openCourse('zero-waste')">Start Course</button>
+          <button class="btn btn-blue" onclick="saveBadgeAndShow('zero-waste','Zero Waste Pro')">Earn Badge</button>
+          <div style="margin-left:auto;font-size:12px;color:#196244">5 lessons • badge available</div>
+        </div>
+      </div>
+
+      <!-- Course Card (Plastic-Free School) -->
+      <div class="course-card" data-course="plastic-school">
+        <div class="course-head">
+          <div class="icon">🏫</div>
+          <div>
+            <div class="course-title">Plastic-Free School Life</div>
+            <div style="font-size:13px;color:#2b6b52;margin-top:6px">Level: Intermediate</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div class="qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https://yourusername.github.io/yourrepo/plastic-free-school.html" alt="qr" style="width:78px;height:78px;border-radius:8px"></div>
+          </div>
+        </div>
+
+        <ul class="lessons">
+          <li>🔬 Lesson 1: How plastic affects ecosystems (food webs)</li>
+          <li>🥪 Lesson 2: Science-based lunch swaps that reduce waste</li>
+          <li>💧 Lesson 3: Bottles tested — steel vs glass vs plastic</li>
+          <li>📚 Lesson 4: Zero-waste stationery engineering</li>
+          <li>👟 Lesson 5: Designing a plastic-free daily routine</li>
+        </ul>
+
+        <div class="progress" data-prog="plastic-school"><div></div></div>
+
+        <div class="actions">
+          <button class="btn btn-green" onclick="openCourse('plastic-school')">Start Course</button>
+          <button class="btn btn-blue" onclick="saveBadgeAndShow('plastic-school','School Audit Ace')">Earn Badge</button>
+          <div style="margin-left:auto;font-size:12px;color:#196244">5 lessons • badge available</div>
+        </div>
+      </div>
+
+      <!-- Course Card (Fashion) -->
+      <div class="course-card" data-course="eco-fashion">
+        <div class="course-head">
+          <div class="icon">👗</div>
+          <div>
+            <div class="course-title">Eco Fashion Basics</div>
+            <div style="font-size:13px;color:#2b6b52;margin-top:6px">Level: Intermediate → Advanced</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div class="qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https://yourusername.github.io/yourrepo/eco-fashion.html" alt="qr" style="width:78px;height:78px;border-radius:8px"></div>
+          </div>
+        </div>
+
+        <ul class="lessons">
+          <li>🌱 Lesson 1: How fast fashion impacts climate (data-based)</li>
+          <li>♻️ Lesson 2: Upcycling with science — fabric lifespan</li>
+          <li>🛍️ Lesson 3: Eco-shopping using material science</li>
+          <li>👚 Lesson 4: Fabric guide — cotton, viscose, polyester</li>
+          <li>🌍 Lesson 5: Build your sustainable wardrobe plan</li>
+        </ul>
+
+        <div class="progress" data-prog="eco-fashion"><div></div></div>
+
+        <div class="actions">
+          <button class="btn btn-green" onclick="openCourse('eco-fashion')">Start Course</button>
+          <button class="btn btn-blue" onclick="saveBadgeAndShow('eco-fashion','Fashion Forward')">Earn Badge</button>
+          <div style="margin-left:auto;font-size:12px;color:#196244">5 lessons • badge available</div>
+        </div>
+      </div>
+
+      <!-- Course Card (Climate Science) -->
+      <div class="course-card" data-course="climate-science">
+        <div class="course-head">
+          <div class="icon">🔬</div>
+          <div>
+            <div class="course-title">Climate Science for Teens</div>
+            <div style="font-size:13px;color:#2b6b52;margin-top:6px">Level: Intermediate → Advanced</div>
+          </div>
+          <div style="margin-left:auto;text-align:right">
+            <div class="qr"><img src="https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=https://yourusername.github.io/yourrepo/climate-science-teens.html" alt="qr" style="width:78px;height:78px;border-radius:8px"></div>
+          </div>
+        </div>
+
+        <ul class="lessons">
+          <li>🔭 Lesson 1: Climate vs weather — scientific breakdown</li>
+          <li>🔥 Lesson 2: Greenhouse gases explained with models</li>
+          <li>💨 Lesson 3: Carbon footprint math (simple equations)</li>
+          <li>🌊 Lesson 4: Extreme events — cyclones, heatwaves</li>
+          <li>🧪 Lesson 5: How teens can reduce emissions realistically</li>
+        </ul>
+
+        <div class="progress" data-prog="climate-science"><div></div></div>
+
+        <div class="actions">
+          <button class="btn btn-green" onclick="openCourse('climate-science')">Start Course</button>
+          <button class="btn btn-blue" onclick="saveBadgeAndShow('climate-science','Climate Champion')">Earn Badge</button>
+          <div style="margin-left:auto;font-size:12px;color:#196244">5 lessons • badge available</div>
+        </div>
+      </div>
+
     </div>
 
-    <div class="lesson" id="l2">
-      <strong>Lesson 2 — Greenhouse gases & models</strong>
-      <p>How gases trap heat and how scientists model future climates.</p>
+    <div style="margin-top:18px;text-align:center">
+      <small style="color:#1b4d36;opacity:0.9">Tip: Scan any QR code with your phone camera to open the course quickly.</small>
     </div>
 
-    <div class="lesson" id="l3">
-      <strong>Lesson 3 — Carbon footprint math</strong>
-      <p>Simple equations to estimate emissions from daily choices.</p>
-    </div>
-
-    <div class="lesson" id="l4">
-      <strong>Lesson 4 — Extreme events explained</strong>
-      <p>Why heatwaves and storms are changing and what that means.</p>
-    </div>
-
-    <div class="lesson" id="l5">
-      <strong>Lesson 5 — Personal climate action plan</strong>
-      <p>Create a 4-week plan that reduces your emissions—practical and measurable.</p>
-    </div>
-
-    <div style="margin-top:12px">
-      <button class="next" onclick="complete()">Complete Course</button>
-      <a class="pdf" href="pdfs/climate-science-teens.pdf" target="_blank">Download PDF</a>
-    </div>
-
-    <div class="badge" id="badge">
-      <strong>🏅 Course Complete — Climate Science Badge</strong>
-      <p>Share your badge and be proud!</p>
-    </div>
-
-    <a href="eco-courses.html" style="display:inline-block;margin-top:16px;color:#15593f;text-decoration:none">⬅️ Back to Courses</a>
   </div>
 
+  <!-- Badge popup -->
+  <div class="badge-pop" id="badgePop">
+    <div class="genz-badge" id="badgeIcon">🔥</div>
+    <div>
+      <div style="font-weight:800;color:#0f3f2f" id="badgeTitle">Badge earned!</div>
+      <div style="font-size:13px;color:#2f6b56" id="badgeSub">You completed the course — nice!</div>
+    </div>
+    <button class="btn btn-blue" style="margin-left:12px" onclick="closeBadge()">Close</button>
+  </div>
+
+  <!-- Achievements modal -->
+  <div class="ach-modal" id="achModal">
+    <h3>Your Achievements</h3>
+    <div id="achList">No badges yet — complete a course to earn one!</div>
+    <div style="text-align:center;margin-top:8px"><button class="btn btn-green" onclick="clearAchievements()">Clear All</button></div>
+  </div>
+
+  <footer>
+    <p>© 2025 EatCo | Made with 💚 by Inayat Agnihotri</p>
+  </footer>
+
 <script>
-  function complete(){ document.getElementById('badge').style.display='block'; window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); }
+  // --- Badge & Achievements system (Gen Z neon style) ---
+  const ACH_KEY = 'eatco_achievements_v1';
+
+  function loadAchievements(){
+    try{ return JSON.parse(localStorage.getItem(ACH_KEY)) || []; }catch(e){ return []; }
+  }
+
+  function saveAchievements(list){ localStorage.setItem(ACH_KEY, JSON.stringify(list)); }
+
+  function saveBadgeAndShow(id,title){
+    const list = loadAchievements();
+    if(!list.find(b=>b.id===id)){
+      const badge = {id, title, date: new Date().toISOString(), icon: randomBadgeEmoji()};
+      list.push(badge); saveAchievements(list);
+      showBadge(badge);
+      updateAchModal();
+    } else {
+      // already earned — still show popup
+      showBadge(list.find(b=>b.id===id));
+    }
+  }
+
+  function randomBadgeEmoji(){
+    const emojis=['🔥','🌟','⚡','💫','🌈','🌿','🛡️','🏆'];
+    return emojis[Math.floor(Math.random()*emojis.length)];
+  }
+
+  function showBadge(badge){
+    document.getElementById('badgeIcon').innerText = badge.icon || '🏅';
+    document.getElementById('badgeTitle').innerText = badge.title || 'Badge earned!';
+    document.getElementById('badgeSub').innerText = 'Saved to your achievements — open "My Achievements" to view.';
+    const pop = document.getElementById('badgePop'); pop.style.display='flex'; pop.style.opacity=1;
+    setTimeout(()=>{ closeBadge(); },4500);
+  }
+  function closeBadge(){ const pop=document.getElementById('badgePop'); pop.style.opacity=0; setTimeout(()=>pop.style.display='none',300); }
+
+  // Achievements modal
+  function updateAchModal(){
+    const list = loadAchievements();
+    const container = document.getElementById('achList');
+    if(list.length===0){ container.innerHTML='No badges yet — complete a course to earn one!'; return; }
+    container.innerHTML='';
+    const grid = document.createElement('div'); grid.className='badge-grid';
+    list.slice().reverse().forEach(b=>{
+      const item = document.createElement('div'); item.className='ach-item';
+      item.innerHTML = `<div class=\"genz-badge\">${b.icon}</div><div><strong>${b.title}</strong><div style=\"font-size:12px;color:#196244\">${new Date(b.date).toLocaleString()}</div></div>`;
+      grid.appendChild(item);
+    });
+    container.appendChild(grid);
+  }
+
+  function clearAchievements(){ if(confirm('Clear all saved badges?')){ saveAchievements([]); updateAchModal(); alert('Achievements cleared.'); } }
+
+  // Open/hide achievements
+  document.getElementById('openAchievements').addEventListener('click', (e)=>{ e.preventDefault(); const m=document.getElementById('achModal'); m.style.display = m.style.display==='block'?'none':'block'; updateAchModal(); });
+
+  // Helper functions
+  function openCourse(slug){ const mapping={ 'eco-habits':'eco-habits.html', 'zero-waste':'zero-waste-genz.html', 'plastic-school':'plastic-free-school.html', 'eco-fashion':'eco-fashion.html', 'climate-science':'climate-science-teens.html' }; window.location.href = mapping[slug] || 'eco-courses.html'; }
+
+  // animate progress bars (faux progress until user completes lessons)
+  document.querySelectorAll('.progress').forEach(p=>{ const inner=p.querySelector('div'); setTimeout(()=>{ inner.style.width = (30 + Math.floor(Math.random()*55)) + '%'; }, 300); });
+
+  // Expose function to be called from individual course pages when a user completes a course
+  // So in each course page, call: window.parentSaveBadge && window.parentSaveBadge('eco-habits','Eco Habits Master')
+  window.parentSaveBadge = function(id,title){ saveBadgeAndShow(id,title); };
+
+  // If the user lands with ?showAchievements=1 in URL, open modal
+  if(location.search.includes('showAchievements=1')){ setTimeout(()=>{ document.getElementById('achModal').style.display='block'; updateAchModal(); },400); }
+
+  // keyboard shortcut for achievements: A
+  document.addEventListener('keydown', e=>{ if(e.key==='a' || e.key==='A') document.getElementById('achModal').style.display='block' && updateAchModal(); });
 </script>
+
 </body>
 </html>
