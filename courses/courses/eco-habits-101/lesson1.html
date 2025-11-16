@@ -1,14 +1,118 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Eco Habits 101 – Lesson 1</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Eco Habits 101 — Lesson 1</title>
+<style>
+  :root{--brand:#2e8b57;--muted:#6aa77a}
+  body{font-family:Inter, Arial, sans-serif;background:#f4fff4;margin:0;color:#123a2a;padding:18px}
+  .wrap{max-width:900px;margin:20px auto;background:#fff;border-radius:14px;padding:22px;box-shadow:0 8px 24px rgba(0,0,0,0.06)}
+  header{display:flex;flex-direction:column;align-items:center;gap:6px}
+  h1{margin:0;color:var(--brand)}
+  .meta{color:var(--muted);font-size:0.95rem}
+  .pager{display:flex;gap:12px;justify-content:center;margin:18px 0}
+  .page{display:none}
+  .page.active{display:block}
+  .slide{padding:12px;border-left:4px solid rgba(46,139,87,0.09);margin-bottom:14px;border-radius:6px;background:linear-gradient(180deg,#fbfffb,#f7fff7)}
+  .slide h3{margin:6px 0}
+  .fact{background:#e9fff0;padding:10px;border-left:4px solid var(--brand);border-radius:8px;margin:10px 0}
+  .nav {display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+  button{background:var(--brand);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+  button[disabled]{background:#cfe8d8;cursor:not-allowed}
+  a.back{display:inline-block;margin-top:14px;color:var(--brand);text-decoration:none;font-weight:700}
+  @media(max-width:520px){.wrap{padding:14px}}
+</style>
 </head>
 <body>
-  <h1>🌱 Eco Habits 101 — Lesson 1</h1>
-  <p>This is a placeholder. The full course content will come next.</p>
+  <div class="wrap" role="main">
+    <header>
+      <h1>🌿 Eco Habits 101 — Lesson 1</h1>
+      <div class="meta">Lesson: What are eco habits? — 4 quick slides</div>
+    </header>
 
-  <a href="../lesson2.html">Next Lesson ➜</a><br>
-  <a href="../../eco-courses.html">⬅ Back to Courses</a>
+    <!-- Slide 1: Main concept -->
+    <section id="p1" class="page active">
+      <div class="slide">
+        <h3>🔎 Slide A — Main concept</h3>
+        <p>Eco habits are small, repeated actions that reduce waste, pollution and emissions. They’re not about being perfect — they’re about close-to-zero friction changes that your brain can keep doing automatically.</p>
+      </div>
+
+      <div class="slide fact">
+        <strong>Scientific note:</strong> The cumulative effect of small behavior changes can be large — lifestyle shifts like switching to reusables, reducing food waste and energy saving can reduce an individual's annual emissions substantially (studies vary; core point: tiny changes compound).</div>
+    </section>
+
+    <!-- Slide 2: Examples -->
+    <section id="p2" class="page">
+      <div class="slide">
+        <h3>📌 Slide B — Real-life examples</h3>
+        <ul>
+          <li>Reusable bottle + refill habit → drastically fewer single-use bottles</li>
+          <li>Shorter showers + water timer → immediate water + energy savings</li>
+          <li>Leftovers into next-day meals → big cut in food waste</li>
+        </ul>
+      </div>
+
+      <div class="slide">
+        <strong>Practical tip:</strong> Keep your reusable bottle visible by the door — visibility increases the chance you’ll grab it (cue engineering).</div>
+    </section>
+
+    <!-- Slide 3: Science & brain -->
+    <section id="p3" class="page">
+      <div class="slide">
+        <h3>🧠 Slide C — Brain science</h3>
+        <p>Habits are encoded in the basal ganglia — the brain region that automates repeated routines so you don’t waste conscious energy. Use cues and fast rewards to recruit this system for eco behaviours.</p>
+      </div>
+
+      <div class="slide fact">
+        <strong>Research clip:</strong> Habit formation varies, but a stable cue + immediate reward accelerates learning. Habit stacking (attach to existing routine) is one evidence-backed strategy.</div>
+    </section>
+
+    <!-- Slide 4: Activity -->
+    <section id="p4" class="page">
+      <div class="slide">
+        <h3>🔥 Slide D — 5-minute activity</h3>
+        <p>Choose one micro-habit and implement it for 3 days:</p>
+        <ol>
+          <li>Pick action (e.g., refill bottle)</li>
+          <li>Define cue (e.g., after breakfast)</li>
+          <li>Choose fast reward (e.g., tick calendar + 10 sec selfie)</li>
+          <li>Stack it to an existing routine (e.g., after brushing)</li>
+        </ol>
+      </div>
+
+      <div class="slide">
+        <strong>Next:</strong> when you’re ready, click the quiz link or go to Lesson 2.<br><br>
+        <a class="back" href="../eco-courses.html">⬅ Back to Courses</a>
+      </div>
+    </section>
+
+    <!-- navigation -->
+    <div class="nav" aria-hidden="false">
+      <button id="prev" onclick="move(-1)" disabled>Previous</button>
+      <div class="pager" role="navigation" aria-label="lesson pages">
+        <span id="dots"></span>
+      </div>
+      <button id="next" onclick="move(1)">Next</button>
+    </div>
+  </div>
+
+<script>
+  const total = 4;
+  let cur = 1;
+  const dots = document.getElementById('dots');
+  for(let i=1;i<=total;i++){ const s=document.createElement('button'); s.textContent=i; s.style.margin='0 6px'; s.onclick=(()=>{cur=i;show();}); dots.appendChild(s); }
+  function show(){
+    for(let i=1;i<=total;i++){ document.getElementById('p'+i).classList.remove('active'); }
+    document.getElementById('p'+cur).classList.add('active');
+    document.getElementById('prev').disabled = cur===1;
+    document.getElementById('next').disabled = cur===total;
+    // highlight dot
+    Array.from(dots.children).forEach((b,idx)=> b.style.opacity = (idx+1===cur? '1':'0.5') );
+  }
+  function move(dir){ cur = Math.min(total, Math.max(1, cur+dir)); show(); }
+  // init dots highlight
+  show();
+</script>
 </body>
 </html>
