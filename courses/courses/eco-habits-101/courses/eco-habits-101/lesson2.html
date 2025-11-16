@@ -5,6 +5,23 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Eco Habits 101 — Lesson 2</title>
 <style>
+  .lesson-img {
+    width: 100%;
+    border-radius: 16px;
+    margin: 18px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  .fun-fact {
+    background: #e4ffe9;
+    padding: 15px 20px;
+    border-left: 6px solid #2ecc71;
+    border-radius: 12px;
+    margin: 20px 0;
+    font-size: 1.05rem;
+    font-weight: 500;
+  }
+
   :root{--brand:#1f8a53;--muted:#6aa77a}
   body{font-family:Inter, Arial, sans-serif;background:#f7fff8;margin:0;color:#0e3f2b;padding:18px}
   .wrap{max-width:900px;margin:20px auto;background:#fff;border-radius:14px;padding:22px;box-shadow:0 8px 24px rgba(0,0,0,0.06)}
@@ -28,62 +45,90 @@
       <div class="meta">Focus: The Habit Loop — cue, action, reward</div>
     </header>
 
+    <!-- PAGE 1 -->
     <section id="p1" class="page active">
+      <img class="lesson-img" src="https://i.imgur.com/lkMQgKb.png" alt="Habit loop visual">
+
       <div class="slide">
         <h3>Slide A — Concept</h3>
-        <p>The habit loop is <strong>cue → action → reward</strong>. To build eco habits you must design each part so the action is easy and the reward is immediate.</p>
+        <p>The habit loop is <strong>cue → action → reward</strong>. To build eco habits, design each part so the action is easy and the reward is instant.</p>
       </div>
 
-      <div class="fact">
-        <strong>Science:</strong> Basal ganglia and dopamine drive habit consolidation. Tiny, immediate rewards matter.
+      <div class="fun-fact">
+        🌱 <strong>Fun fact:</strong> Your brain *loves* shortcuts — once a routine repeats 20–40 times, your basal ganglia starts running it automatically!
       </div>
     </section>
 
+    <!-- PAGE 2 -->
     <section id="p2" class="page">
+      <img class="lesson-img" src="https://i.imgur.com/x1Z9JbE.jpeg" alt="Eco habit example">
+
       <div class="slide">
         <h3>Slide B — Examples</h3>
         <ul>
-          <li><strong>Cue:</strong> After putting on shoes — <strong>Action:</strong> grab reusable cup — <strong>Reward:</strong> iced coffee without waste.</li>
-          <li><strong>Cue:</strong> Before leaving home — <strong>Action:</strong> pack reusable bag — <strong>Reward:</strong> no awkward plastic checkout.</li>
+          <li><strong>Cue:</strong> Putting on shoes → <strong>Action:</strong> grab reusable cup → <strong>Reward:</strong> iced coffee without waste</li>
+          <li><strong>Cue:</strong> Before leaving home → <strong>Action:</strong> pack reusable bag → <strong>Reward:</strong> avoid plastic at checkout</li>
         </ul>
       </div>
 
-      <div class="slide">
-        <strong>Practical tip:</strong> Make the cue impossible to ignore (put the item beside your keys/phone).</div>
+      <div class="fact">
+        <strong>Tip:</strong> Make cues impossible to ignore — place reusables next to phone/keys.
+      </div>
     </section>
 
+    <!-- PAGE 3 -->
     <section id="p3" class="page">
+      <img class="lesson-img" src="https://i.imgur.com/QIjNwzK.jpeg" alt="Psychology image">
+
       <div class="slide">
         <h3>Slide C — Psychology + Evidence</h3>
-        <p>Longer-term habit formation needs consistency. Research suggests routines anchored to strong cues (time/place) need fewer repetitions to stick.</p>
+        <p>Long-term habit formation depends on consistency. Strong cues (time/place) reduce the number of repetitions needed.</p>
       </div>
 
-      <div class="fact">
-        <strong>Note:</strong> If a habit fails, adjust cue or reward — not the action first.
+      <div class="fun-fact">
+        🧠 <strong>Brain fact:</strong> If a habit doesn’t stick, research shows the problem is usually the cue — not the action.
       </div>
     </section>
 
+    <!-- PAGE 4 -->
     <section id="p4" class="page">
+      <img class="lesson-img" src="https://i.imgur.com/WvzbH6Y.jpeg" alt="Checklist habit">
+
       <div class="slide">
         <h3>Slide D — Activity</h3>
-        <p>Design and test one habit loop for 5 days. Track in a notebook or a habit app. Adjust cue/reward until it feels automatic.</p>
+        <p>Design your own habit loop:</p>
+        <ol>
+          <li>Pick an eco action (e.g., refill bottle daily)</li>
+          <li>Choose cue (after breakfast / when leaving home)</li>
+          <li>Add reward (checkmark, selfie, sticker, tiny win)</li>
+          <li>Repeat for 5 days</li>
+        </ol>
       </div>
 
       <div class="slide">
-        <a class="back" href="quiz.html">➡ Take Course Quiz</a> — or return <a class="back" href="../eco-courses.html">⬅ Back to Courses</a>
+        <a class="back" href="quiz.html">➡ Take Course Quiz</a><br>
+        <a class="back" href="../eco-courses.html">⬅ Back to Courses</a>
       </div>
     </section>
 
+    <!-- NAVIGATION -->
     <div class="nav">
       <button id="prev" onclick="move(-1)" disabled>Previous</button>
-      <div style="text-align:center"></div>
+      <div></div>
       <button id="next" onclick="move(1)">Next</button>
     </div>
   </div>
 
 <script>
   const total=4; let cur=1;
-  function show(){ for(let i=1;i<=total;i++){ document.getElementById('p'+i).classList.remove('active'); } document.getElementById('p'+cur).classList.add('active'); document.getElementById('prev').disabled = cur===1; document.getElementById('next').disabled = cur===total; }
+  function show(){
+    for(let i=1;i<=total;i++){
+      document.getElementById('p'+i).classList.remove('active');
+    }
+    document.getElementById('p'+cur).classList.add('active');
+    document.getElementById('prev').disabled = cur===1;
+    document.getElementById('next').disabled = cur===total;
+  }
   function move(d){ cur=Math.min(total,Math.max(1,cur+d)); show(); }
   show();
 </script>
