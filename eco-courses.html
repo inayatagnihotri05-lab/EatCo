@@ -24,19 +24,21 @@
     .btn-green{background:var(--accent);color:#063927}
     .btn-blue{background:#2b9bd6;color:#fff}
     .qr{width:84px;height:84px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(15,63,47,0.06)}
-    .badge-pop{position:fixed;left:50%;transform:translateX(-50%);bottom:25px;background:linear-gradient(135deg,#0fffb2,#85ffdc);padding:12px 16px;border-radius:14px;box-shadow:0 8px 30px rgba(15,63,47,0.12);display:flex;gap:12px;align-items:center;display:none}
+    .badge-pop{position:fixed;left:50%;transform:translateX(-50%);bottom:25px;background:linear-gradient(135deg,#0fffb2,#85ffdc);padding:12px 16px;border-radius:14px;box-shadow:0 8px 30px rgba(15,63,47,0.12);display:flex;gap:12px;align-items:center;display:none;z-index:9999}
     .progress{height:10px;background:#e6f9ea;border-radius:10px;overflow:hidden;margin-top:12px}
     .progress > div{height:100%;background:linear-gradient(90deg,var(--accent),#0ab26b);width:0%;transition:width 400ms}
     footer{padding:20px;text-align:center;color:#0f3f2f}
 
     /* GEN-Z BADGE STYLE */
-    .genz-badge{width:96px;height:96px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:20px;box-shadow:0 10px 30px rgba(0,0,0,0.25);background:linear-gradient(135deg,#ff7ad9,#7a5bff);border:3px solid rgba(255,255,255,0.2);}
+    .genz-badge{width:96px;height:96px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:28px;box-shadow:0 10px 30px rgba(0,0,0,0.25);background:linear-gradient(135deg,#ff7ad9,#7a5bff);border:3px solid rgba(255,255,255,0.2);text-shadow:0 2px 6px rgba(0,0,0,0.25)}
     .badge-grid{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
 
     /* Achievements modal */
-    .ach-modal{position:fixed;right:18px;bottom:18px;width:320px;background:linear-gradient(180deg,#ffffff,#f7fff9);border-radius:14px;padding:14px;box-shadow:0 12px 40px rgba(0,0,0,0.12);display:none}
+    .ach-modal{position:fixed;right:18px;bottom:18px;width:320px;background:linear-gradient(180deg,#ffffff,#f7fff9);border-radius:14px;padding:14px;box-shadow:0 12px 40px rgba(0,0,0,0.12);display:none;z-index:9998}
     .ach-modal h3{margin:0 0 10px}
     .ach-item{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;margin-bottom:8px;background:#f0fff8}
+
+    .share-btn{background:linear-gradient(90deg,#7a5bff,#ff7ad9);color:white;border:none;padding:6px 8px;border-radius:8px;cursor:pointer;font-weight:700}
 
     @media(max-width:520px){header{flex-direction:column;gap:8px} .course-head{flex-direction:row;gap:10px}}
   </style>
@@ -56,7 +58,7 @@
 
   <div class="container">
     <h1 style="color:var(--brand);margin:6px 0 14px">📚 Eco Courses — Level up your eco skills</h1>
-    <p style="color:#14573d;margin-bottom:18px;">Each course has 5 short lessons, a completion badge (Gen‑Z neon style), QR code quick links, and an achievements area that saves badges in your browser.</p>
+    <p style="color:#14573d;margin-bottom:18px;">Each course has 5 short lessons, a completion badge (Gen-Z neon style), QR code quick links, and an achievements area that saves badges in your browser.</p>
 
     <div class="grid">
 
@@ -219,7 +221,7 @@
   </div>
 
   <!-- Badge popup -->
-  <div class="badge-pop" id="badgePop">
+  <div class="badge-pop" id="badgePop" role="status" aria-live="polite">
     <div class="genz-badge" id="badgeIcon">🔥</div>
     <div>
       <div style="font-weight:800;color:#0f3f2f" id="badgeTitle">Badge earned!</div>
@@ -229,7 +231,7 @@
   </div>
 
   <!-- Achievements modal -->
-  <div class="ach-modal" id="achModal">
+  <div class="ach-modal" id="achModal" aria-hidden="true">
     <h3>Your Achievements</h3>
     <div id="achList">No badges yet — complete a course to earn one!</div>
     <div style="text-align:center;margin-top:8px"><button class="btn btn-green" onclick="clearAchievements()">Clear All</button></div>
@@ -242,12 +244,18 @@
 <script>
   // --- Badge & Achievements system (Gen Z neon style) ---
   const ACH_KEY = 'eatco_achievements_v1';
+  const PROG_KEY = 'eatco_course_progress_v1';
 
   function loadAchievements(){
     try{ return JSON.parse(localStorage.getItem(ACH_KEY)) || []; }catch(e){ return []; }
   }
 
   function saveAchievements(list){ localStorage.setItem(ACH_KEY, JSON.stringify(list)); }
+
+  function loadProgress(){
+    try{ return JSON.parse(localStorage.getItem(PROG_KEY)) || {}; }catch(e){ return {}; }
+  }
+  function saveProgress(obj){ localStorage.setItem(PROG_KEY, JSON.stringify(obj)); }
 
   function saveBadgeAndShow(id,title){
     const list = loadAchievements();
@@ -285,13 +293,28 @@
     const grid = document.createElement('div'); grid.className='badge-grid';
     list.slice().reverse().forEach(b=>{
       const item = document.createElement('div'); item.className='ach-item';
-      item.innerHTML = `<div class=\"genz-badge\">${b.icon}</div><div><strong>${b.title}</strong><div style=\"font-size:12px;color:#196244\">${new Date(b.date).toLocaleString()}</div></div>`;
+      item.innerHTML = `<div class="genz-badge">${b.icon}</div>
+        <div style="flex:1">
+          <strong>${b.title}</strong>
+          <div style="font-size:12px;color:#196244">${new Date(b.date).toLocaleString()}</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <button class="share-btn" onclick="shareBadge('${b.title.replace(/'/g,'\\'')}')">Share</button>
+        </div>`;
       grid.appendChild(item);
     });
     container.appendChild(grid);
   }
 
   function clearAchievements(){ if(confirm('Clear all saved badges?')){ saveAchievements([]); updateAchModal(); alert('Achievements cleared.'); } }
+
+  // Share badge (simple copy-to-clipboard)
+  function shareBadge(title){
+    const text = `I earned the "${title}" badge on EatCo! 🌿 Check out https://yourusername.github.io/yourrepo/eco-courses.html`;
+    navigator.clipboard?.writeText(text).then(()=>{
+      alert('Share text copied to clipboard — paste it in Instagram/TikTok bio or story!');
+    }).catch(()=>{ prompt('Copy this text to share:', text); });
+  }
 
   // Open/hide achievements
   document.getElementById('openAchievements').addEventListener('click', (e)=>{ e.preventDefault(); const m=document.getElementById('achModal'); m.style.display = m.style.display==='block'?'none':'block'; updateAchModal(); });
@@ -300,17 +323,38 @@
   function openCourse(slug){ const mapping={ 'eco-habits':'eco-habits.html', 'zero-waste':'zero-waste-genz.html', 'plastic-school':'plastic-free-school.html', 'eco-fashion':'eco-fashion.html', 'climate-science':'climate-science-teens.html' }; window.location.href = mapping[slug] || 'eco-courses.html'; }
 
   // animate progress bars (faux progress until user completes lessons)
-  document.querySelectorAll('.progress').forEach(p=>{ const inner=p.querySelector('div'); setTimeout(()=>{ inner.style.width = (30 + Math.floor(Math.random()*55)) + '%'; }, 300); });
+  function restoreProgressUI(){
+    const prog = loadProgress();
+    document.querySelectorAll('.progress').forEach(p=>{
+      const id = p.getAttribute('data-prog');
+      const inner = p.querySelector('div');
+      const val = prog[id] || (30 + Math.floor(Math.random()*55));
+      inner.style.width = val + '%';
+    });
+  }
+  restoreProgressUI();
 
-  // Expose function to be called from individual course pages when a user completes a course
-  // So in each course page, call: window.parentSaveBadge && window.parentSaveBadge('eco-habits','Eco Habits Master')
+  // Allow course pages to set progress (and to save badge remotely)
+  // e.g., in course page when user completes lesson: window.parentSetProgress && window.parentSetProgress('eco-habits', 40)
   window.parentSaveBadge = function(id,title){ saveBadgeAndShow(id,title); };
+  window.parentSetProgress = function(id,percent){
+    const prog = loadProgress(); prog[id]=Math.max(0,Math.min(100,percent)); saveProgress(prog);
+    const p = document.querySelector(`.progress[data-prog="${id}"]`);
+    if(p) p.querySelector('div').style.width = prog[id] + '%';
+  };
 
   // If the user lands with ?showAchievements=1 in URL, open modal
   if(location.search.includes('showAchievements=1')){ setTimeout(()=>{ document.getElementById('achModal').style.display='block'; updateAchModal(); },400); }
 
   // keyboard shortcut for achievements: A
-  document.addEventListener('keydown', e=>{ if(e.key==='a' || e.key==='A') document.getElementById('achModal').style.display='block' && updateAchModal(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='a' || e.key==='A') { const m=document.getElementById('achModal'); m.style.display = 'block'; updateAchModal(); } });
+
+  // small UX: auto-hide badge when clicked outside
+  document.addEventListener('click', (ev)=>{
+    const pop = document.getElementById('badgePop');
+    if(pop.style.display==='flex' && !pop.contains(ev.target)) closeBadge();
+  });
+
 </script>
 
 </body>
