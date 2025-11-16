@@ -4,7 +4,27 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Eco Habits 101 — Lesson 1</title>
+
 <style>
+  /* ADD-ONS: image + fact styling */
+  .fun-fact {
+    background: #e4ffe9;
+    padding: 15px 20px;
+    border-left: 6px solid #2ecc71;
+    border-radius: 12px;
+    margin: 20px 0;
+    font-size: 1.05rem;
+    font-weight: 500;
+  }
+
+  .lesson-img {
+    width: 100%;
+    border-radius: 16px;
+    margin: 18px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  /* Original styles */
   :root{--brand:#2e8b57;--muted:#6aa77a}
   body{font-family:Inter, Arial, sans-serif;background:#f4fff4;margin:0;color:#123a2a;padding:18px}
   .wrap{max-width:900px;margin:20px auto;background:#fff;border-radius:14px;padding:22px;box-shadow:0 8px 24px rgba(0,0,0,0.06)}
@@ -24,95 +44,138 @@
   @media(max-width:520px){.wrap{padding:14px}}
 </style>
 </head>
+
 <body>
-  <div class="wrap" role="main">
-    <header>
-      <h1>🌿 Eco Habits 101 — Lesson 1</h1>
-      <div class="meta">Lesson: What are eco habits? — 4 quick slides</div>
-    </header>
+<div class="wrap" role="main">
+  
+<header>
+  <h1>🌿 Eco Habits 101 — Lesson 1</h1>
+  <div class="meta">Lesson: What are eco habits? — 4 quick slides</div>
+</header>
 
-    <!-- Slide 1: Main concept -->
-    <section id="p1" class="page active">
-      <div class="slide">
-        <h3>🔎 Slide A — Main concept</h3>
-        <p>Eco habits are small, repeated actions that reduce waste, pollution and emissions. They’re not about being perfect — they’re about close-to-zero friction changes that your brain can keep doing automatically.</p>
-      </div>
+<!-- SLIDE 1 -->
+<section id="p1" class="page active">
 
-      <div class="slide fact">
-        <strong>Scientific note:</strong> The cumulative effect of small behavior changes can be large — lifestyle shifts like switching to reusables, reducing food waste and energy saving can reduce an individual's annual emissions substantially (studies vary; core point: tiny changes compound).</div>
-    </section>
+  <img src="../../images/eco-habits-cover.jpg" class="lesson-img" alt="Eco habits intro">
 
-    <!-- Slide 2: Examples -->
-    <section id="p2" class="page">
-      <div class="slide">
-        <h3>📌 Slide B — Real-life examples</h3>
-        <ul>
-          <li>Reusable bottle + refill habit → drastically fewer single-use bottles</li>
-          <li>Shorter showers + water timer → immediate water + energy savings</li>
-          <li>Leftovers into next-day meals → big cut in food waste</li>
-        </ul>
-      </div>
-
-      <div class="slide">
-        <strong>Practical tip:</strong> Keep your reusable bottle visible by the door — visibility increases the chance you’ll grab it (cue engineering).</div>
-    </section>
-
-    <!-- Slide 3: Science & brain -->
-    <section id="p3" class="page">
-      <div class="slide">
-        <h3>🧠 Slide C — Brain science</h3>
-        <p>Habits are encoded in the basal ganglia — the brain region that automates repeated routines so you don’t waste conscious energy. Use cues and fast rewards to recruit this system for eco behaviours.</p>
-      </div>
-
-      <div class="slide fact">
-        <strong>Research clip:</strong> Habit formation varies, but a stable cue + immediate reward accelerates learning. Habit stacking (attach to existing routine) is one evidence-backed strategy.</div>
-    </section>
-
-    <!-- Slide 4: Activity -->
-    <section id="p4" class="page">
-      <div class="slide">
-        <h3>🔥 Slide D — 5-minute activity</h3>
-        <p>Choose one micro-habit and implement it for 3 days:</p>
-        <ol>
-          <li>Pick action (e.g., refill bottle)</li>
-          <li>Define cue (e.g., after breakfast)</li>
-          <li>Choose fast reward (e.g., tick calendar + 10 sec selfie)</li>
-          <li>Stack it to an existing routine (e.g., after brushing)</li>
-        </ol>
-      </div>
-
-      <div class="slide">
-        <strong>Next:</strong> when you’re ready, click the quiz link or go to Lesson 2.<br><br>
-        <a class="back" href="../eco-courses.html">⬅ Back to Courses</a>
-      </div>
-    </section>
-
-    <!-- navigation -->
-    <div class="nav" aria-hidden="false">
-      <button id="prev" onclick="move(-1)" disabled>Previous</button>
-      <div class="pager" role="navigation" aria-label="lesson pages">
-        <span id="dots"></span>
-      </div>
-      <button id="next" onclick="move(1)">Next</button>
-    </div>
+  <div class="slide">
+    <h3>🔎 Slide A — Main concept</h3>
+    <p>Eco habits are small, repeated actions you do automatically that reduce waste, pollution, and energy use. 
+    They’re not “big activism” — they are tiny daily upgrades that make your life cleaner, cheaper and healthier.</p>
   </div>
+
+  <div class="fun-fact">
+    🌍 <b>Fun Fact:</b> Studies show that 40% of your daily actions are “habit loops”.  
+    If even 3 of them become eco-friendly, your yearly carbon footprint drops dramatically.
+  </div>
+
+  <img src="../../images/habit-loop.jpg" class="lesson-img" alt="Habit loop diagram">
+</section>
+
+<!-- SLIDE 2 -->
+<section id="p2" class="page">
+
+  <div class="slide">
+    <h3>📌 Slide B — Real-Life Examples</h3>
+    <ul>
+      <li>🥤 Refill bottle → no single-use plastics</li>
+      <li>🚿 5-minute showers → saves water + electricity</li>
+      <li>🍲 Leftovers remix → less food waste</li>
+    </ul>
+  </div>
+
+  <img src="../../images/reusable-bottle.jpg" class="lesson-img">
+
+  <div class="fun-fact">
+    💡 <b>Science:</b> Water heating takes more energy than you think.  
+    Cutting showers by 2 minutes saves ~18–22 liters every day.
+  </div>
+</section>
+
+<!-- SLIDE 3 -->
+<section id="p3" class="page">
+
+  <div class="slide">
+    <h3>🧠 Slide C — The Brain Science</h3>
+    <p>Your brain automates repeated behaviours using the basal ganglia.  
+    This is why eco habits must be:</p>
+    <ul>
+      <li><b>Small</b> (low effort)</li>
+      <li><b>Repeated</b> (daily)</li>
+      <li><b>Tied to a cue</b> (after brushing teeth → refill bottle)</li>
+    </ul>
+  </div>
+
+  <img src="../../images/basal-ganglia.jpg" class="lesson-img">
+
+  <div class="fun-fact">
+    🧬 <b>Neuroscience Note:</b> Habit stacking increases habit retention by 2–3×.
+  </div>
+</section>
+
+<!-- SLIDE 4 -->
+<section id="p4" class="page">
+
+  <div class="slide">
+    <h3>🔥 Slide D — 5-Minute Activity</h3>
+    <p>Try this for 3 days:</p>
+    <ol>
+      <li>Pick 1 micro-habit (e.g., refill bottle)</li>
+      <li>Choose a cue (after breakfast)</li>
+      <li>Add a reward (tick a calendar)</li>
+      <li>Stack it to a routine (before packing your bag)</li>
+    </ol>
+  </div>
+
+  <img src="../../images/microhabit.jpg" class="lesson-img">
+
+  <div class="slide">
+    <strong>Next:</strong> Go to Lesson 2 or test yourself with the Quiz.<br><br>
+    <a class="back" href="../eco-courses.html">⬅ Back to Courses</a>
+  </div>
+</section>
+
+<!-- NAVIGATION -->
+<div class="nav">
+  <button id="prev" onclick="move(-1)" disabled>Previous</button>
+  <div class="pager"><span id="dots"></span></div>
+  <button id="next" onclick="move(1)">Next</button>
+</div>
+
+</div>
 
 <script>
   const total = 4;
   let cur = 1;
   const dots = document.getElementById('dots');
-  for(let i=1;i<=total;i++){ const s=document.createElement('button'); s.textContent=i; s.style.margin='0 6px'; s.onclick=(()=>{cur=i;show();}); dots.appendChild(s); }
+
+  for(let i=1;i<=total;i++){
+    const s=document.createElement('button');
+    s.textContent=i;
+    s.style.margin='0 6px';
+    s.onclick=(()=>{cur=i;show();});
+    dots.appendChild(s);
+  }
+
   function show(){
-    for(let i=1;i<=total;i++){ document.getElementById('p'+i).classList.remove('active'); }
+    for(let i=1;i<=total;i++){
+      document.getElementById('p'+i).classList.remove('active');
+    }
     document.getElementById('p'+cur).classList.add('active');
     document.getElementById('prev').disabled = cur===1;
     document.getElementById('next').disabled = cur===total;
-    // highlight dot
-    Array.from(dots.children).forEach((b,idx)=> b.style.opacity = (idx+1===cur? '1':'0.5') );
+
+    Array.from(dots.children)
+      .forEach((b,idx)=> b.style.opacity = (idx+1===cur? '1':'0.5'));
   }
-  function move(dir){ cur = Math.min(total, Math.max(1, cur+dir)); show(); }
-  // init dots highlight
+
+  function move(dir){
+    cur = Math.min(total, Math.max(1, cur+dir));
+    show();
+  }
+
   show();
 </script>
+
 </body>
 </html>
