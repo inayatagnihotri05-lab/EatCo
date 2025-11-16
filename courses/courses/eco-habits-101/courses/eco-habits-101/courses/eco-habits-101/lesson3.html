@@ -5,114 +5,97 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Eco Habits 101 — Lesson 3</title>
 <style>
-  :root{--brand:#2e8b57;--accent:#6fcf97;--bg:#f5fff6}
-  body{font-family:Inter, Arial, sans-serif;background:var(--bg);margin:0;color:#103827;padding:18px}
-  .wrap{max-width:920px;margin:20px auto;background:#fff;border-radius:12px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
-  header{display:flex;flex-direction:column;gap:6px;align-items:center}
-  h1{margin:0;color:var(--brand)}
-  .meta{color:#4a8a66;font-size:0.95rem}
-  .page{display:none}
-  .page.active{display:block}
-  .slide{padding:14px;border-radius:10px;background:linear-gradient(180deg,#fbfff9,#f7fff7);margin-bottom:12px;border-left:6px solid rgba(46,139,87,0.08)}
-  .slide h3{margin:6px 0}
-  .fact{background:#e9fff0;padding:12px;border-left:4px solid var(--brand);border-radius:8px;margin:12px 0}
-  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
-  button{background:var(--brand);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
-  button[disabled]{background:#dfeee2;cursor:not-allowed}
-  a.link{color:var(--brand);text-decoration:none;font-weight:700}
-  ol,ul{margin-left:18px}
-  @media(max-width:520px){.wrap{padding:14px}}
+:root{--brand:#2e8b57;--accent:#6fcf97;--bg:#f5fff6}
+body{font-family:Inter, Arial, sans-serif;background:var(--bg);margin:0;color:#103827;padding:18px}
+.wrap{max-width:920px;margin:20px auto;background:#fff;border-radius:12px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
+header{display:flex;flex-direction:column;gap:6px;align-items:center}
+h1{margin:0;color:var(--brand)}
+.meta{color:#4a8a66;font-size:0.95rem}
+.page{display:none}
+.page.active{display:block}
+.slide{padding:14px;border-radius:10px;background:linear-gradient(180deg,#fbfff9,#f7fff7);margin-bottom:12px;border-left:6px solid rgba(46,139,87,0.08)}
+.slide h3{margin:6px 0}
+.fact{background:#e9fff0;padding:12px;border-left:4px solid var(--brand);border-radius:8px;margin:12px 0}
+.lesson-img{width:100%;border-radius:12px;margin:14px 0;box-shadow:0 4px 15px rgba(0,0,0,0.12)}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+button{background:var(--brand);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+button[disabled]{background:#dfeee2;cursor:not-allowed}
+a.link{color:var(--brand);text-decoration:none;font-weight:700}
+ol,ul{margin-left:18px}
+@media(max-width:520px){.wrap{padding:14px}}
 </style>
 </head>
 <body>
-  <div class="wrap" role="main">
-    <header>
-      <h1>🍽️ Eco Habits 101 — Lesson 3</h1>
-      <div class="meta">Lesson focus: Food choices & waste — science + practical swaps</div>
-    </header>
+<div class="wrap" role="main">
+<header>
+<h1>🍽️ Eco Habits 101 — Lesson 3</h1>
+<div class="meta">Focus: Food choices & waste — science + practical swaps</div>
+</header>
 
-    <!-- Page 1 -->
-    <section id="p1" class="page active">
-      <div class="slide">
-        <h3>Slide A — Core concept: Food & climate</h3>
-        <p>Food systems (production, transport, processing, waste) produce a big slice of global greenhouse gases. Choices at the plate add up — not only diet type but also food waste.</p>
-        <p>Key idea: reducing waste + choosing lower-impact foods (when possible) lowers your personal footprint and helps global supply chains.</p>
-      </div>
+<!-- Page 1 -->
+<section id="p1" class="page active">
+<div class="slide">
+<h3>Slide A — Core concept: Food & climate</h3>
+<p>Food systems (production, transport, processing, waste) produce a large share of global greenhouse gases. Choices at the plate add up — both diet type and food waste matter.</p>
+<img class="lesson-img" src="../images/food-footprint.jpg" alt="Food carbon footprint illustration">
+</div>
+<div class="fact">
+🔬 <strong>Science Bite:</strong> Food waste contributes ~8–10% of global greenhouse gas emissions. Reducing waste is high-impact and low-effort.
+</div>
+</section>
 
-      <div class="fact">
-        🔬 <strong>Science Bite:</strong> Food waste contributes roughly 8–10% of global greenhouse gas emissions and uses huge amounts of water and land — so reducing waste is high-impact and low-effort.
-      </div>
-    </section>
+<!-- Page 2 -->
+<section id="p2" class="page">
+<div class="slide">
+<h3>Slide B — Real-life examples & swaps</h3>
+<ul>
+<li><strong>Swap:</strong> Plan meals → use leftovers → less food thrown away.</li>
+<li><strong>Swap:</strong> Replace 1 meat meal/week with plant-forward options.</li>
+<li><strong>Swap:</strong> Store food correctly (airtight, cool) to extend shelf life.</li>
+<li><strong>Swap:</strong> Freeze extras instead of tossing.</li>
+</ul>
+<img class="lesson-img" src="../images/meal-prep.jpg" alt="Meal prep illustration">
+</div>
+<div class="fact">
+✅ <strong>Tip:</strong> 3-day meal plan reduces impulse buys & food waste.
+</div>
+</section>
 
-    <!-- Page 2 -->
-    <section id="p2" class="page">
-      <div class="slide">
-        <h3>Slide B — Real-life examples & swaps</h3>
-        <ul>
-          <li><strong>Swap:</strong> Plan meals → use leftovers → less throw-away food.</li>
-          <li><strong>Swap:</strong> Replace one meat meal/week with plant-forward meals.</li>
-          <li><strong>Swap:</strong> Store food correctly (airtight, cool) to extend shelf life.</li>
-          <li><strong>Swap:</strong> Freeze extras instead of tossing them.</li>
-        </ul>
-      </div>
+<!-- Page 3 -->
+<section id="p3" class="page">
+<div class="slide">
+<h3>Slide C — The science behind choices</h3>
+<p>Different foods have different footprints. Example: 1 kg beef releases far more CO₂e than 1 kg lentils (methane + feed + land use).</p>
+<img class="lesson-img" src="../images/plant-based.jpg" alt="Plant-based meals">
+<p>Local production, seasonality, and supply chain waste also matter.</p>
+</div>
+<div class="fact">
+🔎 <strong>Numbers:</strong> One beef burger ≈ several hours of driving emissions; swapping to plant-based reduces footprint dramatically.
+</div>
+</section>
 
-      <div class="fact">
-        ✅ <strong>Practical tip:</strong> Use a small whiteboard or phone note for a 3-day meal plan. Planning reduces impulse buys and waste.
-      </div>
-    </section>
+<!-- Page 4 -->
+<section id="p4" class="page">
+<div class="slide">
+<h3>Slide D — Activity: 7-day food audit</h3>
+<ol>
+<li>Record leftovers & thrown food daily (approximate).</li>
+<li>Note food type: vegetable, dairy, meat, packaged.</li>
+<li>At week's end, identify top 2 waste types and plan a swap for each.</li>
+</ol>
+</div>
+<div class="slide">
+<h4>Quick challenge</h4>
+<p>Try a plant-forward lunch for 3 days. Freeze cooked extras. Observe less waste + savings.</p>
+<p style="margin-top:10px"><a class="link" href="lesson2.html">⬅ Back to Lesson 2</a> • <a class="link" href="lesson4.html">Next: Energy & home habits ➜</a></p>
+</div>
+</section>
 
-    <!-- Page 3 -->
-    <section id="p3" class="page">
-      <div class="slide">
-        <h3>Slide C — The science behind choices</h3>
-        <p>Different foods have very different footprints. Example: 1 kg beef releases far more CO₂e than 1 kg lentils. This is due to methane from ruminants, feed production, and land use change.</p>
+<div class="nav" aria-hidden="false">
+<button id="prev" onclick="move(-1)" disabled>Previous</button>
+<div style="font-size:0.95rem;color:#3f7a59">Page <span id="cur">1</span>/4</div>
+<button id="next" onclick="move(1)">Next</button>
+</div>
+</div>
 
-        <p>BUT — context matters. Local production, seasonality, and food waste along the supply chain shift the true impact.</p>
-      </div>
-
-      <div class="fact">
-        🔎 <strong>Numbers (simple):</strong> A single beef burger can have the carbon footprint of several hours of driving for one person; swapping to a plant-based option reduces that footprint dramatically.
-      </div>
-    </section>
-
-    <!-- Page 4 -->
-    <section id="p4" class="page">
-      <div class="slide">
-        <h3>Slide D — Activity: 7-day food audit</h3>
-        <p>Do this audit for one week:</p>
-        <ol>
-          <li>Record leftover & food thrown away each day (just eyeball — cup, plate, etc.).</li>
-          <li>Note the food type (vegetable, dairy, meat, packaged snack).</li>
-          <li>At the end of the week, identify the top 2 waste categories and plan one swap for each.</li>
-        </ol>
-      </div>
-
-      <div class="slide">
-        <h4>Quick challenge</h4>
-        <p>Try a single plant-forward lunch for 3 days and freeze any cooked extras. Observe: less food in bin = less guilt + better savings.</p>
-        <p style="margin-top:10px"><a class="link" href="lesson2.html">⬅ Back to Lesson 2</a> • <a class="link" href="lesson4.html">Next: Energy & home habits ➜</a></p>
-      </div>
-    </section>
-
-    <div class="nav" aria-hidden="false">
-      <button id="prev" onclick="move(-1)" disabled>Previous</button>
-      <div style="font-size:0.95rem;color:#3f7a59">Page <span id="cur">1</span>/4</div>
-      <button id="next" onclick="move(1)">Next</button>
-    </div>
-  </div>
-
-<script>
-  const total = 4;
-  let cur = 1;
-  function show(){
-    for(let i=1;i<=total;i++){ document.getElementById('p'+i).classList.remove('active'); }
-    document.getElementById('p'+cur).classList.add('active');
-    document.getElementById('prev').disabled = cur===1;
-    document.getElementById('next').disabled = cur===total;
-    document.getElementById('cur').textContent = cur;
-  }
-  function move(dir){ cur = Math.min(total, Math.max(1, cur+dir)); show(); }
-  show();
-</script>
-</body>
-</html>
+<s
