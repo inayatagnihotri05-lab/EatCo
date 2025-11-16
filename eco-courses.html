@@ -1,159 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eco Courses 🌿 | EatCo</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Climate Science — EatCo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f1fff4;
-      margin: 0;
-      padding: 0;
-      color: #1b4d36;
-    }
-
-    header {
-      text-align: center;
-      padding: 30px 10px;
-      background: #2e8b57;
-      color: white;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 20px;
-    }
-
-    .course-card {
-      background: white;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    }
-
-    .course-title {
-      font-size: 1.6rem;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    .lessons li{
-      margin: 6px 0;
-    }
-
-    .badge-btn, .pdf-btn{
-      display: inline-block;
-      margin-top: 12px;
-      padding: 10px 18px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: bold;
-      color: white;
-    }
-    .badge-btn { background: #27ae60; }
-    .pdf-btn { background: #2980b9; }
-
-    .back {
-      display: block;
-      text-align: center;
-      margin-top: 30px;
-      padding: 12px;
-      background: #1e6f4d;
-      color: white;
-      border-radius: 10px;
-      text-decoration: none;
-      width: 200px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
+    body{font-family:'Poppins',sans-serif;background:linear-gradient(180deg,#f6fff6,#eaf9ef);color:#0f3f2f;margin:0;padding:0}
+    .wrap{max-width:800px;margin:28px auto;background:#fff;border-radius:16px;padding:22px;box-shadow:0 10px 30px rgba(12,50,35,0.08)}
+    h1{color:#2e8b57}
+    .lesson{padding:12px;border-radius:12px;background:#f0fff8;margin:12px 0}
+    .next{display:inline-block;padding:10px 14px;background:#34d399;color:#063927;border-radius:12px;text-decoration:none;font-weight:700}
+    .pdf{background:#2b9bd6;color:#fff;padding:10px 14px;border-radius:12px;text-decoration:none;margin-left:10px}
+    .badge{display:none;margin-top:14px;padding:12px;background:#fff;border-radius:12px;border:2px solid #dff7ea}
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <h1>🔬 Climate Science for Teens</h1>
+    <p>Understand the key science behind climate change — with small equations and real actions.</p>
 
-<header>
-  <h1>📚 Eco Courses by EatCo</h1>
-  <p>Learn. Explore. Change the Planet.</p>
-</header>
+    <div class="lesson" id="l1">
+      <strong>Lesson 1 — Climate vs Weather</strong>
+      <p>Clear differences and why trends matter.</p>
+    </div>
 
-<div class="container">
+    <div class="lesson" id="l2">
+      <strong>Lesson 2 — Greenhouse gases & models</strong>
+      <p>How gases trap heat and how scientists model future climates.</p>
+    </div>
 
-  <!-- Course 1 -->
-  <div class="course-card">
-    <div class="course-title">🌿 Eco Habits 101</div>
-    <ul class="lessons">
-      <li>🧠 Lesson 1: How habits rewire your brain (neuroplasticity intro)</li>
-      <li>🛒 Lesson 2: The science of eco‑shopping & reading labels</li>
-      <li>🥗 Lesson 3: Carbon footprint of your plate</li>
-      <li>♻️ Lesson 4: Recycling myths busted (scientific facts)</li>
-      <li>🌍 Lesson 5: Build a 7‑day scientific habit loop</li>
-    </ul>
-    <a class="badge-btn" href="#">Earn Badge</a>
-    <a class="pdf-btn" href="#">Download PDF</a>
+    <div class="lesson" id="l3">
+      <strong>Lesson 3 — Carbon footprint math</strong>
+      <p>Simple equations to estimate emissions from daily choices.</p>
+    </div>
+
+    <div class="lesson" id="l4">
+      <strong>Lesson 4 — Extreme events explained</strong>
+      <p>Why heatwaves and storms are changing and what that means.</p>
+    </div>
+
+    <div class="lesson" id="l5">
+      <strong>Lesson 5 — Personal climate action plan</strong>
+      <p>Create a 4-week plan that reduces your emissions—practical and measurable.</p>
+    </div>
+
+    <div style="margin-top:12px">
+      <button class="next" onclick="complete()">Complete Course</button>
+      <a class="pdf" href="pdfs/climate-science-teens.pdf" target="_blank">Download PDF</a>
+    </div>
+
+    <div class="badge" id="badge">
+      <strong>🏅 Course Complete — Climate Science Badge</strong>
+      <p>Share your badge and be proud!</p>
+    </div>
+
+    <a href="eco-courses.html" style="display:inline-block;margin-top:16px;color:#15593f;text-decoration:none">⬅️ Back to Courses</a>
   </div>
 
-  <!-- Course 2 -->
-  <div class="course-card">
-    <div class="course-title">🚯 Zero Waste for Gen Z</div>
-    <ul class="lessons">
-      <li>🔍 Lesson 1: Where trash actually goes (waste flow science)</li>
-      <li>♻️ Lesson 2: The advanced 7 R’s + real impact numbers</li>
-      <li>🥤 Lesson 3: Microplastics & how they enter your body</li>
-      <li>📦 Lesson 4: Designing a zero‑waste school system</li>
-      <li>⚡ Lesson 5: 14‑day Zero Waste Challenge</li>
-    </ul>
-    <a class="badge-btn" href="#">Earn Badge</a>
-    <a class="pdf-btn" href="#">Download PDF</a>
-  </div>
-
-  <!-- Course 3 -->
-  <div class="course-card">
-    <div class="course-title">🏫 Plastic-Free School Life</div>
-    <ul class="lessons">
-      <li>🔬 Lesson 1: How plastic affects ecosystems (food webs)</li>
-      <li>🥪 Lesson 2: Science‑based lunch swaps that reduce waste</li>
-      <li>💧 Lesson 3: Bottles tested — steel vs glass vs plastic</li>
-      <li>📚 Lesson 4: Zero‑waste stationery engineering</li>
-      <li>👟 Lesson 5: Designing a plastic‑free daily routine</li>
-    </ul>
-    <a class="badge-btn" href="#">Earn Badge</a>
-    <a class="pdf-btn" href="#">Download PDF</a>
-  </div>
-
-  <!-- Course 4 -->
-  <div class="course-card">
-    <div class="course-title">👗 Eco Fashion Basics</div>
-    <ul class="lessons">
-      <li>🌱 Lesson 1: How fast fashion impacts climate (data‑based)</li>
-      <li>♻️ Lesson 2: Upcycling with science — fabric lifespan</li>
-      <li>🛍️ Lesson 3: Eco‑shopping using material science</li>
-      <li>👚 Lesson 4: Fabric guide — cotton, viscose, polyester</li>
-      <li>🌍 Lesson 5: Build your sustainable wardrobe plan</li>
-    </ul>
-    <a class="badge-btn" href="#">Earn Badge</a>
-    <a class="pdf-btn" href="#">Download PDF</a>
-  </div>
-
-  <!-- Course 5 -->
-  <div class="course-card">
-    <div class="course-title">🔬 Climate Science for Teens</div>
-    <ul class="lessons">
-      <li>🔭 Lesson 1: Climate vs weather — scientific breakdown</li>
-      <li>🔥 Lesson 2: Greenhouse gases explained with models</li>
-      <li>💨 Lesson 3: Carbon footprint math (simple equations)</li>
-      <li>🌊 Lesson 4: Extreme events — cyclones, heatwaves</li>
-      <li>🧪 Lesson 5: How teens can reduce emissions realistically</li>
-    </ul>
-    <a class="badge-btn" href="#">Earn Badge</a>
-    <a class="pdf-btn" href="#">Download PDF</a>
-  </div>
-
-  <a class="back" href="index.html">⬅️ Back to Home</a>
-
-</div>
-
+<script>
+  function complete(){ document.getElementById('badge').style.display='block'; window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); }
+</script>
 </body>
 </html>
