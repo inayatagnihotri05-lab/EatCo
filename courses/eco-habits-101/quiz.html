@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eco Habits 101 — Quiz</title>
+<style>
+  :root{--brand:#2e8b57;--bg:#f5fff6}
+  body{font-family:Inter, Arial, sans-serif;background:var(--bg);margin:0;color:#103827;padding:18px}
+  .wrap{max-width:900px;margin:20px auto;background:#fff;border-radius:12px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,0.06)}
+  h1{color:var(--brand);text-align:center;margin-bottom:12px}
+  .question{margin:18px 0;padding:12px;border-left:6px solid rgba(46,139,87,0.3);border-radius:8px;background:#fbfff9}
+  .question h3{margin:0 0 8px 0;font-size:1.1rem}
+  .options{list-style:none;padding:0}
+  .options li{margin:8px 0}
+  button.option{background:#e4ffe9;border:1px solid #2e8b57;padding:8px 12px;border-radius:8px;cursor:pointer;width:100%;text-align:left;transition:0.2s}
+  button.option:hover{background:#c6f3d1}
+  button.disabled{opacity:0.6;cursor:not-allowed}
+  .feedback{margin-top:6px;font-weight:600}
+  .score{margin-top:18px;font-size:1.2rem;text-align:center;color:var(--brand)}
+  a.back{display:block;text-align:center;margin-top:18px;color:var(--brand);text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>🌿 Eco Habits 101 — Quiz</h1>
+
+<div id="quiz"></div>
+
+<div class="score" id="score"></div>
+<a class="back" href="../eco-courses.html">⬅ Back to Courses</a>
+</div>
+
+<script>
+const questions=[
+  {
+    q:"1️⃣ Which of these is a micro eco habit?",
+    options:["Using a reusable bottle","Composting the whole city","Switching all energy to solar overnight","Eliminating all plastic in one day"],
+    answer:0
+  },
+  {
+    q:"2️⃣ What is the correct order of the habit loop?",
+    options:["Reward → Cue → Action","Cue → Action → Reward","Action → Cue → Reward","Cue → Reward → Action"],
+    answer:1
+  },
+  {
+    q:"3️⃣ How much can food waste contribute to global emissions?",
+    options:["1–2%","8–10%","20–25%","50%"],
+    answer:1
+  },
+  {
+    q:"4️⃣ Which of these is a good practice at school to reduce plastic?",
+    options:["Reusable lunchbox","Disposable cutlery","Plastic bottled drinks every day","Wrapping snacks in foil daily"],
+    answer:0
+  },
+  {
+    q:"5️⃣ Why are small eco habits effective?",
+    options:["They are easy and compound over time","They make no difference","They require perfection","They are only for adults"],
+    answer:0
+  }
+];
+
+const quizDiv=document.getElementById('quiz');
+let score=0;
+
+questions.forEach((q,i)=>{
+  const div=document.createElement('div');
+  div.className='question';
+  const h3=document.createElement('h3');
+  h3.textContent=q.q;
+  div.appendChild(h3);
+  const ul=document.createElement('ul');
+  ul.className='options';
+  q.options.forEach((opt,idx)=>{
+    const li=document.createElement('li');
+    const btn=document.createElement('button');
+    btn.className='option';
+    btn.textContent=opt;
+    btn.onclick=()=>{
+      if(btn.classList.contains('disabled')) return;
+      if(idx===q.answer){
+        btn.style.background='#b1f2b0';
+        li.insertAdjacentHTML('beforeend','<div class="feedback">✅ Correct!</div>');
+        score++;
+      } else {
+        btn.style.background='#f2b0b0';
+        li.insertAdjacentHTML('beforeend','<div class="feedback">❌ Wrong! Correct: '+q.options[q.answer]+'</div>');
+      }
+      Array.from(ul.querySelectorAll('button')).forEach(b=>b.classList.add('disabled'));
+      document.getElementById('score').textContent='Score: '+score+' / '+questions.length;
+    };
+    li.appendChild(btn);
+    ul.appendChild(li);
+  });
+  div.appendChild(ul);
+  quizDiv.appendChild(div);
+});
+</script>
+</body>
+</html>
