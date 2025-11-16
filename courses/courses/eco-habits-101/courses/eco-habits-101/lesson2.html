@@ -1,125 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Eco Habits 101 – Lesson 2</title>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Eco Habits 101 — Lesson 2</title>
 <style>
-  body{font-family:Arial, sans-serif;background:#f7fff7;margin:0;padding:20px;color:#103e29}
-  .container{max-width:800px;margin:auto;background:#fff;padding:28px;border-radius:14px;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
-  header{display:flex;align-items:center;gap:12px}
-  h1{color:#1f7a4a;margin:0;font-size:22px}
-  h2{color:#16693f;margin:8px 0 6px}
+  :root{--brand:#1f8a53;--muted:#6aa77a}
+  body{font-family:Inter, Arial, sans-serif;background:#f7fff8;margin:0;color:#0e3f2b;padding:18px}
+  .wrap{max-width:900px;margin:20px auto;background:#fff;border-radius:14px;padding:22px;box-shadow:0 8px 24px rgba(0,0,0,0.06)}
+  header{display:flex;flex-direction:column;align-items:center;gap:6px}
+  h1{margin:0;color:var(--brand)}
+  .meta{color:var(--muted)}
   .page{display:none}
   .page.active{display:block}
-  .nav{display:flex;justify-content:space-between;margin-top:18px}
-  button{background:#1f7a4a;color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
-  button:disabled{background:#cfd8cf;cursor:not-allowed}
-  .fact{background:#e9fff0;padding:12px;border-left:5px solid #1f7a4a;border-radius:8px;margin:14px 0}
-  ul{margin:8px 0 0 18px}
-  .small{font-size:0.95rem;color:#2f6b4f}
-  a.back{display:inline-block;margin-top:12px;color:#0f5a3b;text-decoration:none;font-weight:700}
+  .slide{padding:12px;border-radius:8px;background:#fbfff9;margin-bottom:12px;border-left:4px solid rgba(31,138,83,0.08)}
+  .fact{background:#eafdf0;padding:12px;border-left:4px solid var(--brand);border-radius:8px;margin:12px 0}
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+  button{background:var(--brand);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+  button[disabled]{background:#d9eadf;cursor:not-allowed}
+  a.back{display:inline-block;margin-top:12px;color:var(--brand);text-decoration:none;font-weight:700}
 </style>
 </head>
 <body>
-  <div class="container">
+  <div class="wrap">
     <header>
       <h1>🧠 Eco Habits 101 — Lesson 2</h1>
+      <div class="meta">Focus: The Habit Loop — cue, action, reward</div>
     </header>
 
-    <p class="small">Lesson focus: <strong>The Habit Loop — cue, action, reward.</strong> We'll make this practical so you can build real routines.</p>
-
-    <!-- Page 1 -->
-    <div id="page1" class="page active">
-      <h2>Page 1 — Main Concept: The Habit Loop</h2>
-      <p>Every habit is built from three parts:</p>
-      <ol>
-        <li><strong>Cue</strong> — a trigger that tells your brain to start a routine (time of day, emotion, location).</li>
-        <li><strong>Action</strong> — the behaviour itself (grabbing a reusable bottle, switching off a light).</li>
-        <li><strong>Reward</strong> — the quick positive feeling that makes the brain want to repeat it (cool drink, saved money, small dopamine hit).</li>
-      </ol>
-
-      <div class="fact">
-        🔬 <strong>Quick science:</strong> Habit formation is supported by the basal ganglia — the brain area that stores routines so you don’t have to think every time.
+    <section id="p1" class="page active">
+      <div class="slide">
+        <h3>Slide A — Concept</h3>
+        <p>The habit loop is <strong>cue → action → reward</strong>. To build eco habits you must design each part so the action is easy and the reward is immediate.</p>
       </div>
 
-      <p>Goal: design cues and rewards so eco actions become automatic.</p>
-    </div>
-
-    <!-- Page 2 -->
-    <div id="page2" class="page">
-      <h2>Page 2 — Examples: Habit Loop in Real Life</h2>
-
-      <p>Here are five concrete eco habit loops you can copy:</p>
-      <ul>
-        <li><strong>Cue:</strong> Morning routine; <strong>Action:</strong> Fill reusable bottle; <strong>Reward:</strong> Cold water + fewer waste bags in bin.</li>
-        <li><strong>Cue:</strong> Leaving house; <strong>Action:</strong> Grab tote + lunchbox; <strong>Reward:</strong> No plastic bag awkwardness at school.</li>
-        <li><strong>Cue:</strong> Finishing snack; <strong>Action:</strong> Put wrapper in a small pouch to recycle later; <strong>Reward:</strong> Clean desk + pride.</li>
-        <li><strong>Cue:</strong> Nighttime; <strong>Action:</strong> Unplug phone charger; <strong>Reward:</strong> Slightly lower electricity bill + eco flex points.</li>
-        <li><strong>Cue:</strong> Laundry day; <strong>Action:</strong> Use cold wash + air-dry; <strong>Reward:</strong> Less energy used + fresher clothes.</li>
-      </ul>
-
       <div class="fact">
-        ✅ <strong>Pro tip:</strong> Attach a physical object to the cue (e.g., hang your bottle by the door) — that makes the cue impossible to miss.
+        <strong>Science:</strong> Basal ganglia and dopamine drive habit consolidation. Tiny, immediate rewards matter.
       </div>
-    </div>
+    </section>
 
-    <!-- Page 3 -->
-    <div id="page3" class="page">
-      <h2>Page 3 — The Psychology + Science (Why this actually sticks)</h2>
-
-      <p><strong>Dopamine and micro-rewards:</strong> Your brain releases small amounts of dopamine when you complete actions that feel rewarding. Designing tiny, instant rewards (a sip, a checkmark, a “done” feeling) helps lock habits in.</p>
-
-      <p><strong>Chunking & context:</strong> Habits attach to existing routines. This is called 'habit stacking' — add your eco action after a strong existing habit (e.g., after brushing teeth, refill your bottle).</p>
-
-      <div class="fact">
-        🔎 <strong>Research note:</strong> Studies show it can take anywhere from 18 to 254 days to fully form a new habit — but consistent cues + immediate rewards shorten this drastically.
+    <section id="p2" class="page">
+      <div class="slide">
+        <h3>Slide B — Examples</h3>
+        <ul>
+          <li><strong>Cue:</strong> After putting on shoes — <strong>Action:</strong> grab reusable cup — <strong>Reward:</strong> iced coffee without waste.</li>
+          <li><strong>Cue:</strong> Before leaving home — <strong>Action:</strong> pack reusable bag — <strong>Reward:</strong> no awkward plastic checkout.</li>
+        </ul>
       </div>
 
-      <p class="small">So: be patient, stack habits on current routines, and celebrate tiny wins.</p>
-    </div>
+      <div class="slide">
+        <strong>Practical tip:</strong> Make the cue impossible to ignore (put the item beside your keys/phone).</div>
+    </section>
 
-    <!-- Page 4 -->
-    <div id="page4" class="page">
-      <h2>Page 4 — Activity: Design Your Personal Habit Loop</h2>
-
-      <p>Complete this mini-exercise — it takes 5–10 minutes and actually works.</p>
-
-      <ol>
-        <li><strong>Pick an eco action</strong> you want to make automatic (example: refill bottle).</li>
-        <li><strong>Write a cue</strong> (time/place/emotion). Example: "When I leave for school."</li>
-        <li><strong>Choose an immediate reward</strong> (something small, fast). Example: "I’ll take a 30-second deep breath and feel good about it." OR mark a tick on your habit calendar.</li>
-        <li><strong>Stack it</strong> to an existing routine. Example: "After I pack my school bag, I put the bottle in the side pocket."</li>
-      </ol>
-
-      <div class="fact">
-        🎯 <strong>Mini challenge (3 days):</strong> Try your loop for 3 days. If it fails once, tweak the cue or the reward — don’t give up.
+    <section id="p3" class="page">
+      <div class="slide">
+        <h3>Slide C — Psychology + Evidence</h3>
+        <p>Longer-term habit formation needs consistency. Research suggests routines anchored to strong cues (time/place) need fewer repetitions to stick.</p>
       </div>
 
-      <p><a class="back" href="../index.html">⬅ Back to All Lessons</a></p>
-    </div>
+      <div class="fact">
+        <strong>Note:</strong> If a habit fails, adjust cue or reward — not the action first.
+      </div>
+    </section>
+
+    <section id="p4" class="page">
+      <div class="slide">
+        <h3>Slide D — Activity</h3>
+        <p>Design and test one habit loop for 5 days. Track in a notebook or a habit app. Adjust cue/reward until it feels automatic.</p>
+      </div>
+
+      <div class="slide">
+        <a class="back" href="quiz.html">➡ Take Course Quiz</a> — or return <a class="back" href="../eco-courses.html">⬅ Back to Courses</a>
+      </div>
+    </section>
 
     <div class="nav">
-      <button id="prev" onclick="prev()" disabled>Previous</button>
-      <button id="next" onclick="next()">Next</button>
+      <button id="prev" onclick="move(-1)" disabled>Previous</button>
+      <div style="text-align:center"></div>
+      <button id="next" onclick="move(1)">Next</button>
     </div>
   </div>
 
 <script>
-  const total = 4;
-  let cur = 1;
-  function show(n){
-    for(let i=1;i<=total;i++){
-      document.getElementById('page'+i).classList.remove('active');
-    }
-    document.getElementById('page'+n).classList.add('active');
-    document.getElementById('prev').disabled = n===1;
-    document.getElementById('next').disabled = n===total;
-  }
-  function next(){ if(cur<total){ cur++; show(cur);} }
-  function prev(){ if(cur>1){ cur--; show(cur);} }
+  const total=4; let cur=1;
+  function show(){ for(let i=1;i<=total;i++){ document.getElementById('p'+i).classList.remove('active'); } document.getElementById('p'+cur).classList.add('active'); document.getElementById('prev').disabled = cur===1; document.getElementById('next').disabled = cur===total; }
+  function move(d){ cur=Math.min(total,Math.max(1,cur+d)); show(); }
+  show();
 </script>
 </body>
 </html>
-
