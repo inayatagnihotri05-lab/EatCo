@@ -2,52 +2,180 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Eco Habits 101 🌿 | EatCo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eco Habits 101 – Lesson 1</title>
+<link rel="stylesheet" href="../styles.css">
+
 <style>
-  body { font-family: Poppins, sans-serif; background:#f0fff4; margin:0; padding:0; color:#144d32; }
-  header { text-align:center; padding:40px; background:#2ecc71; color:white; border-bottom-left-radius:40px; border-bottom-right-radius:40px; }
-  .container { max-width:900px; margin:auto; padding:20px; }
-  .lesson { background:white; padding:25px; border-radius:20px; margin-bottom:20px; box-shadow:0 6px 15px rgba(0,0,0,0.12); }
-  h2 { margin-top:0; }
-  a.btn { display:inline-block; padding:12px 20px; background:#16a085; color:white; border-radius:10px; text-decoration:none; margin-top:15px; }
+body {
+    font-family: Arial, sans-serif;
+    background: #f4fff4;
+    margin: 0;
+    padding: 20px;
+}
+.container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.1);
+}
+h1 {
+    color: #2e7d32;
+    text-align: center;
+}
+.page {
+    display: none;
+}
+.page.active {
+    display: block;
+}
+.nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+button {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+}
+button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+.fact-box {
+    background: #e8ffe8;
+    padding: 15px;
+    border-left: 6px solid #2e7d32;
+    margin: 15px 0;
+    border-radius: 8px;
+}
 </style>
 </head>
+
 <body>
-
-<header>
-  <h1>Eco Habits 101 🌿</h1>
-  <p>Level up your lifestyle AND the planet</p>
-</header>
-
 <div class="container">
+    <h1>🌿 Eco Habits 101 – Lesson 1</h1>
+    <h3>Eco Habits = Your Real-Life Glow-Up</h3>
 
-  <div class="lesson">
-    <h2>🌱 Lesson 1: Eco Habits = Real Life Glow-Up</h2>
-    <p>Eco habits aren’t just “good for Earth”… they literally make your life cleaner, safer, cheaper and more aesthetic. A 2024 UN study found that small habits like switching to reusables reduce your yearly waste by *22–40%*. That’s a big glow-up.</p>
-  </div>
+    <!-- PAGE 1 -->
+    <div class="page active" id="page1">
+        <h2>Page 1: What Are Eco Habits?</h2>
+        <p>Eco habits are small daily actions that reduce your waste, pollution and carbon footprint.  
+        They’re not “extra work” — they make your life easier, cleaner and healthier.</p>
 
-  <div class="lesson">
-    <h2>🛍️ Lesson 2: Shopping Like a Sustainability Pro</h2>
-    <p>Before buying anything, ask: <b>Do I need it?</b> If yes, then choose durable, refillable or recycled products. Minimalist shopping = less clutter, less guilt, more savings.</p>
-  </div>
+        <div class="fact-box">
+            🌍 <b>Scientific Fact:</b>  
+            A 2024 UN Environment Program study found that simple lifestyle changes  
+            (switching to reusables, reducing waste, saving water) can cut your personal  
+            yearly emissions by **22–40%**.
+        </div>
 
-  <div class="lesson">
-    <h2>🍽️ Lesson 3: Food Choices That Save the Planet</h2>
-    <p>Food waste is responsible for 10% of global emissions. That’s more than aviation! Portion control, using leftovers, composting, and plant-based meals = huge impact.</p>
-  </div>
+        <p>Eco habits = long-term glow-up for you AND the planet.</p>
+    </div>
 
-  <div class="lesson">
-    <h2>♻️ Lesson 4: Recycling (Doing It Correctly)</h2>
-    <p>Most recycling fails because items are dirty or mixed. Quick rule: rinse → dry → sort. And paper with oil/food stains? Not recyclable.</p>
-  </div>
+    <!-- PAGE 2 -->
+    <div class="page" id="page2">
+        <h2>Page 2: Why They Actually Work</h2>
+        <p>Eco habits work because they attack the problem at its source: <b>daily life choices</b>.  
+        Think of them as micro-upgrades your future self will thank you for.</p>
 
-  <div class="lesson">
-    <h2>🌍 Lesson 5: Daily Eco Glow-Up</h2>
-    <p>Small habits add up: reusable bottles, 5-minute showers, lights off, no random Amazon hauls. You’re not “too young” — Gen Z is literally leading climate action worldwide.</p>
-  </div>
+        <ul>
+            <li>Less plastic = fewer toxins entering your food & body</li>
+            <li>Shorter showers = water conservation + lower bills</li>
+            <li>Clean energy choices = less air pollution you breathe</li>
+            <li>Less shopping = less clutter + a cleaner room (yes, really)</li>
+        </ul>
 
-  <a class="btn" href="eco-courses.html">⬅ Back to All Courses</a>
+        <div class="fact-box">
+            🧬 <b>Scientific Fact:</b>  
+            Microplastics have been found in human blood, lungs and even the placenta.  
+            Using fewer plastics reduces your long-term exposure to endocrine-disrupting chemicals.
+        </div>
+    </div>
+
+    <!-- PAGE 3 -->
+    <div class="page" id="page3">
+        <h2>Page 3: The Chain Reaction Effect</h2>
+        <p>One person’s actions trigger a ripple effect. It’s called the <b>Social Contagion Theory</b> —  
+        people copy the good habits they see.</p>
+
+        <ul>
+            <li>You bring a metal bottle → friends ask → some start using one too</li>
+            <li>You stop buying fast fashion → others think twice too</li>
+            <li>You compost → your family learns → household waste drops</li>
+        </ul>
+
+        <div class="fact-box">
+            🔬 <b>Scientific Fact:</b>  
+            MIT researchers found that sustainable behaviour spreads **3× faster**  
+            when practiced in friend groups and schools.
+        </div>
+    </div>
+
+    <!-- PAGE 4 -->
+    <div class="page" id="page4">
+        <h2>Page 4: Eco Glow-Up Checklist</h2>
+        <p>Start with these 7 ultra-powerful habits:</p>
+
+        <ul>
+            <li>✔️ Reusable bottle + bag</li>
+            <li>✔️ 5–7 min showers</li>
+            <li>✔️ Say no to random Amazon/Meesho hauls</li>
+            <li>✔️ Carry your own utensils when outside</li>
+            <li>✔️ Eat more plant-based meals</li>
+            <li>✔️ Keep room lights off when not needed</li>
+            <li>✔️ Sort your waste (wet/dry)</li>
+        </ul>
+
+        <p>Small actions → big climate power.</p>
+
+        <a href="../index.html">⬅ Back to All Lessons</a>
+    </div>
+
+    <!-- NAVIGATION BUTTONS -->
+    <div class="nav-buttons">
+        <button id="prevBtn" onclick="prevPage()" disabled>Previous</button>
+        <button id="nextBtn" onclick="nextPage()">Next</button>
+    </div>
 </div>
+
+<script>
+let currentPage = 1;
+const totalPages = 4;
+
+function showPage(page) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById("page" + page).classList.add("active");
+}
+
+function nextPage() {
+    if (currentPage < totalPages) {
+        currentPage++;
+        showPage(currentPage);
+    }
+    updateButtons();
+}
+
+function prevPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        showPage(currentPage);
+    }
+    updateButtons();
+}
+
+function updateButtons() {
+    document.getElementById("prevBtn").disabled = currentPage === 1;
+    document.getElementById("nextBtn").disabled = currentPage === totalPages;
+}
+</script>
 
 </body>
 </html>
