@@ -3,74 +3,85 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Climate Myth Buster – Verified Science</title>
+  <title>Climate Myth Buster 🌍</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #eafaf1;
+      background: #f1fff4;
       margin: 0;
       padding: 0;
-      color: #035c35;
     }
 
     header {
       background: #2e8b57;
+      padding: 20px;
       color: white;
-      padding: 25px;
       text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 2rem;
     }
 
     .container {
       max-width: 900px;
-      margin: 20px auto;
-      padding: 15px;
+      margin: 40px auto;
+      padding: 20px;
     }
 
-    .controls {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    input, select {
-      padding: 10px;
-      border-radius: 8px;
+    .search-box {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
       border: 1px solid #ccc;
+      margin-bottom: 25px;
+      font-size: 1rem;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
-      gap: 15px;
-    }
-
-    .card {
+    .myth-card {
       background: white;
       padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      cursor: pointer;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+      transition: 0.3s;
     }
 
-    .myth { color: #b30000; font-weight: bold; }
-    .fact { 
-      margin-top: 10px; 
-      display: none;
-      background: #eefcf3;
-      padding: 12px;
-      border-radius: 8px; 
-      border-left: 4px solid #2e8b57;
+    .myth-card:hover {
+      transform: scale(1.02);
     }
 
-    .source {
+    .myth-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #b30000;
+      margin-bottom: 10px;
+    }
+
+    .fact {
+      color: #004d26;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    a.source {
       font-size: 0.9rem;
-      margin-top: 6px;
+      color: #0066cc;
+      text-decoration: none;
     }
 
-    .source a {
-      color: #035c35;
+    a.source:hover {
       text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #2e8b57;
+      color: white;
+      margin-top: 40px;
     }
   </style>
 </head>
@@ -78,117 +89,169 @@
 <body>
 
 <header>
-  <h1>Climate Myth Buster – Evidence Only</h1>
-  <p>Tap a card to reveal the scientific explanation + real sources.</p>
+  <h1>🌍 Climate Myth Buster</h1>
+  <p>Destroying misinformation with real science.</p>
 </header>
 
 <div class="container">
-  <div class="controls">
-    <input id="search" placeholder="Search myths..." oninput="render()" />
-    <select id="lang" onchange="render()">
-      <option value="en">English</option>
-      <option value="hi">Hindi</option>
-      <option value="ta">Tamil</option>
-      <option value="pa">Punjabi</option>
-      <option value="bn">Bengali</option>
-    </select>
-  </div>
 
-  <div id="grid" class="grid"></div>
+  <input type="text" id="search" class="search-box" placeholder="🔍 Search myths...">
+
+  <div id="myth-list">
+
+    <!-- AUTO-GENERATED MYTH CARDS BELOW -->
+
+    <!-- Each card follows this structure: -->
+    <!-- <div class="myth-card">
+          <div class="myth-title">Myth:</div>
+          <div class="fact">Fact:</div>
+          <a class="source">Source</a>
+         </div> -->
+
+  </div>
 </div>
 
+<footer>
+  © 2025 EatCo | Climate Science Matters 🌱
+</footer>
+
 <script>
-const ITEMS = [
-  {
-    id: "m1",
-    myth: {
-      en: "Climate change is natural, humans didn’t cause it.",
-      hi: "जलवायु परिवर्तन प्राकृतिक है, मनुष्यों ने इसे नहीं बनाया।",
-      ta: "காலநிலை மாற்றம் இயற்கை — மனிதர் காரணம் இல்லை.",
-      pa: "ਜਲਵਾਯੂ ਬਦਲਾਅ ਕੁਦਰਤੀ ਹੈ, ਇਨਸਾਨਾਂ ਕਾਰਨ ਨਹੀਂ।",
-      bn: "জলবায়ু পরিবর্তন প্রাকৃতিক, মানুষ এর কারণ নয়।"
+  const myths = [
+    {
+      myth: "Climate change is natural, not caused by humans.",
+      fact: "The rapid warming of the last 150 years matches human emissions, not natural cycles.",
+      src: "https://climate.nasa.gov/evidence/"
     },
-    fact: {
-      en: "Over 99% of climate studies agree that recent warming is driven by human CO₂ emissions.",
-      hi: "99% वैज्ञानिक अध्ययनों के अनुसार हाल की गर्मी मानव CO₂ उत्सर्जन के कारण है।",
-      ta: "99% ஆய்வுகள் சமீபத்திய வெப்பம் மனிதர் CO₂ காரணம் என உறுதிப்படுத்துகின்றன.",
-      pa: "99% ਵਿਗਿਆਨਕ ਕਹਿੰਦੇ ਹਨ ਕਿ ਹਾਲੀਆ ਗਰਮੀ ਮਨੁੱਖੀ CO₂ ਕਾਰਨ ਹੈ।",
-      bn: "৯৯% গবেষণা বলে সাম্প্রতিক উষ্ণতা মানুষের CO₂ নির্গমনের কারণে।"
+    {
+      myth: "Global warming stopped in 1998.",
+      fact: "Earth has warmed significantly since 1998 — the last 10 years were the hottest ever recorded.",
+      src: "https://www.noaa.gov/climate"
     },
-    source: "https://www.ipcc.ch/report/ar6/wg1/"
-  },
-
-  {
-    id: "m2",
-    myth: {
-      en: "Volcanoes emit more CO₂ than humans.",
-      hi: "ज्वालामुखी मनुष्यों से अधिक CO₂ छोड़ते हैं।",
-      ta: "எரிமலைகள் மனிதரை விட அதிக CO₂ வெளியிடுகின்றன.",
-      pa: "ਜੁਆਲਾ ਮੁੱਖੀ ਮਨੁੱਖਾਂ ਨਾਲੋਂ ਵੱਧ CO₂ ਛੱਡਦੇ ਹਨ।",
-      bn: "আগ্নেয়গিরি মানুষের চেয়ে বেশি CO₂ ছাড়ে।"
+    {
+      myth: "CO₂ is plant food, so more CO₂ is good.",
+      fact: "Too much CO₂ overheats the planet and reduces nutrients in crops.",
+      src: "https://www.ipcc.ch"
     },
-    fact: {
-      en: "Humans emit 100x more CO₂ per year than all volcanoes combined.",
-      hi: "मनुष्य हर साल ज्वालामुखियों से 100 गुना अधिक CO₂ छोड़ते हैं।",
-      ta: "மனிதர் வருடத்திற்கு எரிமலைகளை விட 100 மடங்கு CO₂ வெளியிடுகின்றனர்.",
-      pa: "ਮਨੁੱਖ ਹਰ ਸਾਲ ਜੁਆਲਾ ਮੁੱਖੀਆਂ ਤੋਂ 100 ਗੁਣਾ ਜ਼ਿਆਦਾ CO₂ ਛੱਡਦੇ ਹਨ।",
-      bn: "মানুষ আগ্নেয়গিরির তুলনায় বছরে ১০০ গুণ বেশি CO₂ নির্গত করে।"
+    {
+      myth: "Scientists disagree on climate change.",
+      fact: "Over 97% of climate scientists agree humans are causing it.",
+      src: "https://climate.nasa.gov/faq/17/do-scientists-agree-on-climate-change/"
     },
-    source: "https://www.usgs.gov/programs/VHP/volcanoes-and-co2"
-  },
-
-  {
-    id: "m3",
-    myth: {
-      en: "Global warming stopped in 1998 or 2010.",
-      hi: "1998 या 2010 में ग्लोबल वार्मिंग रुक गई थी।",
-      ta: "1998/2010க்கு பிறகு உலக வெப்பமயமாதல் நின்றுவிட்டது.",
-      pa: "1998 ਜਾਂ 2010 ਤੋਂ ਬਾਅਦ ਗਲੋਬਲ ਵਾਰਮਿੰਗ ਰੁਕ ਗਈ ਸੀ।",
-      bn: "১৯৯৮/২০১০ সালের পর গ্লোবাল ওয়ার্মিং থেমে গেছে।"
+    {
+      myth: "Cold winters disprove global warming.",
+      fact: "Weather is short-term; climate is long-term. Global average temperature keeps rising.",
+      src: "https://www.ipcc.ch"
     },
-    fact: {
-      en: "Short-term pauses happen, but the long-term warming trend is clear and ongoing.",
-      hi: "अल्पकालिक बदलाव होते हैं, लेकिन दीर्घकालिक गर्मी का रुझान जारी है।",
-      ta: "சில ஆண்டுகளில் மாற்றம் இருக்கும், ஆனால் நீண்டகால சூடு தெளிவாக உயர்ந்து கொண்டே உள்ளது.",
-      pa: "ਕੁਝ ਸਾਲਾਂ ਵਿੱਚ ਸੁਸਤਾਪਣ ਹੁੰਦੀ ਹੈ, ਪਰ ਲੰਬੇ ਸਮੇਂ ਦਾ ਤਾਪਮਾਨ ਵੱਧ ਰਿਹਾ ਹੈ।",
-      bn: "স্বল্পমেয়াদী বিরতি থাকতে পারে, কিন্তু দীর্ঘমেয়াদে উষ্ণতা বাড়ছে।"
+    {
+      myth: "The Sun is causing climate change.",
+      fact: "Satellite data shows solar energy has not increased since the 1970s.",
+      src: "https://climate.nasa.gov/causes/"
     },
-    source: "https://data.giss.nasa.gov/gistemp/"
-  }
-];
+    {
+      myth: "Climate models are unreliable.",
+      fact: "Models from the 1980s predicted today’s temperatures accurately.",
+      src: "https://www.noaa.gov/education/resource-collections/climate/climate-models"
+    },
+    {
+      myth: "Earth has always changed, so this is normal.",
+      fact: "Current warming is 10× faster than any natural cycle in 800,000 years.",
+      src: "https://www.ipcc.ch"
+    },
+    {
+      myth: "Antarctica is gaining ice overall.",
+      fact: "It gains snow inland but loses far more ice at the coasts — net loss.",
+      src: "https://climate.nasa.gov/vital-signs/ice-sheets/"
+    },
+    {
+      myth: "EVs pollute more because electricity comes from coal.",
+      fact: "EVs have a lower lifetime carbon footprint even on coal-heavy grids.",
+      src: "https://www.iea.org"
+    },
+    {
+      myth: "Wind turbines kill too many birds.",
+      fact: "Turbines cause <0.1% of bird deaths — windows & cats kill millions more.",
+      src: "https://www.audubon.org"
+    },
+    {
+      myth: "Climate change will only affect the future.",
+      fact: "It is already causing heatwaves, floods, coral bleaching, and rising seas.",
+      src: "https://www.ipcc.ch"
+    },
+    {
+      myth: "We can just adapt instead of cutting emissions.",
+      fact: "Some impacts can't be adapted to — like ice sheet collapse or extreme heat.",
+      src: "https://www.un.org/en/climatechange"
+    },
+    {
+      myth: "CO₂ is too small (0.04%) to matter.",
+      fact: "Small amounts can have big effects — CO₂ traps heat extremely effectively.",
+      src: "https://climate.nasa.gov"
+    },
+    {
+      myth: "Oceans can absorb all the CO₂ we emit.",
+      fact: "They absorb 30% — causing dangerous acidification.",
+      src: "https://www.noaa.gov/education/resource-collections/ocean-coasts/ocean-acidification"
+    },
+    {
+      myth: "Heatwaves are natural.",
+      fact: "Climate change makes heatwaves 5× more likely and far more intense.",
+      src: "https://www.worldweatherattribution.org"
+    },
+    {
+      myth: "Methane from cows doesn't matter.",
+      fact: "Methane warms the planet 80× more than CO₂ over 20 years.",
+      src: "https://www.ipcc.ch"
+    },
+    {
+      myth: "Airplanes are the biggest climate problem.",
+      fact: "Aviation is ~2–3% of emissions; energy & transport cause much more.",
+      src: "https://www.iea.org"
+    },
+    {
+      myth: "Climate change only affects polar bears.",
+      fact: "It affects food prices, health, water, migration, and global stability.",
+      src: "https://www.ipcc.ch"
+    },
+    {
+      myth: "Recycling solves the plastic problem.",
+      fact: "Only 9% of plastic is actually recycled.",
+      src: "https://www.oecd.org"
+    },
+    {
+      myth: "India doesn’t contribute much.",
+      fact: "India is the 3rd largest emitter and highly vulnerable to climate impacts.",
+      src: "https://climateknowledgeportal.worldbank.org"
+    },
+    {
+      myth: "Tech will fix everything later.",
+      fact: "No technology can scale fast enough alone — emissions must drop now.",
+      src: "https://www.ipcc.ch"
+    }
+  ];
 
-function render() {
-  const q = (document.getElementById("search").value || "").toLowerCase();
-  const lang = document.getElementById("lang").value;
-  const grid = document.getElementById("grid");
-  grid.innerHTML = "";
+  const list = document.getElementById("myth-list");
 
-  ITEMS.forEach(item => {
-    const myth = item.myth[lang];
-    const fact = item.fact[lang];
-
-    if (q && !myth.toLowerCase().includes(q) && !fact.toLowerCase().includes(q)) return;
-
+  myths.forEach((item) => {
     const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <div class="myth">❌ Myth: ${myth}</div>
-      <div class="fact" id="fact-${item.id}">
-        ✔️ Fact: ${fact}
-        <div class="source">Source: 
-          <a href="${item.source}" target="_blank">Open Study</a>
-        </div>
-      </div>
-    `;
-    card.onclick = () => {
-      const f = document.getElementById("fact-" + item.id);
-      f.style.display = f.style.display === "block" ? "none" : "block";
-    };
-    grid.appendChild(card);
-  });
-}
+    card.className = "myth-card";
 
-render();
+    card.innerHTML = `
+      <div class="myth-title">Myth: ${item.myth}</div>
+      <div class="fact"><b>Fact:</b> ${item.fact}</div>
+      <a href="${item.src}" class="source" target="_blank">Source</a>
+    `;
+
+    list.appendChild(card);
+  });
+
+  document.getElementById("search").addEventListener("input", function () {
+    const value = this.value.toLowerCase();
+    const cards = document.querySelectorAll(".myth-card");
+
+    cards.forEach(card => {
+      card.style.display = card.innerText.toLowerCase().includes(value) ? "block" : "none";
+    });
+  });
 </script>
 
 </body>
