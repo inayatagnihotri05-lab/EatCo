@@ -8,25 +8,27 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f1fff4;
+      background: linear-gradient(135deg, #e9fff1, #d9ffea, #f1fff4);
+      background-attachment: fixed;
       margin: 0;
       padding: 0;
     }
 
     header {
       background: #2e8b57;
-      padding: 20px;
+      padding: 25px;
       color: white;
       text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
     h1 {
       margin: 0;
-      font-size: 2rem;
+      font-size: 2.2rem;
     }
 
     .container {
-      max-width: 900px;
+      max-width: 950px;
       margin: 40px auto;
       padding: 20px;
     }
@@ -34,27 +36,30 @@
     .search-box {
       width: 100%;
       padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
+      border-radius: 12px;
+      border: 1px solid #bbb;
       margin-bottom: 25px;
       font-size: 1rem;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     }
 
     .myth-card {
       background: white;
-      padding: 20px;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
-      transition: 0.3s;
+      padding: 22px;
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+      margin-bottom: 22px;
+      transition: 0.3s ease;
+      border-left: 6px solid #2e8b57;
     }
 
     .myth-card:hover {
-      transform: scale(1.02);
+      transform: translateY(-4px);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.18);
     }
 
     .myth-title {
-      font-size: 1.2rem;
+      font-size: 1.25rem;
       font-weight: bold;
       color: #b30000;
       margin-bottom: 10px;
@@ -78,10 +83,11 @@
 
     footer {
       text-align: center;
-      padding: 20px;
+      padding: 22px;
       background: #2e8b57;
       color: white;
-      margin-top: 40px;
+      margin-top: 45px;
+      box-shadow: 0 -3px 10px rgba(0,0,0,0.15);
     }
   </style>
 </head>
@@ -97,18 +103,7 @@
 
   <input type="text" id="search" class="search-box" placeholder="🔍 Search myths...">
 
-  <div id="myth-list">
-
-    <!-- AUTO-GENERATED MYTH CARDS BELOW -->
-
-    <!-- Each card follows this structure: -->
-    <!-- <div class="myth-card">
-          <div class="myth-title">Myth:</div>
-          <div class="fact">Fact:</div>
-          <a class="source">Source</a>
-         </div> -->
-
-  </div>
+  <div id="myth-list"></div>
 </div>
 
 <footer>
@@ -117,6 +112,7 @@
 
 <script>
   const myths = [
+    // EXISTING MYTHS (KEPT THE SAME)
     {
       myth: "Climate change is natural, not caused by humans.",
       fact: "The rapid warming of the last 150 years matches human emissions, not natural cycles.",
@@ -225,6 +221,86 @@
     {
       myth: "Tech will fix everything later.",
       fact: "No technology can scale fast enough alone — emissions must drop now.",
+      src: "https://www.ipcc.ch"
+    },
+
+    /* -----------------------------
+     🔥 15 NEW MYTHS ADDED BELOW
+    ------------------------------ */
+
+    {
+      myth: "Planting trees alone can stop climate change.",
+      fact: "Trees help, but cannot absorb emissions fast enough without reducing fossil fuels.",
+      src: "https://www.ipcc.ch"
+    },
+    {
+      myth: "Volcanoes emit more CO₂ than humans.",
+      fact: "Humans emit 100× more CO₂ than all volcanoes combined.",
+      src: "https://climate.nasa.gov"
+    },
+    {
+      myth: "Polar bears are doing fine.",
+      fact: "Many populations are declining due to melting sea ice.",
+      src: "https://wwf.panda.org"
+    },
+    {
+      myth: "Climate change only affects poor countries.",
+      fact: "It impacts every nation — through heatwaves, storms, food prices, and health.",
+      src: "https://www.ipcc.ch"
+    },
+    {
+      myth: "Hydrogen fuel is the best climate solution.",
+      fact: "Green hydrogen is useful but still expensive and not widely available.",
+      src: "https://www.iea.org"
+    },
+    {
+      myth: "Plastic bans don’t make a difference.",
+      fact: "Plastic bans reduce waste, microplastics, and ocean pollution significantly.",
+      src: "https://www.unep.org"
+    },
+    {
+      myth: "Carbon offsets let companies avoid responsibility.",
+      fact: "Offsets help but are not enough — companies must reduce real emissions first.",
+      src: "https://www.ipcc.ch"
+    },
+    {
+      myth: "Climate action is too expensive.",
+      fact: "Doing nothing will cost far more in disasters, health, and economy.",
+      src: "https://www.un.org/en/climatechange"
+    },
+    {
+      myth: "Snowfall means global warming isn’t real.",
+      fact: "Warming air evaporates more water → stronger snowfall in some regions.",
+      src: "https://climate.nasa.gov"
+    },
+    {
+      myth: "Recycling paper saves trees.",
+      fact: "Most trees cut today are for timber, not paper. Recycling helps but isn’t enough.",
+      src: "https://www.epa.gov"
+    },
+    {
+      myth: "Solar panels can't work in winter.",
+      fact: "Solar panels work in cold climates — some countries generate most in winter.",
+      src: "https://www.iea.org"
+    },
+    {
+      myth: "Meat alternatives are always eco-friendly.",
+      fact: "Some are, but many processed ones have high water & energy footprints.",
+      src: "https://www.sciencedirect.com"
+    },
+    {
+      myth: "Electric cars will overload the grid.",
+      fact: "Grids can handle EVs — many countries already do.",
+      src: "https://www.iea.org"
+    },
+    {
+      myth: "Heatwaves happen only outdoors.",
+      fact: "Indoor heat kills more people — poorly ventilated homes trap heat.",
+      src: "https://www.who.int"
+    },
+    {
+      myth: "Nothing we do matters because big countries pollute more.",
+      fact: "Every country must act — climate change is global and cumulative.",
       src: "https://www.ipcc.ch"
     }
   ];
