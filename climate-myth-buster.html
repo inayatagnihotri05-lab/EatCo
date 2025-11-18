@@ -1,477 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Climate Myth Buster — Pro Mode 🌍⚡</title>
-<meta name="description" content="Interactive Climate Myth Buster with categories, mini-game, facts, sounds and charts.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌍 Climate Myth Buster</title>
 
 <style>
-  :root{
-    --bg1: #e9fff6;
-    --glass: rgba(255,255,255,0.18);
-    --accent1: #17a14a;
-    --accent2: #43d48a;
-    --muted:#3a7a62;
-    --card-shadow: 0 10px 30px rgba(0,0,0,0.12);
-    --glass-border: rgba(255,255,255,0.35);
-  }
-  *{box-sizing:border-box}
-  body{
-    margin:0;
-    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    background: linear-gradient(180deg,var(--bg1), #f1fff9 60%);
-    color:#0b3d2e;
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    padding:30px 16px;
+  body {
+    margin: 0;
+    font-family: "Inter", sans-serif;
+    background: #f2fff6;
+    color: #0b3d2e;
   }
 
-  .page {
-    max-width: 1100px;
-    margin: 0 auto;
+  .header {
+    text-align: center;
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    padding: 35px 20px;
+    color: white;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
   }
 
-  header{
-    display:flex;
-    align-items:center;
-    gap:16px;
-    justify-content:space-between;
-    margin-bottom:18px;
-  }
-  header h1{
-    margin:0;font-size:1.6rem;
-    background:linear-gradient(90deg,var(--accent1),var(--accent2));
-    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-    letter-spacing:0.2px;
-  }
-  header .sub{color:var(--muted);font-size:0.95rem}
-
-  .top-row{
-    display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+  .header h1 {
+    margin: 0;
+    font-size: 2.4rem;
   }
 
-  .card{
-    background:var(--glass);
-    border-radius:14px;
-    padding:14px;
-    box-shadow:var(--card-shadow);
-    border:1px solid var(--glass-border);
+  .header p {
+    margin: 5px 0 0;
+    font-size: 1.1rem;
   }
 
-  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .chip{
-    padding:8px 12px;border-radius:999px;background:rgba(255,255,255,0.9);
-    border:1px solid rgba(0,0,0,0.06);cursor:pointer;font-weight:600;color:#06462f;
-    transition:transform .14s ease, box-shadow .14s;
-  }
-  .chip:hover{transform:translateY(-3px)}
-  .chip.active{background:linear-gradient(90deg,#13a34c,#25d07e);color:white;box-shadow:0 8px 20px rgba(37,208,126,0.18)}
-
-  main{display:grid;grid-template-columns: 1fr 360px;gap:18px;margin-top:18px}
-  @media(max-width:980px){ main{grid-template-columns:1fr} }
-
-  /* Myth / Truth boxes */
-  .content{
-    display:flex;flex-direction:column;gap:12px;
-  }
-  .mythBox, .truthBox{
-    border-radius:12px;padding:18px;font-size:1.05rem;
-    overflow:hidden;
-  }
-  .mythBox{
-    background:linear-gradient(180deg,#fff2f2,#ffecec);border-left:6px solid #ff6b6b;box-shadow:0 10px 24px rgba(255,107,107,0.06);
-    transform:translateY(10px);opacity:0;transition:all .45s cubic-bezier(.22,.9,.27,1);
-  }
-  .truthBox{
-    background:linear-gradient(180deg,#f3fff4,#e9fff0);border-left:6px solid #2ecc71;box-shadow:0 10px 24px rgba(46,204,113,0.06);
-    transform:translateY(10px);opacity:0;transition:all .45s cubic-bezier(.22,.9,.27,1);
-  }
-  .mythBox.show, .truthBox.show{transform:translateY(0);opacity:1}
-
-  .metaRow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-  .btn {
-    background:linear-gradient(90deg,#16a34a,#22c55e);border:none;padding:10px 14px;border-radius:10px;color:white;font-weight:800;cursor:pointer;
-    box-shadow:0 8px 20px rgba(17,147,79,0.18);transition:transform .14s;
-  }
-  .btn.secondary{background:transparent;color:var(--muted);border:1px solid rgba(0,0,0,0.06);box-shadow:none;font-weight:700}
-  .btn:active{transform:translateY(2px)}
-
-  .small{font-size:0.9rem;color:#3e7a62}
-  .side{
-    display:flex;flex-direction:column;gap:12px;
+  .container {
+    max-width: 950px;
+    margin: 30px auto;
+    padding: 20px;
   }
 
-  /* Game & Did-you-know */
-  .dyk{
-    background:linear-gradient(180deg,#fffaf2,#fff7e6);border-left:6px solid #ffb53a;padding:12px;border-radius:10px;
+  select {
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #2ecc71;
+    font-weight: bold;
+    margin-bottom: 20px;
+    width: 100%;
   }
 
-  .gameCard{display:flex;flex-direction:column;gap:10px;align-items:stretch}
-  .gameChoices{display:flex;flex-direction:column;gap:8px}
-  .choice{
-    padding:10px;border-radius:10px;background:white;border:1px solid rgba(0,0,0,0.06);cursor:pointer;font-weight:700
+  .card {
+    background: white;
+    padding: 18px 20px;
+    border-radius: 14px;
+    margin: 15px 0;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
   }
-  .choice.correct{background:linear-gradient(90deg,#d2ffdf,#9ff1c1);border-color:#2ecc71}
-  .choice.wrong{background:linear-gradient(90deg,#ffdada,#ffbdbd);border-color:#ff6b6b}
 
-  /* Charts */
-  .chart{background:linear-gradient(180deg,#f7fffb,#f0fff6);border-radius:12px;padding:10px;border:1px solid rgba(0,0,0,0.04)}
-  .chart svg{width:100%;height:120px;display:block}
+  .myth {
+    font-weight: bold;
+    color: #c0392b;
+  }
 
-  footer{margin-top:22px;text-align:center;color:var(--muted);font-size:0.9rem}
+  .fact {
+    margin-top: 8px;
+    color: #0e5135;
+    background: #e6fff0;
+    padding: 12px;
+    border-left: 5px solid #27ae60;
+    border-radius: 6px;
+  }
 
-  /* Confetti canvas overlay */
-  #confettiCanvas{position:fixed;left:0;top:0;pointer-events:none;width:100%;height:100%;z-index:9999}
-
-  /* Tiny animation for reveal */
-  .revealPulse{animation:revealPulse .9s ease}
-  @keyframes revealPulse{0%{transform:scale(.995);opacity:0}50%{transform:scale(1.01)}100%{transform:scale(1);opacity:1}}
+  footer {
+    text-align: center;
+    padding: 20px;
+    color: #1e684b;
+    margin-top: 40px;
+  }
 </style>
 </head>
+
 <body>
-<div class="page">
-  <header>
-    <div>
-      <h1>Climate Myth Buster — Pro Mode</h1>
-      <div class="sub small">Categories, mini-game, facts, sounds & charts — learn by playing.</div>
-    </div>
 
-    <div class="top-row">
-      <div class="card controls" aria-hidden="false" id="categoryChips" role="toolbar" aria-label="Categories">
-        <!-- chips inserted here -->
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <section class="content">
-      <div class="card">
-        <div class="metaRow" style="justify-content:space-between">
-          <div style="display:flex;gap:10px;align-items:center">
-            <div class="small">Current category:</div>
-            <div id="currentCategory" class="small" style="font-weight:800">General</div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <button class="btn" id="nextBtn">Next Myth 🔄</button>
-            <button class="btn secondary" id="toggleGame">Play: Guess the Myth</button>
-          </div>
-        </div>
-
-        <div style="height:14px"></div>
-
-        <div id="mythBox" class="mythBox" aria-live="polite"></div>
-        <div id="truthBox" class="truthBox" aria-live="polite"></div>
-      </div>
-
-      <div class="card" id="dykCard" style="display:none">
-        <div class="dyk" id="dykText"></div>
-      </div>
-
-      <div class="card" id="gamePanel" style="display:none">
-        <div class="gameCard">
-          <div style="font-weight:800">🎮 Guess the Myth — choose the false statement</div>
-          <div id="gameQuestion" class="small">Which one is a myth?</div>
-          <div class="gameChoices" id="gameChoices"></div>
-          <div style="display:flex;gap:8px;justify-content:flex-end">
-            <div class="small" id="gameScore">Score: 0</div>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-    <aside class="side">
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="font-weight:800">Did you know?</div>
-          <div class="small" id="dykCounter">0</div>
-        </div>
-        <div style="height:8px"></div>
-        <div class="small">Short scientific facts that pop up randomly while you explore myths.</div>
-      </div>
-
-      <div class="card chart" aria-hidden="false">
-        <div style="font-weight:800;margin-bottom:8px">CO₂: Humans vs Volcanoes (annual)</div>
-        <!-- tiny inline bar chart -->
-        <svg viewBox="0 0 200 100" role="img" aria-label="Bar chart humans vs volcanoes">
-          <rect x="15" y="20" width="60" height="60" fill="#2ecc71" rx="6"></rect>
-          <rect x="125" y="64" width="60" height="16" fill="#ff6b6b" rx="6"></rect>
-          <text x="45" y="95" font-size="9" text-anchor="middle" fill="#0b3d2e">Humans ~ 40 Gt</text>
-          <text x="155" y="95" font-size="9" text-anchor="middle" fill="#0b3d2e">Volcanoes ~ 0.4 Gt</text>
-        </svg>
-        <div class="small" style="margin-top:6px">Humans emit ~100× more CO₂ than volcanoes (annual estimates).</div>
-      </div>
-
-      <div class="card chart">
-        <div style="font-weight:800;margin-bottom:8px">Renewable Price Trend (sample)</div>
-        <svg viewBox="0 0 200 100" role="img" aria-label="line chart renewables cost">
-          <polyline fill="none" stroke="#16a34a" stroke-width="4" points="10,70 50,55 90,42 130,28 170,20"></polyline>
-        </svg>
-        <div class="small">Solar & wind costs have dropped steeply over the last decade.</div>
-      </div>
-
-    </aside>
-  </main>
-
-  <footer>
-    <div class="small">Made by Inayat • Facts are simplified for learning. Sources: IPCC, peer-reviewed literature.</div>
-  </footer>
+<div class="header">
+  <h1>🌎 Climate Myth Buster</h1>
+  <p>Busting common climate myths with real science — in your language.</p>
 </div>
 
-<canvas id="confettiCanvas"></canvas>
+<div class="container">
+  
+  <!-- Translation Dropdown -->
+  <label><strong>🌐 Choose Language:</strong></label>
+  <select id="lang" onchange="translateAll()">
+    <option value="en">English</option>
+    <option value="hi">Hindi</option>
+    <option value="bn">Bengali</option>
+    <option value="ta">Tamil</option>
+    <option value="te">Telugu</option>
+    <option value="gu">Gujarati</option>
+    <option value="mr">Marathi</option>
+    <option value="pa">Punjabi</option>
+    <option value="es">Spanish</option>
+    <option value="fr">French</option>
+    <option value="ar">Arabic</option>
+  </select>
+
+  <!-- MYTH CARDS -->
+  <div id="myths"></div>
+
+</div>
+
+<footer>
+  © 2025 EatCo | Climate Truth Matters 💚
+</footer>
+
 
 <script>
-/* ========= Data ========= */
-const myths = [
-  { id:1, cat:'General', myth:'“Climate change is natural — humans are not the cause.”', truth:'~97% of climate scientists attribute modern warming primarily to human activities (IPCC).' },
-  { id:2, cat:'Weather', myth:'“A cold snap means global warming is false.”', truth:'Weather is short term; climate is long term — individual cold events don’t disprove global warming.' },
-  { id:3, cat:'Energy', myth:'“Renewables can’t power modern economies.”', truth:'Solar and wind are now among the cheapest electricity sources and can scale with storage & grids.' },
-  { id:4, cat:'Volcanoes', myth:'“Volcanoes emit more CO₂ than humans.”', truth:'Human CO₂ emissions are roughly 100× larger annually than volcanic emissions.' },
-  { id:5, cat:'Waste', myth:'“Recycling is useless; it makes no difference.”', truth:'Recycling metals (e.g., aluminum) saves massive energy — recycling is a key part of circular economy.' },
-  { id:6, cat:'Energy', myth:'“Electric cars are worse due to battery manufacturing.”', truth:'EVs typically offset production emissions within 1–3 years of driving, then remain cleaner.' },
-  { id:7, cat:'Oceans', myth:'“Ocean acidification is good for aquatic life.”', truth:'Ocean acidification harms many calcifying organisms (corals, shellfish) and is a major threat.' },
-  { id:8, cat:'General', myth:'“Trees alone will solve climate change.”', truth:'While forests are crucial carbon sinks, emissions reductions are required — trees can’t offset unlimited emissions.' }
+const data = [
+  {
+    myth: {
+      en: "Climate change is natural — humans aren’t causing it.",
+      hi: "जलवायु परिवर्तन प्राकृतिक है — इंसान इसका कारण नहीं हैं।",
+      bn: "জলবায়ু পরিবর্তন স্বাভাবিক — মানুষ এর কারণ নয়।",
+      ta: "காலநிலை மாற்றம் இயற்கை — மனிதர்கள் காரணம் இல்லை.",
+      te: "క్లైమేట్ మార్పు సహజం — మనుషులు కారణం కాదు.",
+      gu: "જલવાયુ બદલાવ કુદરતી છે — મનુષ્યો કારણ નથી.",
+      mr: "हवामान बदल नैसर्गिक आहे — माणसं कारण नाहीत.",
+      pa: "ਜਲਵਾਯੂ ਬਦਲਾਅ ਕੁਦਰਤੀ ਹੈ — ਇਨਸਾਨ ਕਾਰਨ ਨਹੀਂ।",
+      es: "El cambio climático es natural — los humanos no lo causan.",
+      fr: "Le changement climatique est naturel — les humains n’en sont pas la cause.",
+      ar: "تغير المناخ طبيعي — البشر ليسوا السبب."
+    },
+    fact: {
+      en: "Today’s warming is far too rapid to be natural. 97% of scientists agree humans are driving it through CO₂ emissions.",
+      hi: "आज का तापमान बढ़ना प्राकृतिक नहीं है। 97% वैज्ञानिक मानते हैं कि इसका कारण मनुष्य द्वारा उत्सर्जित CO₂ है।",
+      bn: "আজকের উষ্ণায়ন স্বাভাবিক নয়। 97% বিজ্ঞানী মনে করেন মানুষের CO₂ নির্গমনই কারণ।",
+      ta: "இன்றைய வெப்பமடைதல் இயற்கையானது அல்ல. 97% விஞ்ஞானிகள் CO₂ காரணம் என்று உறுதிப்படுத்துகின்றனர்.",
+      te: "నేటి వేడి సహజం కాదు. 97% శాస్త్రవేత్తల ప్రకారం CO₂ కారణం.",
+      gu: "આજનું તાપમાન વધવું કુદરતી નથી. 97% વૈજ્ઞાનિકો CO₂ ને જવાબદાર માને છે.",
+      mr: "आजचे तापमान वाढ नैसर्गिक नाही. 97% वैज्ञानिक मानतात की CO₂ कारण आहे.",
+      pa: "ਅੱਜ ਦਾ ਤਾਪਮਾਨ ਵਧਣਾ ਕੁਦਰਤੀ ਨਹੀਂ। 97% ਵਿਗਿਆਨੀ CO₂ ਨੂੰ ਕਾਰਨ ਮੰਨਦੇ ਹਨ।",
+      es: "El calentamiento actual es demasiado rápido para ser natural. El 97% de los científicos culpan al CO₂ humano.",
+      fr: "Le réchauffement actuel est trop rapide pour être naturel. 97% des scientifiques incriminent le CO₂ humain.",
+      ar: "الاحترار الحالي سريع جدًا ليكون طبيعيًا. 97٪ من العلماء يؤكدون أن البشر هم السبب."
+    }
+  },
+
+  {
+    myth: {
+      en: "Recycling doesn’t matter — everything ends up in landfills anyway.",
+      hi: "रीसाइक्लिंग बेकार है — सब कचरा फिर भी लैंडफिल में जाता है।",
+      es: "Reciclar no sirve — todo termina en un vertedero.",
+      fr: "Le recyclage ne sert à rien — tout finit en décharge.",
+      ar: "إعادة التدوير بلا فائدة — كل شيء ينتهي في مكب النفايات."
+    },
+    fact: {
+      en: "Recycling aluminum saves 95% energy. Recycling DOES work — contamination and poor sorting are the real problems.",
+      hi: "अल्युमिनियम रीसाइक्लिंग 95% ऊर्जा बचाती है। समस्या रीसाइक्लिंग नहीं, बल्कि गंदगी और गलत छंटाई है।",
+      es: "Reciclar aluminio ahorra 95% de energía. El problema es la mala clasificación.",
+      fr: "Recycler l’aluminium économise 95% d’énergie.",
+      ar: "إعادة تدوير الألمنيوم توفر 95٪ من الطاقة."
+    }
+  },
+
+  {
+    myth: {
+      en: "Electric cars pollute more because of batteries.",
+      hi: "इलेक्ट्रिक कारें बैटरी के कारण ज्यादा प्रदूषण करती हैं।"
+    },
+    fact: {
+      en: "Over their lifetime, EVs produce far less CO₂ than petrol cars — even accounting for battery production.",
+      hi: "पूरे जीवनकाल में इलेक्ट्रिक कारें पेट्रोल कारों से बहुत कम CO₂ उत्सर्जित करती हैं।"
+    }
+  },
+
+  {
+    myth: {
+      en: "Climate change will only affect future generations.",
+      hi: "जलवायु परिवर्तन केवल भविष्य की पीढ़ियों को प्रभावित करेगा।"
+    },
+    fact: {
+      en: "Heatwaves, floods, crop loss, and rising sea levels are already affecting millions today.",
+      hi: "हीटवेव, बाढ़ और फसल नुकसान आज ही करोड़ों लोगों को प्रभावित कर रहे हैं।"
+    }
+  }
 ];
 
-const dyk = [
-  'Cows are a big source of methane — but dietary & farm changes can cut emissions by 20–30%.',
-  'Aluminum recycling saves ~95% energy compared to making new aluminum.',
-  'Solar costs have fallen by ~90% since 2010 in many regions.',
-  'Microplastics have been detected in seawater, air and even human blood in trace amounts.',
-  'A single wind turbine produces enough energy to power thousands of homes each year.'
-];
+// render myths
+function render(lang = "en") {
+  const container = document.getElementById("myths");
+  container.innerHTML = "";
 
-const categories = ['All','General','Energy','Weather','Volcanoes','Waste','Oceans'];
+  data.forEach(item => {
+    const myth = item.myth[lang] || item.myth["en"];
+    const fact = item.fact[lang] || item.fact["en"];
 
-/* ========= State ========= */
-let currentCategory = 'All';
-let filtered = myths.slice();
-let lastIndex = -1;
-let dykCount = 0;
-
-/* ========= Elements ========= */
-const categoryChips = document.getElementById('categoryChips');
-const currentCategoryEl = document.getElementById('currentCategory');
-const mythBox = document.getElementById('mythBox');
-const truthBox = document.getElementById('truthBox');
-const nextBtn = document.getElementById('nextBtn');
-const dykCard = document.getElementById('dykCard');
-const dykText = document.getElementById('dykText');
-const dykCounter = document.getElementById('dykCounter');
-const toggleGame = document.getElementById('toggleGame');
-const gamePanel = document.getElementById('gamePanel');
-const gameChoices = document.getElementById('gameChoices');
-const gameQuestion = document.getElementById('gameQuestion');
-const gameScoreEl = document.getElementById('gameScore');
-const confettiCanvas = document.getElementById('confettiCanvas');
-
-/* ========= Init UI ========= */
-function makeChips(){
-  categories.forEach(cat=>{
-    const b = document.createElement('button');
-    b.className='chip' + (cat==='All' ? ' active' : '');
-    b.textContent = cat;
-    b.onclick = ()=>{ selectCategory(cat); document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); b.classList.add('active'); };
-    categoryChips.appendChild(b);
-  });
-}
-makeChips();
-
-function selectCategory(cat){
-  currentCategory = cat;
-  currentCategoryEl.textContent = cat;
-  filtered = (cat==='All') ? myths.slice() : myths.filter(m=>m.cat===cat);
-  // reset index
-  lastIndex = -1;
-  generateMyth(true);
-}
-
-/* ========= Sound helpers (WebAudio = no files) ========= */
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-function beep(freq=440, time=0.12, type='sine', vol=0.06){
-  const o = audioCtx.createOscillator();
-  const g = audioCtx.createGain();
-  o.type = type; o.frequency.value = freq;
-  g.gain.value = vol;
-  o.connect(g); g.connect(audioCtx.destination);
-  o.start(); o.stop(audioCtx.currentTime + time);
-}
-function playChime(){ beep(880,0.12,'sine',0.06); setTimeout(()=>beep(660,0.12,'sine',0.04),100); }
-function playClick(){ beep(1000,0.06,'square',0.03); }
-function playWrong(){ beep(240,0.15,'sawtooth',0.08); setTimeout(()=>beep(160,0.12,'sawtooth',0.05),120); }
-
-/* ========= Myth generation ========= */
-function generateMyth(fromSelect=false){
-  if(filtered.length===0){
-    mythBox.innerHTML = '<strong>No myths in this category.</strong>'; truthBox.innerHTML='';
-    return;
-  }
-  playClick();
-  // pick random different index
-  let idx = Math.floor(Math.random()*filtered.length);
-  if(filtered.length>1){
-    while(idx===lastIndex) idx = Math.floor(Math.random()*filtered.length);
-  }
-  lastIndex = idx;
-  const item = filtered[idx];
-  // reveal with animation
-  mythBox.classList.remove('show'); truthBox.classList.remove('show');
-  setTimeout(()=>{
-    mythBox.innerHTML = '<strong>❌ Myth:</strong> ' + item.myth;
-    truthBox.innerHTML = '<strong>✔️ Truth:</strong> ' + item.truth;
-    mythBox.classList.add('show','revealPulse');
-    truthBox.classList.add('show','revealPulse');
-    // subtle sound
-    setTimeout(()=> playChime(), 140);
-    // random did-you-know pop-up (30% chance)
-    if(Math.random() < 0.33 && !fromSelect){ showDyk(); }
-  },80);
-}
-
-// initial
-generateMyth();
-
-/* ===== Next button ===== */
-nextBtn.addEventListener('click', ()=>generateMyth());
-
-/* ===== Did-you-know ===== */
-function showDyk(){
-  const s = dyk[Math.floor(Math.random()*dyk.length)];
-  dykText.textContent = '💡 ' + s;
-  dykCard.style.display = 'block';
-  dykCount++;
-  dykCounter.textContent = dykCount;
-  // fade out after a while
-  setTimeout(()=>{ dykCard.style.opacity = 1; }, 60);
-  setTimeout(()=>{ dykCard.style.opacity = 0; setTimeout(()=> dykCard.style.display = 'none', 600); }, 6000);
-}
-
-/* ===== Mini-game: Guess the Myth ===== */
-let gameMode=false, gameScore=0;
-
-toggleGame.addEventListener('click', ()=>{ gameMode = !gameMode; setupGameMode(gameMode); });
-
-function setupGameMode(on){
-  if(on){
-    gamePanel.style.display = 'block';
-    toggleGame.textContent = 'Exit Game';
-    nextBtn.disabled = true;
-    document.getElementById('mythBox').style.opacity = 0.6; // de-emphasize
-    startGameRound();
-  } else {
-    gamePanel.style.display = 'none';
-    toggleGame.textContent = 'Play: Guess the Myth';
-    nextBtn.disabled = false;
-    document.getElementById('mythBox').style.opacity = 1;
-  }
-}
-
-function startGameRound(){
-  // pick two items: one true statement (real truth) and one myth, but present as two statements: one true one false
-  const a = myths[Math.floor(Math.random()*myths.length)];
-  const b = myths[Math.floor(Math.random()*myths.length)];
-  // ensure different
-  if(a.id===b.id){ return startGameRound(); }
-
-  // make two choices: statement A (truth from a) and statement B (myth from b) or vice versa — user must pick the myth
-  const orderSwap = Math.random() < 0.5;
-  const opt1 = orderSwap ? a.truth : b.myth;
-  const opt2 = orderSwap ? b.myth : a.truth;
-  const correctIndex = orderSwap ? 1 : 0; // index of correct myth statement
-  gameQuestion.textContent = 'Which of these is the ❌ myth?';
-  renderGameChoices([opt1,opt2], correctIndex);
-}
-
-function renderGameChoices(opts, correctIndex){
-  gameChoices.innerHTML = '';
-  opts.forEach((text,i)=>{
-    const d = document.createElement('div');
-    d.className = 'choice';
-    d.textContent = text;
-    d.onclick = ()=> {
-      // disable clicks
-      Array.from(gameChoices.children).forEach(c=>c.onclick=null);
-      if(i===correctIndex){
-        d.classList.add('correct');
-        gameScore++;
-        playChime();
-        launchConfetti();
-      } else {
-        d.classList.add('wrong');
-        playWrong();
-      }
-      gameScoreEl.textContent = 'Score: ' + gameScore;
-      // next round after delay
-      setTimeout(()=> startGameRound(), 1200);
-    };
-    gameChoices.appendChild(d);
+    container.innerHTML += `
+      <div class="card">
+        <div class="myth">❌ Myth: ${myth}</div>
+        <div class="fact">✔️ Fact: ${fact}</div>
+      </div>`;
   });
 }
 
-/* ===== Confetti (simple canvas) ===== */
-const ctx = confettiCanvas.getContext ? confettiCanvas.getContext('2d') : null;
-let confettiPieces = [];
-function resizeCanvas(){
-  confettiCanvas.width = innerWidth;
-  confettiCanvas.height = innerHeight;
-}
-resizeCanvas();
-addEventListener('resize', resizeCanvas);
-
-function launchConfetti(){
-  if(!ctx) return;
-  // create pieces
-  const count = 40;
-  for(let i=0;i<count;i++){
-    confettiPieces.push({
-      x: Math.random()*confettiCanvas.width,
-      y: -10 - Math.random()*200,
-      vx: (Math.random()-0.5)*6,
-      vy: 2 + Math.random()*6,
-      size: 6 + Math.random()*8,
-      color: `hsl(${Math.random()*60 + 120}, 70%, 50%)`,
-      rot: Math.random()*360,
-      rotSpeed: (Math.random()-0.5)*6,
-      ttl: 200 + Math.random()*200
-    });
-  }
-  requestAnimationFrame(confettiLoop);
+function translateAll() {
+  const lang = document.getElementById("lang").value;
+  render(lang);
 }
 
-let lastT = 0;
-function confettiLoop(t){
-  if(!ctx) return;
-  const dt = t - lastT;
-  lastT = t;
-  ctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
-  confettiPieces.forEach((p, idx)=>{
-    p.x += p.vx;
-    p.y += p.vy;
-    p.vy += 0.12; // gravity
-    p.rot += p.rotSpeed;
-    p.ttl -= dt;
-    ctx.save();
-    ctx.translate(p.x, p.y);
-    ctx.rotate(p.rot * Math.PI/180);
-    ctx.fillStyle = p.color;
-    ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
-    ctx.restore();
-  });
-  // remove dead
-  confettiPieces = confettiPieces.filter(p=>p.ttl>0 && p.y < confettiCanvas.height + 100);
-  if(confettiPieces.length>0) requestAnimationFrame(confettiLoop);
-  else ctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
-}
-
-/* ===== Keyboard accessibility ===== */
-document.addEventListener('keydown', (e)=>{
-  if(e.key === 'n' || e.key === 'N') generateMyth();
-  if(e.key === 'g' || e.key === 'G') { gameMode = !gameMode; setupGameMode(gameMode); }
-});
-
-/* ===== On-load tiny reveal animation ===== */
-setTimeout(()=> document.querySelectorAll('.mythBox,.truthBox').forEach(el=>el.classList.add('show')), 350);
+render(); // initial load
 </script>
+
 </body>
 </html>
