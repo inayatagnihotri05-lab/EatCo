@@ -41,10 +41,10 @@ nav a:hover {
   color: #a8f0c6;
 }
 
-/* -------------------- HERO SECTION -------------------- */
+/* -------------------- HERO SECTION FIX -------------------- */
 .hero {
   position: relative;
-  min-height: 80vh; /* ensures text is visible */
+  height: 80vh; /* full viewport height */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -58,29 +58,18 @@ nav a:hover {
 .hero-overlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.35);
+  background: rgba(0,0,0,0.25); /* lighter so text is visible */
   z-index: 1;
 }
 
 .hero-content {
   position: relative;
   z-index: 2;
-  animation: fadeUp 1s ease forwards;
   color: white;
+  animation: fadeUp 1s ease forwards;
+  padding: 0 1rem;
 }
 
-.hero h1 {
-  font-size: 2.8rem;
-  margin-bottom: 1rem;
-}
-
-.hero p {
-  font-size: 1.3rem;
-  max-width: 600px;
-  margin: auto;
-  margin-bottom: 2rem;
-  line-height: 1.5;
-}
 
 /* -------------------- BUTTONS -------------------- */
 .btn {
@@ -179,3 +168,4 @@ footer {
   0% { opacity: 0; transform: translateY(30px); }
   100% { opacity:1; transform: translateY(0); }
 }
+
