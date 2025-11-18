@@ -5,6 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>EatCo 🌿</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Section fade-up animation */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Button hover effect */
+    a.btn, .quiz-btn {
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    a.btn:hover, .quiz-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Eco Personality Quiz box styling */
+    .quiz-box {
+      background-color:#2e8b57; 
+      color:white; 
+      padding:18px 20px; 
+      margin-top:20px; 
+      border-radius:10px; 
+      text-align:center; 
+      display:inline-block; 
+      box-shadow:0 3px 10px rgba(0,0,0,0.15);
+    }
+
+    .quiz-box a {
+      background-color:white; 
+      color:#2e8b57; 
+      padding:10px 22px; 
+      border-radius:6px; 
+      text-decoration:none; 
+      font-weight:bold; 
+      display:inline-block; 
+      margin-top:8px; 
+      box-shadow:0 2px 6px rgba(0,0,0,0.15); 
+      transition:0.3s;
+    }
+
+    .quiz-box a:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+  </style>
 </head>
 <body>
   <!-- Navbar -->
@@ -21,21 +74,21 @@
   </nav>
 
   <!-- Hero -->
-  <section id="home" class="hero">
+  <section id="home" class="hero fade-up">
     <h1>Welcome to EatCo 🌱</h1>
     <p>Building a world where every bite counts — for you and the planet.</p>
     <a href="#join" class="btn">Join the Movement</a>
   </section>
 
   <!-- About -->
-  <section id="about">
+  <section id="about" class="fade-up">
     <h2>Mindful. Local. Sustainable.</h2>
     <p>EatCo promotes eco-friendly eating habits — reducing waste, supporting farmers, and making sustainability simple and delicious.</p>
     <a href="about.html" class="btn">Learn More About Me</a>
   </section>
 
   <!-- Mission -->
-  <section id="mission">
+  <section id="mission" class="fade-up">
     <h2>Our Mission</h2>
     <ul>
       <li>🌾 Sustainable Agriculture – Supporting local, seasonal, and organic food systems.</li>
@@ -45,21 +98,20 @@
   </section>
 
   <!-- Join -->
-  <section id="join">
+  <section id="join" class="fade-up">
     <h2>Join the Movement 🌍</h2>
     <p>Be part of the eco-food revolution. Let’s make every meal meaningful.</p>
     <a href="challenge.html" class="btn" target="_blank">🚀 Join the Zero Waste Challenge</a>
 
-    <!-- Eco Personality Quiz Header in Smaller Green Box -->
-    <div style="background-color:#2e8b57; color:white; padding:18px 20px; margin-top:20px; border-radius:10px; text-align:center; display:inline-block; box-shadow:0 3px 10px rgba(0,0,0,0.15);">
-      <h3 style="margin:0; font-size:1.4em;">🌿 Take the Eco Personality Quiz 🌱 </h3>
-      <a href="eco-quiz.html" class="quiz-btn" style="background-color:white; color:#2e8b57; padding:10px 22px; border-radius:6px; text-decoration:none; font-weight:bold; display:inline-block; margin-top:8px; box-shadow:0 2px 6px rgba(0,0,0,0.15); transition:0.3s;">
-      </a>
+    <!-- Eco Personality Quiz Box -->
+    <div class="quiz-box">
+      <h3 style="margin:0; font-size:1.4em;">🌿 Eco Personality Quiz</h3>
+      <a href="eco-quiz.html">Take the Quiz 🌱</a>
     </div>
   </section>
 
   <!-- EcoRun Game Button -->
-  <div style="text-align:center; margin: 40px 0;">
+  <div style="text-align:center; margin: 40px 0;" class="fade-up">
     <a href="ecorun.html"
       style="background-color:#2e8b57; color:white; padding:15px 30px;
              border-radius:10px; text-decoration:none; font-size:1.2em;
@@ -69,7 +121,7 @@
   </div>
 
   <!-- Green Climate Myth Buster Button -->
-  <div style="text-align:center; margin: 40px 0;">
+  <div style="text-align:center; margin: 40px 0;" class="fade-up">
     <a href="climate-myth-buster.html"
       style="background-color:#27ae60; color:white; padding:15px 30px;
              border-radius:12px; text-decoration:none; font-size:1.2em;
@@ -79,12 +131,12 @@
   </div>
 
   <!-- EcoBuzz Button -->
-  <div style="text-align:center; margin-bottom: 40px;">
+  <div style="text-align:center; margin-bottom: 40px;" class="fade-up">
     <a href="ecobuzz.html" class="btn">🌿 EcoBuzz</a>
   </div>
 
   <!-- Carbon Footprint Checker -->
-  <section id="footprint" style="text-align:center; margin: 3rem auto;">
+  <section id="footprint" style="text-align:center; margin: 3rem auto;" class="fade-up">
     <h2>🌾 Food Carbon Footprint Checker</h2>
     <p>Type a food item to estimate its carbon footprint.</p>
 
@@ -99,10 +151,28 @@
   </section>
 
   <!-- Footer -->
-  <footer>
+  <footer class="fade-up">
     <p>© 2025 EatCo | Made with 💚 by Inayat Agnihotri</p>
   </footer>
 
 <script src="script.js"></script>
+<script>
+  // Fade-up animation on scroll
+  const faders = document.querySelectorAll('section, .fade-up, .quiz-box, .container > div');
+
+  const appearOnScroll = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  faders.forEach(fader => {
+    fader.classList.add('fade-up');
+    appearOnScroll.observe(fader);
+  });
+</script>
 </body>
 </html>
