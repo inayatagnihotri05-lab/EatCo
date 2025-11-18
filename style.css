@@ -37,27 +37,25 @@ nav a {
 }
 
 nav a:hover {
-  text-decoration: underline;
   color: #a8f0c6;
 }
+
 /* -------------------- HERO SECTION -------------------- */
 .hero {
   position: relative;
   width: 100%;
-  min-height: 80vh; /* ensures hero takes most of the viewport */
+  min-height: 80vh;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 0 2rem;
   background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
-  overflow: hidden;
 }
 
 .hero-overlay {
   position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.25); /* light overlay for contrast */
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.35);
   z-index: 1;
 }
 
@@ -74,7 +72,6 @@ nav a:hover {
 .hero-content h1 {
   font-size: 3rem;
   margin-bottom: 1rem;
-  line-height: 1.2;
 }
 
 .hero-content p {
@@ -87,8 +84,6 @@ nav a:hover {
   padding: 0.8rem 2rem;
   border-radius: 25px;
 }
-
-
 
 /* -------------------- BUTTONS -------------------- */
 .btn {
@@ -109,7 +104,6 @@ nav a:hover {
   transform: scale(1.05);
 }
 
-/* Smaller Quiz Button */
 .quiz-btn {
   padding: 0.6rem 1.2rem;
   font-size: 1rem;
@@ -134,7 +128,7 @@ section.visible {
   transform: translateY(0);
 }
 
-/* Section Gradient Backgrounds */
+/* Section gradient backgrounds */
 #about { background: linear-gradient(145deg, #e0f7e9, #f1fff4); }
 #mission { background: linear-gradient(145deg, #d8f1e1, #e8fff5); }
 #join { background: linear-gradient(145deg, #c8e9d4, #d8f7e8); padding: 3rem; }
@@ -169,8 +163,8 @@ section.visible {
 }
 
 #footprint p {
-  margin-top: 1.5rem;
-  font-size: 1.2rem;
+  margin-top:1.5rem;
+  font-size:1.2rem;
 }
 
 /* -------------------- FOOTER -------------------- */
@@ -178,7 +172,6 @@ footer {
   background-color: #2e8b57;
   color: white;
   padding: 1rem;
-  margin-top: 2rem;
   text-align: center;
 }
 
@@ -187,5 +180,3 @@ footer {
   0% { opacity: 0; transform: translateY(30px); }
   100% { opacity:1; transform: translateY(0); }
 }
-
-
