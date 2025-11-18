@@ -11,31 +11,26 @@
       margin: 0;
       padding: 0;
     }
-
     header {
       background: #2e8b57;
       padding: 20px;
       color: white;
       text-align: center;
     }
-
     h1 {
       margin: 0;
       font-size: 2.2rem;
     }
-
     header p {
       margin-top: 8px;
       font-size: 1rem;
       color: #d0f0d6;
     }
-
     .container {
       max-width: 950px;
       margin: 40px auto;
       padding: 0 20px;
     }
-
     .search-box {
       width: 100%;
       padding: 14px;
@@ -44,7 +39,6 @@
       margin-bottom: 30px;
       font-size: 1rem;
     }
-
     .myth-card {
       background: white;
       padding: 22px;
@@ -53,36 +47,30 @@
       margin-bottom: 22px;
       transition: transform 0.3s, box-shadow 0.3s;
     }
-
     .myth-card:hover {
       transform: scale(1.02);
       box-shadow: 0 8px 25px rgba(0,0,0,0.18);
     }
-
     .myth-title {
       font-size: 1.3rem;
       font-weight: bold;
       color: #b30000;
       margin-bottom: 10px;
     }
-
     .fact {
       color: #004d26;
       font-size: 1rem;
       margin-bottom: 10px;
       line-height: 1.5;
     }
-
     a.source {
       font-size: 0.9rem;
       color: #0066cc;
       text-decoration: none;
     }
-
     a.source:hover {
       text-decoration: underline;
     }
-
     footer {
       text-align: center;
       padding: 22px;
@@ -102,7 +90,6 @@
 
 <div class="container">
   <input type="text" id="search" class="search-box" placeholder="🔍 Search myths...">
-
   <div id="myth-list"></div>
 </div>
 
@@ -112,6 +99,7 @@
 
 <script>
 const myths = [
+  // Original myths
   { myth: "Volcanoes emit more CO₂ than humans.", fact: "Humans emit <b>over 100× more CO₂</b> annually than all volcanoes combined. This makes fossil fuels the dominant driver of recent warming.", src: "https://www.climate.gov/news-features/climate-qa/which-emits-more-carbon-dioxide-volcanoes-or-human-activities" },
   { myth: "Solar variability drives modern warming.", fact: "Solar irradiance has been <b>stable since the 1970s</b>, while global temperatures have risen sharply, proving the Sun is not the main cause.", src: "https://climate.nasa.gov/causes/" },
   { myth: "Climate models are unreliable.", fact: "Models from the 1980s predicted current warming trends within <b>±10%</b> accuracy. They continue to accurately forecast climate impacts.", src: "https://www.noaa.gov/education/resource-collections/climate/climate-models" },
@@ -140,8 +128,9 @@ const myths = [
   { myth: "Agriculture has minimal climate impact.", fact: "Agriculture contributes <b>~24%</b> of global GHGs including land use, methane, and fertilizer emissions.", src: "https://www.ipcc.ch" },
   { myth: "Climate change only matters for rich nations.", fact: "Low-income countries face disproportionately high risks from extreme weather, heat, and sea-level rise.", src: "https://www.ipcc.ch" },
   { myth: "Climate action harms the economy.", fact: "Inaction costs trillions via disasters; early action reduces economic losses and creates jobs.", src: "https://www.un.org/en/climatechange" },
-  { myth: "Individual actions are pointless.", fact: "Behavioral shifts influence markets, policy, and collective change — every choice counts.", src: "https://www.un.org/en/climatechange" }
-  const extraMyths = [
+  { myth: "Individual actions are pointless.", fact: "Behavioral shifts influence markets, policy, and collective change — every choice counts.", src: "https://www.un.org/en/climatechange" },
+  
+  // Extra 20 high-level myths
   { myth: "Geoengineering can fully reverse global warming.", fact: "No geoengineering scheme is proven at scale. Solar radiation management could reduce temperatures but <b>won’t stop ocean acidification or extreme weather</b>.", src: "https://www.ipcc.ch" },
   { myth: "Permafrost thawing is slow and harmless.", fact: "Thawing permafrost releases <b>~1.5 billion tons of CO₂ annually</b> and methane, accelerating warming.", src: "https://www.ipcc.ch" },
   { myth: "Climate sensitivity is low and harmless.", fact: "Earth’s climate sensitivity is estimated at <b>2–5°C per CO₂ doubling</b>, enough to trigger dangerous impacts.", src: "https://www.ipcc.ch" },
@@ -164,26 +153,22 @@ const myths = [
   { myth: "Climate feedback loops are weak.", fact: "Positive feedbacks like ice-albedo and permafrost carbon release can amplify warming by <b>up to 1–2°C</b>.", src: "https://www.ipcc.ch" }
 ];
 
-
 const list = document.getElementById("myth-list");
 
 myths.forEach((item) => {
   const card = document.createElement("div");
   card.className = "myth-card";
-
   card.innerHTML = `
     <div class="myth-title">Myth: ${item.myth}</div>
     <div class="fact"><b>Fact:</b> ${item.fact}</div>
     <a href="${item.src}" class="source" target="_blank">Source</a>
   `;
-
   list.appendChild(card);
 });
 
 document.getElementById("search").addEventListener("input", function () {
   const value = this.value.toLowerCase();
   const cards = document.querySelectorAll(".myth-card");
-
   cards.forEach(card => {
     card.style.display = card.innerText.toLowerCase().includes(value) ? "block" : "none";
   });
