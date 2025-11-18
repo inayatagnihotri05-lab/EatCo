@@ -3,126 +3,183 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Climate Myth Buster 🌍</title>
+<title>Climate Myth Buster 🌍⚡</title>
 
 <style>
   body {
-    font-family: Inter, Arial, sans-serif;
-    background: #f2fff4;
     margin: 0;
-    padding: 20px;
-    color: #0b3d2e;
+    padding: 30px;
+    background: linear-gradient(135deg, #e8ffe9, #d6ffef, #eafff7);
+    font-family: "Inter", Arial, sans-serif;
+    overflow-x: hidden;
   }
 
   .container {
-    max-width: 800px;
+    max-width: 900px;
     margin: auto;
-    background: white;
-    padding: 25px;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    padding: 35px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(18px);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    animation: popUp 0.8s ease;
+  }
+
+  @keyframes popUp {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
   }
 
   h1 {
     text-align: center;
-    color: #1a8f5b;
-    font-size: 2rem;
+    font-size: 2.6rem;
+    margin-top: 0;
+    background: linear-gradient(90deg, #0f7a4b, #27ae60, #1abc9c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 1px;
+    animation: glow 2s infinite alternate ease-in-out;
+  }
+
+  @keyframes glow {
+    from { text-shadow: 0 0 8px rgba(39,174,96,0.3); }
+    to { text-shadow: 0 0 18px rgba(39,174,96,0.7); }
+  }
+
+  .floating-emoji {
+    font-size: 2.5rem;
+    position: absolute;
+    animation: floatUp 8s infinite ease-in-out;
+    opacity: 0.3;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-40px); }
+    100% { transform: translateY(0); }
+  }
+
+  .myth, .truth {
+    padding: 20px;
+    border-radius: 14px;
+    margin: 25px 0;
+    font-size: 1.2rem;
+    opacity: 0;
+    animation: fadeIn 0.7s forwards ease;
+  }
+
+  @keyframes fadeIn {
+    from { transform: translateY(15px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
 
   .myth {
-    background: #ffeaea;
-    border-left: 5px solid #e74c3c;
-    padding: 15px;
-    margin: 20px 0;
-    border-radius: 8px;
+    background: #ffe3e3;
+    border-left: 6px solid #ff4b4b;
   }
 
   .truth {
-    background: #e9fff1;
-    border-left: 5px solid #2ecc71;
-    padding: 15px;
-    margin: 20px 0;
-    border-radius: 8px;
+    background: #e4ffe9;
+    border-left: 6px solid #2ecc71;
   }
 
   button {
     display: block;
-    margin: 25px auto;
-    padding: 12px 25px;
-    background: #1a8f5b;
-    color: white;
-    font-size: 1.1rem;
+    margin: 30px auto;
+    padding: 14px 28px;
     border: none;
-    border-radius: 10px;
-    cursor: pointer;
+    font-size: 1.2rem;
+    border-radius: 12px;
     font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    transition: 0.2s;
+    cursor: pointer;
+    background: linear-gradient(135deg, #16a34a, #1cc56b);
+    color: white;
+    box-shadow: 0 6px 18px rgba(22,163,74,0.4);
+    transition: 0.25s;
   }
 
   button:hover {
-    background: #157a4d;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(22,163,74,0.6);
   }
 
   .small {
     text-align: center;
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: #6d907c;
+    margin-top: 25px;
+    color: #418a6d;
   }
 </style>
 </head>
 
 <body>
 
+<!-- Floating emojis -->
+<div class="floating-emoji" style="top:15%; left:5%;">🌍</div>
+<div class="floating-emoji" style="top:70%; right:10%;">🌱</div>
+<div class="floating-emoji" style="top:40%; right:5%;">💨</div>
+
 <div class="container">
-  <h1>🌍 Climate Myth Buster</h1>
-  <p style="text-align:center;">Tap to reveal the truth behind popular climate myths.</p>
+  <h1>⚡ Climate Myth Buster ⚡</h1>
+  <p style="text-align:center; font-size:1.1rem; margin-bottom:25px;">
+    Busting fake climate facts — one myth at a time 🔥
+  </p>
 
   <div id="mythBox" class="myth"></div>
   <div id="truthBox" class="truth"></div>
 
   <button onclick="generateMyth()">Next Myth 🔄</button>
 
-  <p class="small">Made by Inayat — spreading facts, not fear 💚</p>
+  <p class="small">Made by Inayat — powering climate facts 💚</p>
 </div>
 
 <script>
 const myths = [
   {
-    myth: "“Climate change is natural, humans aren't causing it.”",
-    truth: "97% of climate scientists agree humans are the main cause of recent warming.",
+    myth: "“Climate change is natural — humans aren't causing it.”",
+    truth: "Over 97% of climate scientists say humans are the main reason for modern warming."
   },
   {
-    myth: "“It’s cold today, so global warming isn’t real.”",
-    truth: "Weather changes daily — climate is long-term. One cold day doesn’t disprove global warming."
+    myth: "“It’s cold today, so climate change is fake.”",
+    truth: "Weather = short-term. Climate = long-term. One cold day doesn’t change global warming."
   },
   {
-    myth: "“Renewable energy is too weak to power the world.”",
-    truth: "Solar and wind are now the cheapest energy sources and can power entire countries."
+    myth: "“Solar & wind can't power big countries.”",
+    truth: "Solar is now the cheapest electricity ever created. Many countries run mostly on renewables."
   },
   {
-    myth: "“Volcanoes emit more CO₂ than humans.”",
-    truth: "Humans produce ~100x more CO₂ annually than all volcanoes combined."
+    myth: "“Volcanoes emit more CO₂.”",
+    truth: "Humans emit 100× more CO₂ than all volcanoes combined."
   },
   {
-    myth: "“Recycling doesn’t matter.”",
-    truth: "Recycling aluminum saves 95% energy. Plastic recycling prevents ocean pollution and methane release."
+    myth: "“Electric cars pollute more because of batteries.”",
+    truth: "After 1–2 years, EVs become cleaner than all petrol & diesel cars."
   },
   {
-    myth: "“Electric cars are worse because of battery production.”",
-    truth: "EVs repay their battery emissions within 1–2 years and then produce far less pollution."
+    myth: "“Recycling doesn’t help.”",
+    truth: "Recycling aluminum saves 95% of energy. Plastics avoided = methane prevented."
   },
   {
-    myth: "“Trees alone can stop climate change.”",
-    truth: "Trees help, but emissions must also drop — forests can’t absorb unlimited CO₂."
+    myth: "“Planting trees alone will fix climate change.”",
+    truth: "Trees help — but reducing emissions is the real solution."
   }
 ];
 
 function generateMyth() {
   const item = myths[Math.floor(Math.random() * myths.length)];
-  document.getElementById("mythBox").innerHTML = "<strong>❌ Myth:</strong> " + item.myth;
-  document.getElementById("truthBox").innerHTML = "<strong>✔️ Truth:</strong> " + item.truth;
+
+  // Fade-in animation restart
+  const mythBox = document.getElementById("mythBox");
+  const truthBox = document.getElementById("truthBox");
+
+  mythBox.style.opacity = 0;
+  truthBox.style.opacity = 0;
+
+  setTimeout(() => {
+    mythBox.innerHTML = "<strong>❌ Myth:</strong> " + item.myth;
+    truthBox.innerHTML = "<strong>✔️ Truth:</strong> " + item.truth;
+    mythBox.style.animation = "fadeIn .7s forwards";
+    truthBox.style.animation = "fadeIn .7s forwards .1s";
+  }, 100);
 }
 
 generateMyth();
