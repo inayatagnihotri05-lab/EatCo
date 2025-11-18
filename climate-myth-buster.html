@@ -4,22 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Climate Myth Buster 🌍</title>
-
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #e9fff1, #d9ffea, #f1fff4);
-      background-attachment: fixed;
+      background: linear-gradient(to bottom, #e0f7e9, #f1fff4);
       margin: 0;
       padding: 0;
     }
 
     header {
       background: #2e8b57;
-      padding: 25px;
+      padding: 20px;
       color: white;
       text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
     h1 {
@@ -27,39 +24,43 @@
       font-size: 2.2rem;
     }
 
+    header p {
+      margin-top: 8px;
+      font-size: 1rem;
+      color: #d0f0d6;
+    }
+
     .container {
       max-width: 950px;
       margin: 40px auto;
-      padding: 20px;
+      padding: 0 20px;
     }
 
     .search-box {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       border-radius: 12px;
-      border: 1px solid #bbb;
-      margin-bottom: 25px;
+      border: 1px solid #ccc;
+      margin-bottom: 30px;
       font-size: 1rem;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     }
 
     .myth-card {
       background: white;
       padding: 22px;
       border-radius: 16px;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 5px 18px rgba(0,0,0,0.12);
       margin-bottom: 22px;
-      transition: 0.3s ease;
-      border-left: 6px solid #2e8b57;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
 
     .myth-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.18);
+      transform: scale(1.02);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.18);
     }
 
     .myth-title {
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       font-weight: bold;
       color: #b30000;
       margin-bottom: 10px;
@@ -69,6 +70,7 @@
       color: #004d26;
       font-size: 1rem;
       margin-bottom: 10px;
+      line-height: 1.5;
     }
 
     a.source {
@@ -86,8 +88,7 @@
       padding: 22px;
       background: #2e8b57;
       color: white;
-      margin-top: 45px;
-      box-shadow: 0 -3px 10px rgba(0,0,0,0.15);
+      margin-top: 40px;
     }
   </style>
 </head>
@@ -96,238 +97,75 @@
 
 <header>
   <h1>🌍 Climate Myth Buster</h1>
-  <p>Destroying misinformation with real science.</p>
+  <p>High-level facts, real science, zero fluff.</p>
 </header>
 
 <div class="container">
-
   <input type="text" id="search" class="search-box" placeholder="🔍 Search myths...">
 
   <div id="myth-list"></div>
 </div>
 
 <footer>
-  © 2025 EatCo | Climate Science Matters 🌱
+  © 2025 EatCo | Science Matters 🌱
 </footer>
 
 <script>
-  const myths = [
-    // EXISTING MYTHS (KEPT THE SAME)
-    {
-      myth: "Climate change is natural, not caused by humans.",
-      fact: "The rapid warming of the last 150 years matches human emissions, not natural cycles.",
-      src: "https://climate.nasa.gov/evidence/"
-    },
-    {
-      myth: "Global warming stopped in 1998.",
-      fact: "Earth has warmed significantly since 1998 — the last 10 years were the hottest ever recorded.",
-      src: "https://www.noaa.gov/climate"
-    },
-    {
-      myth: "CO₂ is plant food, so more CO₂ is good.",
-      fact: "Too much CO₂ overheats the planet and reduces nutrients in crops.",
-      src: "https://www.ipcc.ch"
-    },
-    {
-      myth: "Scientists disagree on climate change.",
-      fact: "Over 97% of climate scientists agree humans are causing it.",
-      src: "https://climate.nasa.gov/faq/17/do-scientists-agree-on-climate-change/"
-    },
-    {
-      myth: "Cold winters disprove global warming.",
-      fact: "Weather is short-term; climate is long-term. Global average temperature keeps rising.",
-      src: "https://www.ipcc.ch"
-    },
-    {
-      myth: "The Sun is causing climate change.",
-      fact: "Satellite data shows solar energy has not increased since the 1970s.",
-      src: "https://climate.nasa.gov/causes/"
-    },
-    {
-      myth: "Climate models are unreliable.",
-      fact: "Models from the 1980s predicted today’s temperatures accurately.",
-      src: "https://www.noaa.gov/education/resource-collections/climate/climate-models"
-    },
-    {
-      myth: "Earth has always changed, so this is normal.",
-      fact: "Current warming is 10× faster than any natural cycle in 800,000 years.",
-      src: "https://www.ipcc.ch"
-    },
-    {
-      myth: "Antarctica is gaining ice overall.",
-      fact: "It gains snow inland but loses far more ice at the coasts — net loss.",
-      src: "https://climate.nasa.gov/vital-signs/ice-sheets/"
-    },
-    {
-      myth: "EVs pollute more because electricity comes from coal.",
-      fact: "EVs have a lower lifetime carbon footprint even on coal-heavy grids.",
-      src: "https://www.iea.org"
-    },
-    {
-      myth: "Wind turbines kill too many birds.",
-      fact: "Turbines cause <0.1% of bird deaths — windows & cats kill millions more.",
-      src: "https://www.audubon.org"
-    },
-    {
-      myth: "Climate change will only affect the future.",
-      fact: "It is already causing heatwaves, floods, coral bleaching, and rising seas.",
-      src: "https://www.ipcc.ch"
-    },
-    {
-      myth: "We can just adapt instead of cutting emissions.",
-      fact: "Some impacts can't be adapted to — like ice sheet collapse or extreme heat.",
-      src: "https://www.un.org/en/climatechange"
-    },
-    {
-      myth: "CO₂ is too small (0.04%) to matter.",
-      fact: "Small amounts can have big effects — CO₂ traps heat extremely effectively.",
-      src: "https://climate.nasa.gov"
-    },
-    {
-      myth: "Oceans can absorb all the CO₂ we emit.",
-      fact: "They absorb 30% — causing dangerous acidification.",
-      src: "https://www.noaa.gov/education/resource-collections/ocean-coasts/ocean-acidification"
-    },
-    {
-      myth: "Heatwaves are natural.",
-      fact: "Climate change makes heatwaves 5× more likely and far more intense.",
-      src: "https://www.worldweatherattribution.org"
-    },
-    {
-      myth: "Methane from cows doesn't matter.",
-      fact: "Methane warms the planet 80× more than CO₂ over 20 years.",
-      src: "https://www.ipcc.ch"
-    },
-    {
-      myth: "Airplanes are the biggest climate problem.",
-      fact: "Aviation is ~2–3% of emissions; energy & transport cause much more.",
-      src: "https://www.iea.org"
-    },
-    {
-      myth: "Climate change only affects polar bears.",
-      fact: "It affects food prices, health, water, migration, and global stability.",
-      src: "https://www.ipcc.ch"
-    },
-    {
-      myth: "Recycling solves the plastic problem.",
-      fact: "Only 9% of plastic is actually recycled.",
-      src: "https://www.oecd.org"
-    },
-    {
-      myth: "India doesn’t contribute much.",
-      fact: "India is the 3rd largest emitter and highly vulnerable to climate impacts.",
-      src: "https://climateknowledgeportal.worldbank.org"
-    },
-    {
-      myth: "Tech will fix everything later.",
-      fact: "No technology can scale fast enough alone — emissions must drop now.",
-      src: "https://www.ipcc.ch"
-    },
+const myths = [
+  { myth: "Volcanoes emit more CO₂ than humans.", fact: "Humans emit <b>over 100× more CO₂</b> annually than all volcanoes combined. This makes fossil fuels the dominant driver of recent warming.", src: "https://www.climate.gov/news-features/climate-qa/which-emits-more-carbon-dioxide-volcanoes-or-human-activities" },
+  { myth: "Solar variability drives modern warming.", fact: "Solar irradiance has been <b>stable since the 1970s</b>, while global temperatures have risen sharply, proving the Sun is not the main cause.", src: "https://climate.nasa.gov/causes/" },
+  { myth: "Climate models are unreliable.", fact: "Models from the 1980s predicted current warming trends within <b>±10%</b> accuracy. They continue to accurately forecast climate impacts.", src: "https://www.noaa.gov/education/resource-collections/climate/climate-models" },
+  { myth: "Electric cars don’t reduce emissions.", fact: "EVs produce <b>50–70% lower lifetime GHG emissions</b> than petrol cars, even when charged on fossil-heavy grids.", src: "https://www.iea.org/reports/global-ev-outlook-2023" },
+  { myth: "Renewables can’t reliably power countries.", fact: "Countries like Denmark and Germany meet <b>50–80% of electricity demand</b> from renewables on some days, proving grids can adapt.", src: "https://www.iea.org/reports/world-energy-outlook-2022" },
+  { myth: "Antarctica is gaining ice overall.", fact: "While inland snow increases, coastal ice loss exceeds <b>150 billion tons per year</b>, resulting in net ice decline.", src: "https://climate.nasa.gov/vital-signs/ice-sheets/" },
+  { myth: "Oceans absorb unlimited CO₂.", fact: "Oceans absorb ~<b>30%</b> of emissions, causing acidification that harms coral and marine ecosystems.", src: "https://www.noaa.gov/education/resource-collections/ocean-coasts/ocean-acidification" },
+  { myth: "Cows don’t significantly contribute to warming.", fact: "Methane from livestock warms the planet <b>80× more than CO₂</b> over 20 years, making agriculture a major source of emissions.", src: "https://www.ipcc.ch/report/ar6/" },
+  { myth: "We can just adapt; no need to cut emissions.", fact: "Some impacts like ice-sheet collapse and deadly heat are irreversible. <b>Mitigation is essential</b>.", src: "https://www.un.org/en/climatechange" },
+  { myth: "Climate change only affects polar regions or future generations.", fact: "It’s already impacting food security, health, migration, and infrastructure worldwide.", src: "https://www.ipcc.ch" },
+  { myth: "Hydrogen is the ultimate climate solution.", fact: "Green hydrogen is promising but <b>currently small-scale</b> and resource-intensive; it cannot replace immediate emission cuts.", src: "https://www.iea.org/reports/hydrogen" },
+  { myth: "Plastic bans alone stop pollution.", fact: "Without recycling, waste management, and producer responsibility, plastic continues polluting globally.", src: "https://www.oecd.org/environment/waste/plastic-waste.html" },
+  { myth: "Composting is ineffective for climate.", fact: "Proper composting prevents methane emissions from landfills and improves soil health, reducing net GHGs.", src: "https://www.epa.gov/recycle/composting-home" },
+  { myth: "Climate change is too slow to matter.", fact: "The planet is warming <b>10× faster than any natural cycle in 800,000 years</b>.", src: "https://www.ipcc.ch" },
+  { myth: "Electricity grids will collapse with EV adoption.", fact: "Smart grids and charging strategies allow massive EV integration without failures.", src: "https://www.iea.org/reports/global-ev-outlook-2023" },
+  { myth: "Wind turbines kill large numbers of birds.", fact: "Turbines account for <b>0.1%</b> of bird deaths; buildings and cats are far deadlier.", src: "https://www.audubon.org" },
+  { myth: "EVs are worse than petrol cars on coal grids.", fact: "EVs still produce <b>50–70% lower lifetime emissions</b> than gasoline vehicles, even on coal-heavy electricity.", src: "https://www.iea.org/reports/global-ev-outlook-2023" },
+  { myth: "Solar panels are ineffective in cloudy regions.", fact: "Cold or cloudy regions like Germany still generate substantial solar electricity; panel efficiency improves in cooler conditions.", src: "https://www.iea.org/reports/world-energy-outlook-2022" },
+  { myth: "Organic food is always lower impact.", fact: "Some organic farms require more land and water; emissions depend on methods, not labels.", src: "https://www.fao.org" },
+  { myth: "Tech will save us without emissions cuts.", fact: "No technology scales fast enough alone; immediate emission reductions are mandatory.", src: "https://www.ipcc.ch" },
+  { myth: "Methane from fossil gas is negligible.", fact: "Methane leaks from gas production contribute <b>~25% of current warming</b> in the short term.", src: "https://www.ipcc.ch/report/ar6/" },
+  { myth: "Extreme weather is unrelated to climate change.", fact: "Climate change amplifies intensity and frequency of storms, heatwaves, and floods.", src: "https://www.ipcc.ch" },
+  { myth: "CO₂ is just plant food; more is fine.", fact: "Excess CO₂ reduces crop nutrient quality and drives dangerous warming.", src: "https://www.ipcc.ch" },
+  { myth: "The Sun will solve global warming naturally.", fact: "No solar cycle can replicate the current warming rate; human emissions dominate.", src: "https://climate.nasa.gov/causes/" },
+  { myth: "Polar ice melt doesn’t affect sea levels.", fact: "Melting glaciers and ice sheets contribute ><b>1.2 mm/year</b> to sea level rise globally.", src: "https://climate.nasa.gov/vital-signs/sea-level/" },
+  { myth: "Agriculture has minimal climate impact.", fact: "Agriculture contributes <b>~24%</b> of global GHGs including land use, methane, and fertilizer emissions.", src: "https://www.ipcc.ch" },
+  { myth: "Climate change only matters for rich nations.", fact: "Low-income countries face disproportionately high risks from extreme weather, heat, and sea-level rise.", src: "https://www.ipcc.ch" },
+  { myth: "Climate action harms the economy.", fact: "Inaction costs trillions via disasters; early action reduces economic losses and creates jobs.", src: "https://www.un.org/en/climatechange" },
+  { myth: "Individual actions are pointless.", fact: "Behavioral shifts influence markets, policy, and collective change — every choice counts.", src: "https://www.un.org/en/climatechange" }
+];
 
-    /* -----------------------------
-     🔥 15 NEW MYTHS ADDED BELOW
-    ------------------------------ */
+const list = document.getElementById("myth-list");
 
-    {
-      myth: "Planting trees alone can stop climate change.",
-      fact: "Trees help, but cannot absorb emissions fast enough without reducing fossil fuels.",
-      src: "https://www.ipcc.ch"
-    },
-    {
-      myth: "Volcanoes emit more CO₂ than humans.",
-      fact: "Humans emit 100× more CO₂ than all volcanoes combined.",
-      src: "https://climate.nasa.gov"
-    },
-    {
-      myth: "Polar bears are doing fine.",
-      fact: "Many populations are declining due to melting sea ice.",
-      src: "https://wwf.panda.org"
-    },
-    {
-      myth: "Climate change only affects poor countries.",
-      fact: "It impacts every nation — through heatwaves, storms, food prices, and health.",
-      src: "https://www.ipcc.ch"
-    },
-    {
-      myth: "Hydrogen fuel is the best climate solution.",
-      fact: "Green hydrogen is useful but still expensive and not widely available.",
-      src: "https://www.iea.org"
-    },
-    {
-      myth: "Plastic bans don’t make a difference.",
-      fact: "Plastic bans reduce waste, microplastics, and ocean pollution significantly.",
-      src: "https://www.unep.org"
-    },
-    {
-      myth: "Carbon offsets let companies avoid responsibility.",
-      fact: "Offsets help but are not enough — companies must reduce real emissions first.",
-      src: "https://www.ipcc.ch"
-    },
-    {
-      myth: "Climate action is too expensive.",
-      fact: "Doing nothing will cost far more in disasters, health, and economy.",
-      src: "https://www.un.org/en/climatechange"
-    },
-    {
-      myth: "Snowfall means global warming isn’t real.",
-      fact: "Warming air evaporates more water → stronger snowfall in some regions.",
-      src: "https://climate.nasa.gov"
-    },
-    {
-      myth: "Recycling paper saves trees.",
-      fact: "Most trees cut today are for timber, not paper. Recycling helps but isn’t enough.",
-      src: "https://www.epa.gov"
-    },
-    {
-      myth: "Solar panels can't work in winter.",
-      fact: "Solar panels work in cold climates — some countries generate most in winter.",
-      src: "https://www.iea.org"
-    },
-    {
-      myth: "Meat alternatives are always eco-friendly.",
-      fact: "Some are, but many processed ones have high water & energy footprints.",
-      src: "https://www.sciencedirect.com"
-    },
-    {
-      myth: "Electric cars will overload the grid.",
-      fact: "Grids can handle EVs — many countries already do.",
-      src: "https://www.iea.org"
-    },
-    {
-      myth: "Heatwaves happen only outdoors.",
-      fact: "Indoor heat kills more people — poorly ventilated homes trap heat.",
-      src: "https://www.who.int"
-    },
-    {
-      myth: "Nothing we do matters because big countries pollute more.",
-      fact: "Every country must act — climate change is global and cumulative.",
-      src: "https://www.ipcc.ch"
-    }
-  ];
+myths.forEach((item) => {
+  const card = document.createElement("div");
+  card.className = "myth-card";
 
-  const list = document.getElementById("myth-list");
+  card.innerHTML = `
+    <div class="myth-title">Myth: ${item.myth}</div>
+    <div class="fact"><b>Fact:</b> ${item.fact}</div>
+    <a href="${item.src}" class="source" target="_blank">Source</a>
+  `;
 
-  myths.forEach((item) => {
-    const card = document.createElement("div");
-    card.className = "myth-card";
+  list.appendChild(card);
+});
 
-    card.innerHTML = `
-      <div class="myth-title">Myth: ${item.myth}</div>
-      <div class="fact"><b>Fact:</b> ${item.fact}</div>
-      <a href="${item.src}" class="source" target="_blank">Source</a>
-    `;
+document.getElementById("search").addEventListener("input", function () {
+  const value = this.value.toLowerCase();
+  const cards = document.querySelectorAll(".myth-card");
 
-    list.appendChild(card);
+  cards.forEach(card => {
+    card.style.display = card.innerText.toLowerCase().includes(value) ? "block" : "none";
   });
-
-  document.getElementById("search").addEventListener("input", function () {
-    const value = this.value.toLowerCase();
-    const cards = document.querySelectorAll(".myth-card");
-
-    cards.forEach(card => {
-      card.style.display = card.innerText.toLowerCase().includes(value) ? "block" : "none";
-    });
-  });
+});
 </script>
 
 </body>
