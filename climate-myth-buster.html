@@ -1,164 +1,285 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Climate Myth Buster</title>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Climate Myth Buster — Evidence-First</title>
 <style>
-    body {
-        font-family: "Poppins", sans-serif;
-        margin: 0;
-        background: #f3f8ff;
-        color: #222;
-    }
+  :root{
+    --green-1:#2e8b57; --green-2:#34d399; --bg:#e9fef1;
+    --card-shadow: 0 8px 22px rgba(15,63,47,0.08);
+  }
+  body{font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; margin:0; background:var(--bg); color:#0b3d2e; -webkit-font-smoothing:antialiased;}
+  header{background:linear-gradient(90deg,var(--green-1),var(--green-2));color:#fff;padding:34px 18px;text-align:center;border-bottom-left-radius:18px;border-bottom-right-radius:18px}
+  header h1{margin:0;font-size:2rem;letter-spacing:0.4px}
+  header p{margin:8px 0 0;font-size:0.95rem;opacity:0.95}
 
-    header {
-        background: linear-gradient(135deg, #2ecc71, #27ae60);
-        padding: 30px;
-        text-align: center;
-        color: white;
-        font-size: 32px;
-        font-weight: 700;
-        letter-spacing: 1px;
-    }
+  .container{max-width:980px;margin:26px auto;padding:0 18px}
+  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  #search{flex:1;min-width:200px;padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);box-shadow:0 6px 14px rgba(0,0,0,0.04)}
+  #lang{padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06)}
+  .note{font-size:0.9rem;color:#18523a;margin-top:6px}
 
-    .container {
-        max-width: 900px;
-        margin: 20px auto;
-        padding: 20px;
-    }
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  @media(max-width:820px){ .grid{grid-template-columns:1fr} }
 
-    /* Search bar */
-    #searchBox {
-        width: 100%;
-        padding: 15px;
-        font-size: 18px;
-        border: 2px solid #27ae60;
-        border-radius: 10px;
-        outline: none;
-        margin-bottom: 25px;
-    }
+  .card{
+    background:#fff;border-radius:12px;padding:16px;box-shadow:var(--card-shadow);transition:transform .18s, box-shadow .18s;cursor:pointer;
+  }
+  .card:hover{ transform:translateY(-6px); box-shadow:0 16px 36px rgba(15,63,47,0.12) }
 
-    /* Card styling */
-    .card {
-        background: white;
-        padding: 20px;
-        border-radius: 15px;
-        margin-bottom: 20px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        transition: 0.3s;
-    }
+  .myth{color:#b82d2d;font-weight:800;margin-bottom:8px}
+  .fact{display:none;color:#0d4f33;background:linear-gradient(180deg,#f3fff7,#ecfff1);padding:12px;border-radius:8px;border-left:4px solid #27ae60;font-weight:600}
+  .meta-small{font-size:0.86rem;color:#2d6b51;margin-top:8px}
 
-    .card:hover {
-        transform: scale(1.02);
-    }
+  .actions{display:flex;gap:12px;margin-top:12px;align-items:center}
+  .btn{background:linear-gradient(90deg,var(--green-2),var(--green-1));border:none;color:white;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(46,211,157,0.12)}
+  .btn.secondary{background:transparent;color:var(--green-1);border:1px solid rgba(0,0,0,0.06);box-shadow:none}
 
-    .myth {
-        font-size: 20px;
-        font-weight: 700;
-        color: #e74c3c;
-    }
-
-    .fact {
-        margin-top: 10px;
-        font-size: 17px;
-        color: #2c3e50;
-    }
-
-    /* Language dropdown */
-    #language-select {
-        padding: 12px;
-        border-radius: 10px;
-        border: 2px solid #2ecc71;
-        font-size: 16px;
-        margin-bottom: 25px;
-        width: 100%;
-    }
+  footer{max-width:980px;margin:36px auto;text-align:center;color:#155a40;font-size:0.9rem;padding:0 18px}
 </style>
 </head>
-
 <body>
-<header>🌎 Climate Myth Buster</header>
 
-<div class="container">
+<header>
+  <h1>Climate Myth Buster — Evidence-First</h1>
+  <p>Accurate, science-based corrections for common misunderstandings. Tap a card to reveal the evidence-based fact.</p>
+</header>
 
-    <!-- Language Select -->
-    <select id="language-select">
-        <option value="en">English</option>
-        <option value="hi">Hindi (हिन्दी)</option>
-        <option value="es">Spanish (Español)</option>
-        <option value="fr">French (Français)</option>
-        <option value="ta">Tamil (தமிழ்)</option>
-        <option value="bn">Bengali (বাংলা)</option>
+<section class="container">
+  <div class="controls">
+    <input id="search" placeholder="Search myths or facts (keywords) — e.g. 'volcano', 'methane', 'recycling'" oninput="render()" />
+    <select id="lang" onchange="render()">
+      <option value="en">English</option>
+      <option value="hi">Hindi (हिन्दी)</option>
+      <option value="es">Spanish (Español)</option>
+      <option value="fr">French (Français)</option>
+      <option value="bn">Bengali (বাংলা)</option>
+      <option value="ta">Tamil (தமிழ்)</option>
     </select>
+    <button class="btn secondary" onclick="showAllFacts()">Reveal all facts</button>
+  </div>
 
-    <!-- Search -->
-    <input type="text" id="searchBox" placeholder="Search myths...">
+  <div class="note">Notes: explanations are concise summaries of scientific consensus (IPCC, peer-reviewed literature). If you want, I can add source links under each fact.</div>
 
-    <!-- Myth List -->
-    <div id="mythList"></div>
+  <div id="grid" class="grid" style="margin-top:18px"></div>
 
-</div>
+  <div style="margin-top:18px; display:flex; gap:10px; flex-wrap:wrap; align-items:center">
+    <button class="btn" onclick="randomMyth()">Give me a random myth</button>
+    <div class="meta-small">Keyboard shortcuts: <strong>N</strong> = random / next, <strong>R</strong> = reveal all</div>
+  </div>
+</section>
+
+<footer>
+  © 2025 EatCo • Facts summarized from IPCC & scientific literature. Want sources under each fact? Say “add sources” and I’ll attach them.
+</footer>
 
 <script>
-const myths = {
-    en: [
-        { myth: "Climate change is not real.", fact: "97% of scientists agree it's happening and caused by humans." },
-        { myth: "Electric cars pollute more than petrol cars.", fact: "EVs produce less pollution over their lifetime." },
-        { myth: "One person can't make a difference.", fact: "Individual actions inspire community change." },
-        { myth: "Global warming stopped in 1998.", fact: "The last decade was the hottest ever recorded." },
-        { myth: "Recycling doesn't matter.", fact: "Recycling reduces waste, energy use, and emissions." }
-    ],
+/*
+  Upgraded, scientific myth list. Each item has text for multiple languages where provided.
+  Keep translations minimal for now — English always present.
+  Facts are written carefully to avoid time-sensitive numeric claims; they reflect stable conclusions.
+*/
 
-    hi: [
-        { myth: "जलवायु परिवर्तन असली नहीं है।", fact: "97% वैज्ञानिक मानते हैं कि यह वास्तविक है और इंसानों के कारण हो रहा है।" },
-        { myth: "इलेक्ट्रिक कारें पेट्रोल कारों से ज्यादा प्रदूषण करती हैं।", fact: "पूरे जीवनकाल में EV कम प्रदूषण करती हैं।" }
-    ],
+const ITEMS = [
+  {
+    id: 'm1',
+    myth: { en: "Climate change is just a natural cycle and humans aren’t responsible." },
+    fact: {
+      en: "Observations and attribution studies show recent warming is primarily driven by human emissions of greenhouse gases, especially CO₂ from fossil fuels — this is the scientific consensus (IPCC)."
+    },
+  },
 
-    es: [
-        { myth: "El cambio climático no es real.", fact: "El 97% de los científicos está de acuerdo en que es real y causado por humanos." }
-    ],
+  {
+    id: 'm2',
+    myth: { en: "Volcanoes emit more CO₂ than humans." },
+    fact: {
+      en: "While volcanoes emit CO₂, the total annual CO₂ from human activities (fossil fuel burning, cement, land-use change) far exceeds volcanic emissions by orders of magnitude."
+    },
+  },
 
-    fr: [
-        { myth: "Le changement climatique n'est pas réel.", fact: "97% des scientifiques confirment qu'il est réel et causé par l'homme." }
-    ],
+  {
+    id: 'm3',
+    myth: { en: "Global warming stopped in year X (e.g., 1998) — the planet is not warming." },
+    fact: {
+      en: "Short-term variability (El Niño/La Niña, volcanic eruptions) can cause temporary slowdowns, but the long-term global temperature trend continues upward; decade-scale averages show continued warming."
+    },
+  },
 
-    ta: [
-        { myth: "காலநிலை மாற்றம் உண்மையல்ல.", fact: "97% விஞ்ஞானிகள் இது மனிதர்களால் ஏற்படுகிறது என்று согள்கிறார்கள்." }
-    ],
+  {
+    id: 'm4',
+    myth: { en: "Reducing methane isn't important, CO₂ is the only one we should care about." },
+    fact: {
+      en: "Methane is a potent, short-lived greenhouse gas with strong near-term warming effects. Reducing methane emissions gives faster climate benefits while CO₂ reduction is necessary for long-term stabilization."
+    },
+  },
 
-    bn: [
-        { myth: "জলবায়ু পরিবর্তন সত্যি নয়।", fact: "৯৭% বিজ্ঞানী একমত যে এটি সত্যি এবং মানুষের কারণে হচ্ছে।" }
-    ]
+  {
+    id: 'm5',
+    myth: { en: "Planting trees alone will solve climate change." },
+    fact: {
+      en: "Afforestation and reforestation help remove CO₂, but they can’t substitute for rapid reductions in fossil fuel emissions; permanence, land availability, and ecosystems matter."
+    },
+  },
+
+  {
+    id: 'm6',
+    myth: { en: "Electric vehicles (EVs) are worse overall because battery production is dirty." },
+    fact: {
+      en: "Life-cycle studies show EVs typically have higher manufacturing emissions but lower lifetime emissions than comparable internal combustion vehicles once they are driven (impacts depend on electricity mix and vehicle lifetime)."
+    },
+  },
+
+  {
+    id: 'm7',
+    myth: { en: "Recycling is pointless; it doesn't reduce climate impact." },
+    fact: {
+      en: "Recycling materials like aluminum and steel saves substantial energy and emissions compared to primary production; for plastics, recycling reduces waste and pollution but effectiveness depends on collection and low contamination rates."
+    },
+  },
+
+  {
+    id: 'm8',
+    myth: { en: "Ocean acidification is just like pollution — not a big deal." },
+    fact: {
+      en: "Ocean acidification is a chemical change caused by more CO₂ in the atmosphere dissolving into seawater; it reduces carbonate ion availability and harms shell-building organisms, with ecosystem consequences."
+    },
+  },
+
+  {
+    id: 'm9',
+    myth: { en: "Sea level rise is only caused by melting ice — thermal expansion doesn't matter." },
+    fact: {
+      en: "Sea level rise is caused by both melting land ice (glaciers, ice sheets) and thermal expansion of warming seawater; both processes are important and observed."
+    },
+  },
+
+  {
+    id: 'm10',
+    myth: { en: "Renewable energy cannot be reliable at large scale." },
+    fact: {
+      en: "Variable renewables (wind & solar) can supply very large shares of electricity when paired with grids, storage, demand management, and diversified geographic deployment; many regions already operate with high renewable shares."
+    },
+  },
+
+  {
+    id: 'm11',
+    myth: { en: "Adaptation costs are always cheaper than reducing emissions (mitigation)." },
+    fact: {
+      en: "Both adaptation and mitigation are required. Mitigation reduces future damages and long-term costs; many studies find early mitigation is more cost-effective than paying for large adaptation needs later."
+    },
+  },
+
+  {
+    id: 'm12',
+    myth: { en: "Microplastics are harmless because they’re tiny." },
+    fact: {
+      en: "Microplastics are ubiquitous and can transport chemicals; research is ongoing on health/ecosystem effects, so reducing plastic leakage is prudent while scientists study specific impacts."
+    },
+  }
+];
+
+/* optional short translations for a few items (expand later) */
+const TRANSLATIONS = {
+  hi: {
+    m1: {
+      myth: "जलवायु परिवर्तन केवल एक प्राकृतिक चक्र है और मानव जिम्मेदार नहीं हैं।",
+      fact: "पर्यवेक्षण और अध्ययन दिखाते हैं कि हालिया तापमान वृद्धि मुख्य रूप से मानव द्वारा उत्सर्जित ग्रीनहाउस गैसों (विशेषकर फ़ॉसिल ईंधन से CO₂) के कारण है।"
+    },
+    m2: {
+      myth: "ज्वालामुखी मानवों से अधिक CO₂ उत्सर्जित करते हैं।",
+      fact: "ज्वालामुखी CO₂ छोड़ते हैं, पर मानव गतिविधियाँ (ईंधन जलाना, सीमेंट, भूमि-उपयोग परिवर्तन) कुल वार्षिक CO₂ में कहीं अधिक योगदान देती हैं।"
+    },
+    m4: {
+      myth: "मीथेन को कम करना ज़रूरी नहीं है, केवल CO₂ की चिंता करें।",
+      fact: "मीथेन एक शक्तिशाली और अल्प-अवधि ग्रीनहाउस गैस है; इसे कम करने से नज़दीकी समय में तापमान वृद्धि धीमी हो सकती है जबकि CO₂ कटौती दीर्घकालिक समाधान है।"
+    }
+    // add more translations as needed
+  }
 };
 
-const mythList = document.getElementById("mythList");
-const searchBox = document.getElementById("searchBox");
-const langSelect = document.getElementById("language-select");
+const grid = document.getElementById('grid');
+const searchInput = document.getElementById('search');
+const langSelect = document.getElementById('lang');
 
-function displayMyths() {
-    const lang = langSelect.value;
-    const query = searchBox.value.toLowerCase();
-    const selectedMyths = myths[lang].filter(item =>
-        item.myth.toLowerCase().includes(query) ||
-        item.fact.toLowerCase().includes(query)
-    );
+/* Render function builds cards filtered by search and language */
+function render(){
+  const q = (searchInput.value || '').trim().toLowerCase();
+  const lang = langSelect.value || 'en';
+  grid.innerHTML = '';
 
-    mythList.innerHTML = selectedMyths.map(item => `
-        <div class="card">
-            <div class="myth">❌ Myth: ${item.myth}</div>
-            <div class="fact">✔ Fact: ${item.fact}</div>
-        </div>
-    `).join("");
+  for(const item of ITEMS){
+    // get text (prefer translation if available)
+    const id = item.id;
+    let mythText = item.myth.en;
+    let factText = item.fact.en;
+    if(TRANSLATIONS[lang] && TRANSLATIONS[lang][id]){
+      mythText = TRANSLATIONS[lang][id].myth || mythText;
+      factText = TRANSLATIONS[lang][id].fact || factText;
+    } else if(lang !== 'en' && item.myth[lang]) {
+      mythText = item.myth[lang];
+      factText = item.fact[lang] || factText;
+    }
+
+    const searchable = (mythText + ' ' + factText).toLowerCase();
+    if(q && !searchable.includes(q)) continue;
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.tabIndex = 0;
+    card.innerHTML = `
+      <div class="myth">❌ Myth: ${escapeHtml(mythText)}</div>
+      <div class="fact" id="fact-${id}">✔️ Fact: ${escapeHtml(factText)}</div>
+      <div class="meta-small">Click to reveal / hide • ID: ${id}</div>
+    `;
+    // toggle fact on click or Enter
+    card.addEventListener('click', ()=> toggleFact(id));
+    card.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') toggleFact(id); });
+    grid.appendChild(card);
+  }
+
+  // if nothing found
+  if(grid.children.length === 0){
+    grid.innerHTML = `<div style="grid-column:1/-1;padding:18px;background:#fff;border-radius:12px;box-shadow:${getComputedStyle(document.documentElement).getPropertyValue('--card-shadow')};">No myths found for that search.</div>`;
+  }
 }
 
-searchBox.addEventListener("input", displayMyths);
-langSelect.addEventListener("change", displayMyths);
+/* Toggle fact visibility safely */
+function toggleFact(id){
+  const el = document.getElementById('fact-' + id);
+  if(!el) return;
+  el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+}
 
-// Load default (English)
-displayMyths();
+/* Random myth helper */
+function randomMyth(){
+  const visibleCards = Array.from(grid.children).filter(c => c.classList && c.classList.contains('card'));
+  if(visibleCards.length === 0) { render(); return; }
+  const idx = Math.floor(Math.random() * visibleCards.length);
+  visibleCards[idx].scrollIntoView({behavior:'smooth', block:'center'});
+  visibleCards[idx].focus();
+  visibleCards[idx].click();
+}
+
+/* helper for instances where user wants to reveal all */
+function showAllFacts(){
+  for(const item of ITEMS){
+    const f = document.getElementById('fact-' + item.id);
+    if(f) f.style.display = 'block';
+  }
+}
+
+/* basic HTML-escape */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* keyboard shortcuts */
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'N' || e.key === 'n') randomMyth();
+  if(e.key === 'R' || e.key === 'r') showAllFacts();
+});
+
+/* initial render */
+render();
 </script>
-
 </body>
 </html>
