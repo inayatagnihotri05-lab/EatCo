@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Climate Myth Buster 🌍</title>
+
+<style>
+  body {
+    font-family: Inter, Arial, sans-serif;
+    background: #f2fff4;
+    margin: 0;
+    padding: 20px;
+    color: #0b3d2e;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+
+  h1 {
+    text-align: center;
+    color: #1a8f5b;
+    font-size: 2rem;
+  }
+
+  .myth {
+    background: #ffeaea;
+    border-left: 5px solid #e74c3c;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+  }
+
+  .truth {
+    background: #e9fff1;
+    border-left: 5px solid #2ecc71;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 8px;
+  }
+
+  button {
+    display: block;
+    margin: 25px auto;
+    padding: 12px 25px;
+    background: #1a8f5b;
+    color: white;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: 0.2s;
+  }
+
+  button:hover {
+    background: #157a4d;
+  }
+
+  .small {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #6d907c;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🌍 Climate Myth Buster</h1>
+  <p style="text-align:center;">Tap to reveal the truth behind popular climate myths.</p>
+
+  <div id="mythBox" class="myth"></div>
+  <div id="truthBox" class="truth"></div>
+
+  <button onclick="generateMyth()">Next Myth 🔄</button>
+
+  <p class="small">Made by Inayat — spreading facts, not fear 💚</p>
+</div>
+
+<script>
+const myths = [
+  {
+    myth: "“Climate change is natural, humans aren't causing it.”",
+    truth: "97% of climate scientists agree humans are the main cause of recent warming.",
+  },
+  {
+    myth: "“It’s cold today, so global warming isn’t real.”",
+    truth: "Weather changes daily — climate is long-term. One cold day doesn’t disprove global warming."
+  },
+  {
+    myth: "“Renewable energy is too weak to power the world.”",
+    truth: "Solar and wind are now the cheapest energy sources and can power entire countries."
+  },
+  {
+    myth: "“Volcanoes emit more CO₂ than humans.”",
+    truth: "Humans produce ~100x more CO₂ annually than all volcanoes combined."
+  },
+  {
+    myth: "“Recycling doesn’t matter.”",
+    truth: "Recycling aluminum saves 95% energy. Plastic recycling prevents ocean pollution and methane release."
+  },
+  {
+    myth: "“Electric cars are worse because of battery production.”",
+    truth: "EVs repay their battery emissions within 1–2 years and then produce far less pollution."
+  },
+  {
+    myth: "“Trees alone can stop climate change.”",
+    truth: "Trees help, but emissions must also drop — forests can’t absorb unlimited CO₂."
+  }
+];
+
+function generateMyth() {
+  const item = myths[Math.floor(Math.random() * myths.length)];
+  document.getElementById("mythBox").innerHTML = "<strong>❌ Myth:</strong> " + item.myth;
+  document.getElementById("truthBox").innerHTML = "<strong>✔️ Truth:</strong> " + item.truth;
+}
+
+generateMyth();
+</script>
+
+</body>
+</html>
