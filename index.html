@@ -19,11 +19,11 @@
     }
 
     /* Button hover effect */
-    a.btn, .quiz-btn {
+    a.btn {
       transition: transform 0.3s, box-shadow 0.3s;
     }
 
-    a.btn:hover, .quiz-btn:hover {
+    a.btn:hover {
       transform: translateY(-3px) scale(1.05);
       box-shadow: 0 6px 15px rgba(0,0,0,0.3);
     }
@@ -32,28 +32,19 @@
     .quiz-box {
       background-color:#2e8b57; 
       color:white; 
-      padding:18px 20px; 
+      padding:12px 18px; 
       margin-top:20px; 
       border-radius:10px; 
       text-align:center; 
       display:inline-block; 
       box-shadow:0 3px 10px rgba(0,0,0,0.15);
+      font-weight:bold;
+      font-size:1em;
+      text-decoration:none;
+      transition: transform 0.3s, box-shadow 0.3s;
     }
 
-    .quiz-box a {
-      background-color:white; 
-      color:#2e8b57; 
-      padding:10px 22px; 
-      border-radius:6px; 
-      text-decoration:none; 
-      font-weight:bold; 
-      display:inline-block; 
-      margin-top:8px; 
-      box-shadow:0 2px 6px rgba(0,0,0,0.15); 
-      transition:0.3s;
-    }
-
-    .quiz-box a:hover {
+    .quiz-box:hover {
       transform: translateY(-3px) scale(1.05);
       box-shadow: 0 6px 15px rgba(0,0,0,0.3);
     }
@@ -104,10 +95,9 @@
     <a href="challenge.html" class="btn" target="_blank">🚀 Join the Zero Waste Challenge</a>
 
     <!-- Eco Personality Quiz Box -->
-    <div class="quiz-box">
-      <h3 style="margin:0; font-size:1.4em;">🌿 Eco Personality Quiz</h3>
-      <a href="eco-quiz.html">Take the Quiz 🌱</a>
-    </div>
+    <a href="eco-quiz.html" class="quiz-box">
+      🌿 Eco Personality Quiz
+    </a>
   </section>
 
   <!-- EcoRun Game Button -->
