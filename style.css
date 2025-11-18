@@ -40,25 +40,24 @@ nav a:hover {
   text-decoration: underline;
   color: #a8f0c6;
 }
-
-/* -------------------- HERO SECTION FIX -------------------- */
+/* -------------------- HERO SECTION -------------------- */
 .hero {
   position: relative;
-  height: 80vh; /* full viewport height */
+  width: 100%;
+  min-height: 80vh; /* ensures hero takes most of the viewport */
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 2rem;
+  padding: 0 2rem;
   background: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
   overflow: hidden;
-  border-radius: 10px;
 }
 
 .hero-overlay {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.25); /* lighter so text is visible */
+  background: rgba(0,0,0,0.25); /* light overlay for contrast */
   z-index: 1;
 }
 
@@ -66,9 +65,29 @@ nav a:hover {
   position: relative;
   z-index: 2;
   color: white;
+  max-width: 700px;
+  width: 100%;
+  padding: 1rem;
   animation: fadeUp 1s ease forwards;
-  padding: 0 1rem;
 }
+
+.hero-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.hero-content p {
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+}
+
+.hero-content .btn {
+  font-size: 1.2rem;
+  padding: 0.8rem 2rem;
+  border-radius: 25px;
+}
+
 
 
 /* -------------------- BUTTONS -------------------- */
@@ -168,4 +187,5 @@ footer {
   0% { opacity: 0; transform: translateY(30px); }
   100% { opacity:1; transform: translateY(0); }
 }
+
 
