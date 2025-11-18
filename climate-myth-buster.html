@@ -1,212 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🌍 Climate Myth Buster</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Climate Myth Buster</title>
 
 <style>
-  body {
-    margin: 0;
-    font-family: "Inter", sans-serif;
-    background: #f2fff6;
-    color: #0b3d2e;
-  }
+    body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        background: #f3f8ff;
+        color: #222;
+    }
 
-  .header {
-    text-align: center;
-    background: linear-gradient(135deg, #2ecc71, #27ae60);
-    padding: 35px 20px;
-    color: white;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-  }
+    header {
+        background: linear-gradient(135deg, #2ecc71, #27ae60);
+        padding: 30px;
+        text-align: center;
+        color: white;
+        font-size: 32px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
 
-  .header h1 {
-    margin: 0;
-    font-size: 2.4rem;
-  }
+    .container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+    }
 
-  .header p {
-    margin: 5px 0 0;
-    font-size: 1.1rem;
-  }
+    /* Search bar */
+    #searchBox {
+        width: 100%;
+        padding: 15px;
+        font-size: 18px;
+        border: 2px solid #27ae60;
+        border-radius: 10px;
+        outline: none;
+        margin-bottom: 25px;
+    }
 
-  .container {
-    max-width: 950px;
-    margin: 30px auto;
-    padding: 20px;
-  }
+    /* Card styling */
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        transition: 0.3s;
+    }
 
-  select {
-    padding: 10px;
-    border-radius: 10px;
-    border: 2px solid #2ecc71;
-    font-weight: bold;
-    margin-bottom: 20px;
-    width: 100%;
-  }
+    .card:hover {
+        transform: scale(1.02);
+    }
 
-  .card {
-    background: white;
-    padding: 18px 20px;
-    border-radius: 14px;
-    margin: 15px 0;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-  }
+    .myth {
+        font-size: 20px;
+        font-weight: 700;
+        color: #e74c3c;
+    }
 
-  .myth {
-    font-weight: bold;
-    color: #c0392b;
-  }
+    .fact {
+        margin-top: 10px;
+        font-size: 17px;
+        color: #2c3e50;
+    }
 
-  .fact {
-    margin-top: 8px;
-    color: #0e5135;
-    background: #e6fff0;
-    padding: 12px;
-    border-left: 5px solid #27ae60;
-    border-radius: 6px;
-  }
-
-  footer {
-    text-align: center;
-    padding: 20px;
-    color: #1e684b;
-    margin-top: 40px;
-  }
+    /* Language dropdown */
+    #language-select {
+        padding: 12px;
+        border-radius: 10px;
+        border: 2px solid #2ecc71;
+        font-size: 16px;
+        margin-bottom: 25px;
+        width: 100%;
+    }
 </style>
 </head>
 
 <body>
-
-<div class="header">
-  <h1>🌎 Climate Myth Buster</h1>
-  <p>Busting common climate myths with real science — in your language.</p>
-</div>
+<header>🌎 Climate Myth Buster</header>
 
 <div class="container">
-  
-  <!-- Translation Dropdown -->
-  <label><strong>🌐 Choose Language:</strong></label>
-  <select id="lang" onchange="translateAll()">
-    <option value="en">English</option>
-    <option value="hi">Hindi</option>
-    <option value="bn">Bengali</option>
-    <option value="ta">Tamil</option>
-    <option value="te">Telugu</option>
-    <option value="gu">Gujarati</option>
-    <option value="mr">Marathi</option>
-    <option value="pa">Punjabi</option>
-    <option value="es">Spanish</option>
-    <option value="fr">French</option>
-    <option value="ar">Arabic</option>
-  </select>
 
-  <!-- MYTH CARDS -->
-  <div id="myths"></div>
+    <!-- Language Select -->
+    <select id="language-select">
+        <option value="en">English</option>
+        <option value="hi">Hindi (हिन्दी)</option>
+        <option value="es">Spanish (Español)</option>
+        <option value="fr">French (Français)</option>
+        <option value="ta">Tamil (தமிழ்)</option>
+        <option value="bn">Bengali (বাংলা)</option>
+    </select>
+
+    <!-- Search -->
+    <input type="text" id="searchBox" placeholder="Search myths...">
+
+    <!-- Myth List -->
+    <div id="mythList"></div>
 
 </div>
 
-<footer>
-  © 2025 EatCo | Climate Truth Matters 💚
-</footer>
-
-
 <script>
-const data = [
-  {
-    myth: {
-      en: "Climate change is natural — humans aren’t causing it.",
-      hi: "जलवायु परिवर्तन प्राकृतिक है — इंसान इसका कारण नहीं हैं।",
-      bn: "জলবায়ু পরিবর্তন স্বাভাবিক — মানুষ এর কারণ নয়।",
-      ta: "காலநிலை மாற்றம் இயற்கை — மனிதர்கள் காரணம் இல்லை.",
-      te: "క్లైమేట్ మార్పు సహజం — మనుషులు కారణం కాదు.",
-      gu: "જલવાયુ બદલાવ કુદરતી છે — મનુષ્યો કારણ નથી.",
-      mr: "हवामान बदल नैसर्गिक आहे — माणसं कारण नाहीत.",
-      pa: "ਜਲਵਾਯੂ ਬਦਲਾਅ ਕੁਦਰਤੀ ਹੈ — ਇਨਸਾਨ ਕਾਰਨ ਨਹੀਂ।",
-      es: "El cambio climático es natural — los humanos no lo causan.",
-      fr: "Le changement climatique est naturel — les humains n’en sont pas la cause.",
-      ar: "تغير المناخ طبيعي — البشر ليسوا السبب."
-    },
-    fact: {
-      en: "Today’s warming is far too rapid to be natural. 97% of scientists agree humans are driving it through CO₂ emissions.",
-      hi: "आज का तापमान बढ़ना प्राकृतिक नहीं है। 97% वैज्ञानिक मानते हैं कि इसका कारण मनुष्य द्वारा उत्सर्जित CO₂ है।",
-      bn: "আজকের উষ্ণায়ন স্বাভাবিক নয়। 97% বিজ্ঞানী মনে করেন মানুষের CO₂ নির্গমনই কারণ।",
-      ta: "இன்றைய வெப்பமடைதல் இயற்கையானது அல்ல. 97% விஞ்ஞானிகள் CO₂ காரணம் என்று உறுதிப்படுத்துகின்றனர்.",
-      te: "నేటి వేడి సహజం కాదు. 97% శాస్త్రవేత్తల ప్రకారం CO₂ కారణం.",
-      gu: "આજનું તાપમાન વધવું કુદરતી નથી. 97% વૈજ્ઞાનિકો CO₂ ને જવાબદાર માને છે.",
-      mr: "आजचे तापमान वाढ नैसर्गिक नाही. 97% वैज्ञानिक मानतात की CO₂ कारण आहे.",
-      pa: "ਅੱਜ ਦਾ ਤਾਪਮਾਨ ਵਧਣਾ ਕੁਦਰਤੀ ਨਹੀਂ। 97% ਵਿਗਿਆਨੀ CO₂ ਨੂੰ ਕਾਰਨ ਮੰਨਦੇ ਹਨ।",
-      es: "El calentamiento actual es demasiado rápido para ser natural. El 97% de los científicos culpan al CO₂ humano.",
-      fr: "Le réchauffement actuel est trop rapide pour être naturel. 97% des scientifiques incriminent le CO₂ humain.",
-      ar: "الاحترار الحالي سريع جدًا ليكون طبيعيًا. 97٪ من العلماء يؤكدون أن البشر هم السبب."
-    }
-  },
+const myths = {
+    en: [
+        { myth: "Climate change is not real.", fact: "97% of scientists agree it's happening and caused by humans." },
+        { myth: "Electric cars pollute more than petrol cars.", fact: "EVs produce less pollution over their lifetime." },
+        { myth: "One person can't make a difference.", fact: "Individual actions inspire community change." },
+        { myth: "Global warming stopped in 1998.", fact: "The last decade was the hottest ever recorded." },
+        { myth: "Recycling doesn't matter.", fact: "Recycling reduces waste, energy use, and emissions." }
+    ],
 
-  {
-    myth: {
-      en: "Recycling doesn’t matter — everything ends up in landfills anyway.",
-      hi: "रीसाइक्लिंग बेकार है — सब कचरा फिर भी लैंडफिल में जाता है।",
-      es: "Reciclar no sirve — todo termina en un vertedero.",
-      fr: "Le recyclage ne sert à rien — tout finit en décharge.",
-      ar: "إعادة التدوير بلا فائدة — كل شيء ينتهي في مكب النفايات."
-    },
-    fact: {
-      en: "Recycling aluminum saves 95% energy. Recycling DOES work — contamination and poor sorting are the real problems.",
-      hi: "अल्युमिनियम रीसाइक्लिंग 95% ऊर्जा बचाती है। समस्या रीसाइक्लिंग नहीं, बल्कि गंदगी और गलत छंटाई है।",
-      es: "Reciclar aluminio ahorra 95% de energía. El problema es la mala clasificación.",
-      fr: "Recycler l’aluminium économise 95% d’énergie.",
-      ar: "إعادة تدوير الألمنيوم توفر 95٪ من الطاقة."
-    }
-  },
+    hi: [
+        { myth: "जलवायु परिवर्तन असली नहीं है।", fact: "97% वैज्ञानिक मानते हैं कि यह वास्तविक है और इंसानों के कारण हो रहा है।" },
+        { myth: "इलेक्ट्रिक कारें पेट्रोल कारों से ज्यादा प्रदूषण करती हैं।", fact: "पूरे जीवनकाल में EV कम प्रदूषण करती हैं।" }
+    ],
 
-  {
-    myth: {
-      en: "Electric cars pollute more because of batteries.",
-      hi: "इलेक्ट्रिक कारें बैटरी के कारण ज्यादा प्रदूषण करती हैं।"
-    },
-    fact: {
-      en: "Over their lifetime, EVs produce far less CO₂ than petrol cars — even accounting for battery production.",
-      hi: "पूरे जीवनकाल में इलेक्ट्रिक कारें पेट्रोल कारों से बहुत कम CO₂ उत्सर्जित करती हैं।"
-    }
-  },
+    es: [
+        { myth: "El cambio climático no es real.", fact: "El 97% de los científicos está de acuerdo en que es real y causado por humanos." }
+    ],
 
-  {
-    myth: {
-      en: "Climate change will only affect future generations.",
-      hi: "जलवायु परिवर्तन केवल भविष्य की पीढ़ियों को प्रभावित करेगा।"
-    },
-    fact: {
-      en: "Heatwaves, floods, crop loss, and rising sea levels are already affecting millions today.",
-      hi: "हीटवेव, बाढ़ और फसल नुकसान आज ही करोड़ों लोगों को प्रभावित कर रहे हैं।"
-    }
-  }
-];
+    fr: [
+        { myth: "Le changement climatique n'est pas réel.", fact: "97% des scientifiques confirment qu'il est réel et causé par l'homme." }
+    ],
 
-// render myths
-function render(lang = "en") {
-  const container = document.getElementById("myths");
-  container.innerHTML = "";
+    ta: [
+        { myth: "காலநிலை மாற்றம் உண்மையல்ல.", fact: "97% விஞ்ஞானிகள் இது மனிதர்களால் ஏற்படுகிறது என்று согள்கிறார்கள்." }
+    ],
 
-  data.forEach(item => {
-    const myth = item.myth[lang] || item.myth["en"];
-    const fact = item.fact[lang] || item.fact["en"];
+    bn: [
+        { myth: "জলবায়ু পরিবর্তন সত্যি নয়।", fact: "৯৭% বিজ্ঞানী একমত যে এটি সত্যি এবং মানুষের কারণে হচ্ছে।" }
+    ]
+};
 
-    container.innerHTML += `
-      <div class="card">
-        <div class="myth">❌ Myth: ${myth}</div>
-        <div class="fact">✔️ Fact: ${fact}</div>
-      </div>`;
-  });
+const mythList = document.getElementById("mythList");
+const searchBox = document.getElementById("searchBox");
+const langSelect = document.getElementById("language-select");
+
+function displayMyths() {
+    const lang = langSelect.value;
+    const query = searchBox.value.toLowerCase();
+    const selectedMyths = myths[lang].filter(item =>
+        item.myth.toLowerCase().includes(query) ||
+        item.fact.toLowerCase().includes(query)
+    );
+
+    mythList.innerHTML = selectedMyths.map(item => `
+        <div class="card">
+            <div class="myth">❌ Myth: ${item.myth}</div>
+            <div class="fact">✔ Fact: ${item.fact}</div>
+        </div>
+    `).join("");
 }
 
-function translateAll() {
-  const lang = document.getElementById("lang").value;
-  render(lang);
-}
+searchBox.addEventListener("input", displayMyths);
+langSelect.addEventListener("change", displayMyths);
 
-render(); // initial load
+// Load default (English)
+displayMyths();
 </script>
 
 </body>
