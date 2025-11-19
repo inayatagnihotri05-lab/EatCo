@@ -6,7 +6,6 @@
   <title>EatCo 🌿</title>
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
   <!-- Navbar -->
@@ -62,17 +61,13 @@
   </section>
 
   <!-- Carbon Footprint Checker -->
-  <section id="footprint" class="section">
-    <h2>🌾 Food + Plastic Footprint Checker</h2>
-    <p>Type any food item or plastic quantity (per day) to estimate your footprint.</p>
+  <section id="footprint">
+    <h2>🌾 Food Carbon Footprint Checker</h2>
+    <p>Type a food item to estimate its carbon footprint.</p>
 
-    <input type="text" id="foodInput" placeholder="e.g. rice, chicken, apple, 5 plastics/day">
-    <button onclick="calculateFootprint()">Check</button>
-
+    <input type="text" id="foodInput" placeholder="e.g. rice, chicken, apple">
+    <button onclick="checkFootprint()">Check</button>
     <p id="result"></p>
-    <p id="annualImpact"></p>
-    <p id="suggestion"></p>
-    <p id="ecoFact" style="font-style: italic; margin-top: 1rem; color:#256d47; font-weight:500;"></p>
   </section>
 
   <!-- Footer -->
@@ -80,35 +75,23 @@
     <p>© 2025 EatCo | Made with 💚 by Inayat Agnihotri</p>
   </footer>
 
-
   <!-- Scripts -->
   <script>
-    // Fade-in on scroll
-    const sections = document.querySelectorAll('section');
-    window.addEventListener('scroll', () => {
+    // Fade-in animation
+    const sections = document.querySelectorAll("section");
+    window.addEventListener("scroll", () => {
       sections.forEach(section => {
         const top = section.getBoundingClientRect().top;
-        const height = window.innerHeight;
-        if (top < height - 100) { section.classList.add('visible'); }
+        if (top < window.innerHeight - 100) {
+          section.classList.add("visible");
+        }
       });
     });
 
-    // Footprint Calculator
-    function calculateFootprint() {
+    // Carbon Checker
+    function checkFootprint() {
       let input = document.getElementById("foodInput").value.trim().toLowerCase();
-
-      const resultEl = document.getElementById("result");
-      const annualEl = document.getElementById("annualImpact");
-      const suggEl = document.getElementById("suggestion");
-      const factEl = document.getElementById("ecoFact");
-
-      if (!input) {
-        resultEl.innerHTML = "Please enter something.";
-        annualEl.innerHTML = "";
-        suggEl.innerHTML = "";
-        factEl.innerHTML = "";
-        return;
-      }
+      const result = document.getElementById("result");
 
       const foodData = {
         rice: 2.7,
@@ -123,48 +106,16 @@
         potato: 0.3
       };
 
-      // If number → treat as plastic count
-      if (!isNaN(Number(input))) {
-        let count = Number(input);
-
-        resultEl.innerHTML = `🌱 You use <b>${count}</b> plastic items daily.`;
-
-        let yearly = count * 365;
-        annualEl.innerHTML = `📅 That's <b>${yearly}</b> items per year!`;
-
-        if (count <= 5) suggEl.innerHTML = "💡 You're doing great! Keep it up!";
-        else if (count <= 15) suggEl.innerHTML = "💡 Try reducing 1–2 items/day.";
-        else suggEl.innerHTML = "💡 Switch to reusable bottles + bags!";
+      if (!input) {
+        result.innerHTML = "Please enter something.";
+        return;
       }
 
-      // Food case
-      else if (foodData[input]) {
-        let value = foodData[input];
-        resultEl.innerHTML = `🍽️ <b>${input}</b> emits around <b>${value} kg CO₂</b> per kg.`;
-        annualEl.innerHTML = "";
-        suggEl.innerHTML = "💡 Tip: Buy local + seasonal to reduce emissions.";
+      if (foodData[input]) {
+        result.innerHTML = `🍽️ <b>${input}</b> emits <b>${foodData[input]} kg CO₂</b> per kg.`;
+      } else {
+        result.innerHTML = "Sorry! I don't have data for that item yet.";
       }
-
-      else {
-        resultEl.innerHTML = "I don't have data for that item yet.";
-        annualEl.innerHTML = "";
-        suggEl.innerHTML = "";
-      }
-
-      const facts = [
-        "Recycling 1 bottle saves enough energy for a 3-hour LED light.",
-        "8 million tons of plastic enter oceans yearly.",
-        "Plastic bags last 500 years before breaking down.",
-        "A reusable bottle saves 1,460 bottles yearly.",
-        "91% of plastic is never recycled.",
-        "Food waste is the 3rd biggest emitter.",
-        "Eating local food cuts emissions by up to 70%.",
-        "Marine animals often mistake plastic for food.",
-        "Skipping meat one day/week reduces 100kg CO₂ yearly.",
-        "Electronics in standby mode can account for 5–10% of residential energy use and may cost the average U.S. home around \(\$100\) annually.."
-      ];
-
-      factEl.innerHTML = `🔍 Did you know? ${facts[Math.floor(Math.random() * facts.length)]}`;
     }
   </script>
 
