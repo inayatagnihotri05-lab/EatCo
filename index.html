@@ -85,12 +85,105 @@
       });
     });
 
-    // Carbon Checker placeholder
-    function checkFootprint() {
-      const food = document.getElementById('foodInput').value;
-      document.getElementById('result').innerText = food ? `Estimated footprint for ${food}: 1.2 kg CO₂` : "Please enter a food item.";
+   <section id="footprint" class="section">
+  <h2>🌾 Food Carbon Footprint Checker</h2>
+  <p>Type any food item or plastic count to estimate your footprint.</p>
+
+  <input type="text" id="foodInput" placeholder="e.g. rice, chicken, apple, 5 plastics/day">
+  <button onclick="calculateFootprint()">Check</button>
+
+  <p id="result"></p>
+  <p id="annualImpact"></p>
+  <p id="suggestion"></p>
+
+  <p id="ecoFact" 
+     style="font-style: italic; margin-top: 1rem; color:#256d47; font-weight:500;">
+  </p>
+</section>
+<script>
+function calculateFootprint() {
+    let input = document.getElementById("foodInput").value.trim().toLowerCase();
+
+    const resultEl = document.getElementById("result");
+    const annualEl = document.getElementById("annualImpact");
+    const suggEl = document.getElementById("suggestion");
+    const factEl = document.getElementById("ecoFact");
+
+    if (!input) {
+        resultEl.innerHTML = "Please enter something.";
+        annualEl.innerHTML = "";
+        suggEl.innerHTML = "";
+        factEl.innerHTML = "";
+        return;
     }
-  </script>
+
+    // --- FOOD CARBON VALUES (rough global averages) ---
+    const foodData = {
+        rice: 2.7,
+        chicken: 6.9,
+        egg: 4.8,
+        beef: 27,
+        milk: 1.3,
+        apple: 0.4,
+        banana: 0.7,
+        wheat: 1.4,
+        cheese: 13.5,
+        potato: 0.3
+    };
+
+    // If it's a number → treat as daily plastic usage
+    if (!isNaN(Number(input))) {
+        let count = Number(input);
+
+        resultEl.innerHTML = `🌱 You use <b>${count}</b> plastic items daily.`;
+
+        let yearly = count * 365;
+        annualEl.innerHTML = `📅 That's <b>${yearly}</b> items per year!`;
+
+        // Suggestions
+        if (count <= 5) {
+            suggEl.innerHTML = "💡 You're already doing well! Keep going!";
+        } else if (count <= 15) {
+            suggEl.innerHTML = "💡 Try reducing 1–2 items/day. Small steps = big change.";
+        } else {
+            suggEl.innerHTML = "💡 Reusable bottles + bags can cut this number in half.";
+        }
+    }
+
+    // Food item footprint
+    else if (foodData[input]) {
+        let value = foodData[input];
+
+        resultEl.innerHTML = `🍽️ <b>${input}</b> emits around <b>${value} kg CO₂</b> per kg.`;
+
+        annualEl.innerHTML = "";
+        suggEl.innerHTML = "💡 Tip: Choosing local + seasonal reduces emissions.";
+    }
+
+    else {
+        resultEl.innerHTML = "Sorry! I don't have data for that item yet.";
+        annualEl.innerHTML = "";
+        suggEl.innerHTML = "";
+    }
+
+    // --- RANDOM ECO FACTS ---
+    const facts = [
+        "Recycling 1 bottle saves energy for a 3-hour LED light.",
+        "8 million tons of plastic enter oceans yearly.",
+        "A plastic bag lasts 500 years before breaking down.",
+        "A reusable bottle saves 1,460 plastic bottles yearly.",
+        "91% of plastic is never recycled.",
+        "Most marine animals mistake plastic for food.",
+        "Cutting meat 1 day/week reduces 100kg CO₂ yearly.",
+        "Eating local food can reduce emissions by 70%.",
+        "Food waste is the 3rd largest emitter in the world.",
+        "Bananas have a lower footprint than apples transported by air."
+    ];
+
+    factEl.innerHTML = `🔍 Did you know? ${facts[Math.floor(Math.random() * facts.length)]}`;
+}
+</script>
+
 
 </body>
 </html>
