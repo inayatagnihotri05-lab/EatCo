@@ -1,133 +1,200 @@
-/* GENERAL */
-body {
-  font-family: "Poppins", sans-serif;
+/* Reset */
+* {
   margin: 0;
   padding: 0;
-  background-color: #ffffff;
-  color: #1b4d2c;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
-/* HEADER */
-header {
-  background-color: #1b5e20;
-  padding: 20px;
-  text-align: center;
-  color: white;
+body {
+  background: #f7fff8;
+  color: #1e3a1e;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 2.4rem;
-}
-
-/* NAVBAR */
+/* Navbar */
 nav {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 40px;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #d8f3dc;
+}
+
+nav .logo {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+nav ul {
+  display: flex;
   gap: 20px;
-  padding: 15px;
-  background-color: #e8f5e9;
-  border-bottom: 2px solid #c8e6c9;
 }
 
 nav a {
   text-decoration: none;
   color: #1b5e20;
   font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 6px;
+  font-size: 14px;
 }
 
-nav a:hover {
-  background-color: #c8e6c9;
+/* HERO SECTION */
+.hero {
+  height: 85vh;
+  background: url("https://images.unsplash.com/photo-1501004318641-b39e6451bec6")
+    center/cover no-repeat;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* MAIN SECTIONS */
-section {
-  padding: 50px 20px;
-  max-width: 900px;
-  margin: auto;
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 60, 40, 0.35);
+  backdrop-filter: blur(1px);
 }
 
-/* TITLES */
-section h2 {
-  text-align: center;
-  font-size: 2rem;
-  color: #1b5e20;
-  margin-bottom: 20px;
-}
-
-/* CARDS */
-.card {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  margin-bottom: 20px;
-  border: 1px solid #dcedc8;
-}
-
-/* BUTTONS */
-button {
-  background-color: #1b5e20;
-  border: none;
-  padding: 12px 20px;
+.hero-content {
+  position: relative;
   color: white;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 12px;
+  text-align: center;
+  max-width: 600px;
+  padding: 20px;
 }
 
-button:hover {
-  background-color: #145a18;
+.hero h1 {
+  font-size: 48px;
+  font-weight: 700;
 }
 
-/* INPUTS */
-input {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #c8e6c9;
-  border-radius: 8px;
+.hero p {
+  font-size: 18px;
   margin-top: 10px;
 }
 
-/* FOOTER */
+.btn {
+  display: inline-block;
+  padding: 12px 20px;
+  background: #2e8b57;
+  color: white;
+  border-radius: 10px;
+  text-decoration: none;
+  margin-top: 20px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #256d45;
+}
+
+/* MARQUEE (Gen-Z Banner) */
+.eco-marquee {
+  width: 100%;
+  overflow: hidden;
+  background: #e6f7ea;
+  padding: 10px 0;
+  border-top: 1px solid #cfe8d2;
+  border-bottom: 1px solid #cfe8d2;
+}
+
+.eco-marquee-track {
+  white-space: nowrap;
+  display: inline-block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1b5e20;
+  animation: scroll-left 18s linear infinite;
+}
+
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* Sections */
+section {
+  padding: 60px 40px;
+  text-align: center;
+}
+
+/* Join Box */
+.join-box {
+  background: #e8f5e9;
+  border-radius: 20px;
+  padding: 40px;
+}
+
+.join-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+/* Carbon Checker */
+.footprint-section {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  margin: 40px;
+}
+
+#foodInput {
+  padding: 12px;
+  border: 1px solid #9ccc9c;
+  border-radius: 8px;
+  width: 70%;
+  margin-bottom: 10px;
+}
+
+.progress-container {
+  width: 100%;
+  height: 15px;
+  background: #d7f5df;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+#progressBar {
+  height: 15px;
+  background: #2e8b57;
+  width: 0%;
+  border-radius: 10px;
+}
+
+/* Circular meter */
+.meter {
+  margin: 20px auto;
+  width: 120px;
+  position: relative;
+}
+
+#meterFill {
+  stroke-dasharray: 314;
+  stroke-dashoffset: 314;
+  transition: 0.6s ease;
+}
+
+#meterValue {
+  position: absolute;
+  top: 38px;
+  left: 0;
+  width: 120px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* Footer */
 footer {
-  background-color: #1b5e20;
   padding: 20px;
   text-align: center;
+  background: #1b5e20;
   color: white;
   margin-top: 40px;
-}
-
-/* --- CARBON FOOTPRINT CHECKER --- */
-#carbon-checker {
-  background: #e8f5e9;
-  border-radius: 16px;
-  padding: 30px;
-  border: 2px solid #c8e6c9;
-  margin-top: 40px;
-}
-
-.carbon-row {
-  margin-bottom: 20px;
-}
-
-#carbon-result {
-  margin-top: 20px;
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #1b5e20;
-  text-align: center;
-}
-
-/* RESULT TAG */
-.result-box {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  border-left: 5px solid #1b5e20;
-  box-shadow: 0px 3px 10px rgba(0,0,0,0.08);
-  margin-top: 15px;
 }
