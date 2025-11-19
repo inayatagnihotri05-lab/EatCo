@@ -22,6 +22,14 @@
     </ul>
   </nav>
 
+  <!-- GEN-Z MARQUEE BANNER -->
+  <div class="eco-marquee">
+    <div class="eco-marquee-track">
+      ♻️ Reduce Waste • 🌱 Choose Reusable • 🚴 Move Greener • 💧 Save Water •  
+      ♻️ Reduce Waste • 🌱 Choose Reusable • 🚴 Move Greener • 💧 Save Water •
+    </div>
+  </div>
+
   <!-- Hero Section -->
   <section id="home" class="hero">
     <div class="hero-overlay"></div>
@@ -62,15 +70,13 @@
     </div>
   </section>
 
-
-
-  <!-- ⭐⭐⭐ PREMIUM CARBON CHECKER ADDED HERE ⭐⭐⭐ -->
+  <!-- ⭐⭐⭐ PREMIUM CARBON CHECKER ⭐⭐⭐ -->
   <section id="footprint" class="footprint-section">
     <h2>🌾 Food & Daily Impact Carbon Checker</h2>
     <p>Type any food item or your daily plastic use.</p>
 
     <input type="text" id="foodInput" placeholder="e.g. rice, chicken, apple OR 5 plastics/day">
-    <button onclick="calculateFootprint()">Check</button>
+    <button class="btn" onclick="calculateFootprint()">Check</button>
 
     <div id="footprintCard" class="hidden">
 
@@ -99,9 +105,6 @@
       <p id="ecoFact" class="eco-fact"></p>
     </div>
   </section>
-  <!-- END PREMIUM CHECKER -->
-
-
 
   <!-- Footer -->
   <footer>
@@ -109,7 +112,7 @@
   </footer>
 
 
-  <!-- ⭐⭐⭐ FULL CARBON CHECKER SCRIPT ⭐⭐⭐ -->
+  <!-- ⭐⭐⭐ CARBON CHECKER SCRIPT ⭐⭐⭐ -->
   <script>
   function calculateFootprint() {
       let input = document.getElementById("foodInput").value.trim().toLowerCase();
