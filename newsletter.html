@@ -11,7 +11,7 @@
       line-height: 1.6;
       margin: 0;
       padding: 0;
-      background: #f9f9f9;
+      background: linear-gradient(160deg, #f0fff4, #eaf5ff);
       color: #2c3e50;
     }
     .newsletter-section {
@@ -34,7 +34,12 @@
       margin: 30px 0;
       padding: 20px;
       border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.07);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .section-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.1);
     }
     .recipe-section { background: #f3f9f4; }
     .icon-section { background: #fff9f2; }
@@ -49,6 +54,10 @@
       max-width: 700px;
       border-radius: 12px;
       margin-bottom: 15px;
+      transition: transform 0.3s;
+    }
+    .section-box img:hover {
+      transform: scale(1.03);
     }
     .subscribe-btn {
       background-color: #2ecc71;
@@ -87,7 +96,7 @@
   <!-- Recipe Section -->
   <div class="section-box recipe-section">
     <h3>🍲 Recipe of the Week: Sweet Potato & Chickpea Buddha Bowl</h3>
-    <img src="https://images.unsplash.com/photo-1617196030604-b48f5c33f718?auto=format&fit=crop&w=750&q=80" alt="Sweet Potato & Chickpea Buddha Bowl">
+    <img src="https://source.unsplash.com/750x500/?buddha-bowl,vegan" alt="Sweet Potato & Chickpea Buddha Bowl">
     <p><b>Ingredients:</b> Roasted sweet potato, chickpeas, baby spinach, red cabbage, avocado, tahini, lemon juice, cumin, olive oil, salt.</p>
     <p><b>Method:</b><br>
       1. Roast sweet potato and chickpeas with olive oil, cumin, and salt at 200°C for 25 mins.<br>
@@ -95,20 +104,20 @@
       3. Add roasted veggies and chickpeas, top with avocado slices.<br>
       4. Drizzle tahini-lemon dressing and serve warm or cold.
     </p>
-    <p><b>Why it’s eco-friendly:</b> Fully plant-based, seasonal produce, and protein-packed without meat = low carbon footprint. Sweet potatoes enrich the soil when rotated in farms.</p>
+    <p><b>Why it’s eco-friendly:</b> Fully plant-based, seasonal produce, protein-packed without meat = low carbon footprint. Sweet potatoes enrich the soil when rotated in farms.</p>
   </div>
 
   <!-- Sustainable Icon Section -->
   <div class="section-box icon-section">
     <h3>🌱 Sustainable Icon of the Week: Alice Waters</h3>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/56/Alice_Waters_2010.jpg" alt="Alice Waters">
+    <img src="https://source.unsplash.com/750x500/?chef,cooking" alt="Alice Waters">
     <p>A culinary legend and sustainability pioneer. Alice Waters founded <b>Chez Panisse</b> in California and popularized the farm-to-table movement long before it was mainstream. She champions <b>local, seasonal, and organic ingredients</b>, showing that mindful eating can be elegant, fun, and eco-conscious. Her philosophy? Food should <b>nourish the body, support communities, and protect the planet</b>.</p>
   </div>
 
   <!-- Word of the Week -->
   <div class="section-box word-section">
     <h3>📚 Sustainable Word of the Week: Permaculture</h3>
-    <img src="https://images.unsplash.com/photo-1598908319182-5e2677cb1c5b?auto=format&fit=crop&w=750&q=80" alt="Permaculture Garden">
+    <img src="https://source.unsplash.com/750x500/?permaculture,garden" alt="Permaculture Garden">
     <p><b>Permaculture</b> — A design system for creating sustainable and self-sufficient agricultural ecosystems. Think “eco-smart gardening” that works with nature, not against it. Try using it in your conversations or your next food experiment!</p>
   </div>
 
