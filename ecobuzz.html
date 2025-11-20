@@ -264,6 +264,56 @@ function refreshEcoBuzz() {
 
 refreshEcoBuzz();
 </script>
+<script>
+  // 🌱 DAILY UPDATE LABEL
+  const today = new Date();
+  const formatted = today.toLocaleDateString("en-IN", {
+    day: "numeric", month: "short", year: "numeric"
+  });
+
+  const header = document.querySelector(".live-feed h2");
+  header.innerHTML = `🌱 Live Eco Feed <span style="font-size:14px;color:#3a7f52;">• Updated ${formatted}</span>`;
+
+  // 🌍 AUTO-SHUFFLE NEWS DAILY
+  function shuffleFeed() {
+    const feed = document.getElementById("news-feed");
+    const items = Array.from(feed.children);
+
+    items.sort(() => Math.random() - 0.5);
+
+    items.forEach(item => feed.appendChild(item));
+  }
+
+  shuffleFeed();
+
+  // 🔥 DAILY ROTATION OF MAIN CARDS
+  const cardData = [
+    {
+      title: "Youth Invent Solar-Powered AC",
+      text: "A student team from Delhi built a 0-electricity AC using recycled materials!",
+      img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400"
+    },
+    {
+      title: "World’s First Edible Water Pods",
+      text: "New seaweed-based water capsules reduce plastic bottles by 60%!",
+      img: "https://images.unsplash.com/photo-1528396518505-4451f15f9075?w=400"
+    },
+    {
+      title: "India’s New Zero-Waste Cafés",
+      text: "Cafés in Mumbai now give discounts for bringing reusable containers.",
+      img: "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400"
+    }
+  ];
+
+  const cards = document.querySelectorAll(".buzz-card");
+
+  cards.forEach((card, i) => {
+    const data = cardData[(i + today.getDate()) % cardData.length];
+    card.querySelector(".buzz-title").textContent = data.title;
+    card.querySelector("p").textContent = data.text;
+    card.querySelector("img").src = data.img;
+  });
+</script>
 
 </body>
 </html>
