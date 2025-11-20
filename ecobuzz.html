@@ -232,6 +232,38 @@
 
     loadDailyNews();
   </script>
+<script>
+// 🔄 Auto-Refreshing EcoBuzz Headlines Daily
+const dynamicNews = [
+  "🌍 “Gen Z activists push for climate curriculum in Indian schools” — Youth Climate Org",
+  "🌿 “Delhi’s air quality improves after community-led green roofs project” — NDTV Green",
+  "⚡ “Reusable battery packs for phones gain popularity across Asia” — TechAsia",
+  "🍃 “Farmers in Punjab adopt no-burn stubble tech — emissions down 30%” — Indian Express",
+  "🌊 “World’s biggest coral restoration project shows 70% success rate” — Reuters",
+  "🔥 “Solar-powered street food stalls launch pilot in Mumbai” — TOI Sustainable",
+  "💧 “Himachal villages switch to rainwater harvesting for daily use” — Down To Earth",
+  "🌱 “New startup turns fruit waste into biodegradable packaging” — MIT Climate Lab",
+];
+
+function refreshEcoBuzz() {
+  const newsFeed = document.getElementById("news-feed");
+  newsFeed.innerHTML = ""; // clears old items
+
+  // choose 5 random pieces daily
+  const today = new Date().getDate();
+  const seed = today % dynamicNews.length;
+
+  for (let i = 0; i < 5; i++) {
+    const item = dynamicNews[(seed + i) % dynamicNews.length];
+    const div = document.createElement("div");
+    div.className = "news-item";
+    div.innerHTML = item;
+    newsFeed.appendChild(div);
+  }
+}
+
+refreshEcoBuzz();
+</script>
 
 </body>
 </html>
