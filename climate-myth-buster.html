@@ -22,108 +22,177 @@
 </head>
 <body>
 
-  <h1>💥 Climate Myth Buster</h1>
+<h1>💥 Climate Myth Buster</h1>
 
-  <!-- Language Selector -->
-  <div class="language-switcher">
-    <button onclick="changeLanguage('en')">English</button>
-    <button onclick="changeLanguage('hi')">हिंदी</button>
-    <button onclick="changeLanguage('fr')">Français</button>
-    <button onclick="changeLanguage('mr')">मराठी</button>
-    <button onclick="changeLanguage('ta')">தமிழ்</button>
-    <button onclick="changeLanguage('bn')">বাংলা</button>
-  </div>
+<!-- Language Selector -->
+<div class="language-switcher">
+  <button onclick="changeLanguage('en')">English</button>
+  <button onclick="changeLanguage('hi')">हिंदी</button>
+  <button onclick="changeLanguage('fr')">Français</button>
+  <button onclick="changeLanguage('mr')">मराठी</button>
+  <button onclick="changeLanguage('ta')">தமிழ்</button>
+  <button onclick="changeLanguage('bn')">বাংলা</button>
+</div>
 
-  <!-- Myths: English -->
-  <div class="myth" data-lang="en">
-    <h3>🌍 Myth: Plant-based diets aren’t filling</h3>
-    <p>Truth: A well-planned plant-based diet is rich in protein, fiber, and nutrients — very satisfying!</p>
-  </div>
-  <div class="myth" data-lang="hi" style="display:none;">
-    <h3>🌍 मिथक: शाकाहारी भोजन पेट भरा हुआ महसूस नहीं कराता</h3>
-    <p>सत्य: एक अच्छी तरह से योजना बनाई गई शाकाहारी डाइट प्रोटीन, फाइबर और पोषक तत्वों से भरपूर होती है — बहुत संतोषजनक!</p>
-  </div>
-  <div class="myth" data-lang="fr" style="display:none;">
-    <h3>🌍 Mythe : Les régimes à base de plantes ne sont pas rassasiants</h3>
-    <p>Vérité : Un régime à base de plantes bien planifié est riche en protéines, fibres et nutriments — très satisfaisant !</p>
-  </div>
-  <div class="myth" data-lang="mr" style="display:none;">
-    <h3>🌍 मिथक: वनस्पती-आधारित आहार पूर्णपणे पोट भरत नाही</h3>
-    <p>सत्य: व्यवस्थित नियोजित वनस्पती-आधारित आहार प्रथिने, तंतू आणि पोषक घटकांनी समृद्ध असतो — खूप समाधानकारक!</p>
-  </div>
-  <div class="myth" data-lang="ta" style="display:none;">
-    <h3>🌍 மிதம்: செடிப்பொருள் உணவுகள் பூர்த்தியாக உணரச் செய்யாது</h3>
-    <p>உண்மை: நன்கு திட்டமிடப்பட்ட செடிப்பொருள் உணவு புரதம், நார்ச்சத்து மற்றும் ஊட்டச்சத்துகள் நிறைந்தது — மிகவும் திருப்திகரமானது!</p>
-  </div>
-  <div class="myth" data-lang="bn" style="display:none;">
-    <h3>🌍 কল্পনা: উদ্ভিদ-ভিত্তিক খাদ্য পেট ভর্তি হয় না</h3>
-    <p>সত্য: ভালোভাবে পরিকল্পিত উদ্ভিদ-ভিত্তিক খাদ্য প্রোটিন, ফাইবার এবং পুষ্টিতে সমৃদ্ধ — খুবই তৃপ্তিদায়ক!</p>
-  </div>
+<div id="myths-container">
+  <!-- Myths will be injected here by JavaScript -->
+</div>
 
-  <!-- Myths: Recycling -->
-  <div class="myth" data-lang="en">
-    <h3>🌍 Myth: Recycling doesn’t help reduce climate change</h3>
-    <p>Truth: Recycling reduces waste, saves energy, and decreases greenhouse gas emissions. Every bottle counts!</p>
-  </div>
-  <div class="myth" data-lang="hi" style="display:none;">
-    <h3>🌍 मिथक: रीसाइक्लिंग जलवायु परिवर्तन को कम नहीं करती</h3>
-    <p>सत्य: रीसाइक्लिंग कचरे को कम करती है, ऊर्जा बचाती है और ग्रीनहाउस गैसों के उत्सर्जन को घटाती है। हर बोतल मायने रखती है!</p>
-  </div>
-  <div class="myth" data-lang="fr" style="display:none;">
-    <h3>🌍 Mythe : Le recyclage n'aide pas à lutter contre le changement climatique</h3>
-    <p>Vérité : Le recyclage réduit les déchets, économise de l'énergie et diminue les émissions de gaz à effet de serre. Chaque bouteille compte !</p>
-  </div>
-  <div class="myth" data-lang="mr" style="display:none;">
-    <h3>🌍 मिथक: रिसायक्लिंग हवामान बदल कमी करत नाही</h3>
-    <p>सत्य: रिसायक्लिंग कचरा कमी करते, ऊर्जा वाचवते आणि हरितगृह वायूंचे उत्सर्जन कमी करते. प्रत्येक बाटली महत्वाची आहे!</p>
-  </div>
-  <div class="myth" data-lang="ta" style="display:none;">
-    <h3>🌍 மிதம்: மறுசுழற்சி காலநிலை மாற்றத்தை குறைக்க உதவாது</h3>
-    <p>உண்மை: மறுசுழற்சி கழிவு குறைக்கிறது, சக்தி சேமிக்கிறது மற்றும் பச்சைhouse வாயு உமிழ்வை குறைக்கிறது. ஒவ்வொரு பாட்டிலும் கணக்கில் உள்ளது!</p>
-  </div>
-  <div class="myth" data-lang="bn" style="display:none;">
-    <h3>🌍 কল্পনা: পুনর্ব্যবহার জলবায়ু পরিবর্তন কমাতে সাহায্য করে না</h3>
-    <p>সত্য: পুনর্ব্যবহার বর্জ্য কমায়, শক্তি বাঁচায় এবং গ্রীনহাউস গ্যাস নিঃসরণ হ্রাস করে। প্রতিটি বোতল গুরুত্বপূর্ণ!</p>
-  </div>
+<script>
+const myths = [
+  {
+    myth: "Climate change is just a natural cycle.",
+    fact: "While Earth’s climate has changed historically, the current warming is happening unusually fast and is strongly linked to human greenhouse gas emissions.",
+    src: "https://www.unep.org/news-and-stories/story/debunking-eight-common-myths-about-climate-change"
+  },
+  {
+    myth: "There’s no scientific consensus on climate change.",
+    fact: "Over 97% (or even 99%) of climate scientists agree that climate change is driven by human activities.",
+    src: "https://www.preventionweb.net/news/10-climate-change-myths-debunked"
+  },
+  {
+    myth: "CO₂ can’t be that bad — it’s such a small part of the atmosphere.",
+    fact: "Even in small concentrations, CO₂ is a very powerful greenhouse gas, trapping heat and driving warming.",
+    src: "https://hydroreform.org/2021/01/debunking-5-common-climate-change-myths/"
+  },
+  {
+    myth: "The Sun’s changes are causing global warming.",
+    fact: "Solar output has been relatively stable, while global temperatures continue to rise — greenhouse gases are the dominant factor.",
+    src: "https://www.nationalgeographic.com/environment/article/climate-change-myth"
+  },
+  {
+    myth: "Climate models are unreliable — scientists can’t trust them.",
+    fact: "Climate models have consistently predicted major trends accurately; many models developed decades ago match observed warming.",
+    src: "https://hydroreform.org/2021/01/debunking-5-common-climate-change-myths/"
+  },
+  {
+    myth: "Cold winters disprove global warming.",
+    fact: "Short-term weather (like cold snaps) is not the same as long-term climate. Climate change refers to average conditions over decades.",
+    src: "https://www.unep.org/news-and-stories/story/debunking-eight-common-myths-about-climate-change"
+  },
+  {
+    myth: "It’s too late to do anything; we should just adapt.",
+    fact: "While adaptation is vital, many impacts are already irreversible; mitigation (cutting emissions) remains critical.",
+    src: "https://www.unep.org/news-and-stories/story/debunking-eight-common-myths-about-climate-change"
+  },
+  {
+    myth: "Planting trees is enough to solve climate change.",
+    fact: "Trees help absorb CO₂, but we still need to drastically reduce fossil fuel use — offsetting alone isn’t sufficient.",
+    src: "https://www.wea.org.uk/news-views/blog/climate-change-debunking-key-myths-surrounding-global-warming"
+  },
+  {
+    myth: "Ocean levels rising is exaggerated or not happening.",
+    fact: "Sea level is rising due to melting ice and thermal expansion, and it's accelerating.",
+    src: "https://climatefactchecks.org/debunking-commonn-myths-co%E2%82%82-sea-levels-and-the-reality-of-climate-change/"
+  },
+  {
+    myth: "Geoengineering can fix climate change safely.",
+    fact: "Geoengineering may help reduce temperatures, but it does not address root causes like CO₂ and has uncertain, potentially dangerous side‑effects.",
+    src: "https://en.wikipedia.org/wiki/Enhanced_weathering"
+  },
+  {
+    myth: "Methane doesn’t matter because it breaks down quickly.",
+    fact: "Methane is a potent greenhouse gas; leaks from fossil fuel extraction contribute significantly to warming.",
+    src: "https://arxiv.org/abs/2304.07620"
+  },
+  {
+    myth: "Ocean acidification isn’t a big deal; marine life will adapt.",
+    fact: "Acidification disrupts marine ecosystems, affecting shells, coral reefs, and food chains.",
+    src: "https://www.ipcc.ch/report/ar6/wg1/"
+  },
+  {
+    myth: "Permafrost thaw is slow and harmless.",
+    fact: "Thawing permafrost releases both CO₂ and methane, creating strong feedback loops that accelerate warming.",
+    src: "https://arxiv.org/abs/2304.07620"
+  },
+  {
+    myth: "Energy from renewables cannot meet baseload demand.",
+    fact: "With better grid design, storage, and a mix of renewable sources, it’s increasingly feasible to run reliable clean energy systems.",
+    src: "https://climatecosmos.com/climate-science/10-climate-myths-that-experts-have-debunked/"
+  },
+  {
+    myth: "Nuclear power is too unsafe to be a climate solution.",
+    fact: "Modern nuclear technologies can support low-carbon electricity with strong safety records.",
+    src: "https://www.wea.org.uk/news-views/blog/climate-change-debunking-key-myths-surrounding-global-warming"
+  },
+  {
+    myth: "Carbon offsets mean I don’t need to reduce emissions.",
+    fact: "Offsets help, but real emissions cuts are necessary — offsets should supplement, not replace, reduction efforts.",
+    src: "https://www.wea.org.uk/news-views/blog/climate-change-debunking-key-myths-surrounding-global-warming"
+  },
+  {
+    myth: "Only rich countries will feel the impacts of climate change.",
+    fact: "Vulnerable countries are already facing extreme heat, food insecurity, and flooding — they often lack the resources to adapt.",
+    src: "https://www.preventionweb.net/news/10-climate-change-myths-debunked"
+  },
+  {
+    myth: "Extreme weather isn’t linked to climate change.",
+    fact: "Climate change is increasing the frequency and intensity of events like heatwaves, heavy rainfall, and storms.",
+    src: "https://www.unep.org/news-and-stories/story/debunking-eight-common-myths-about-climate-change"
+  },
+  {
+    myth: "Greenhouse gas emissions are inevitable; cutting now will destroy economies.",
+    fact: "Investing in green infrastructure and clean energy creates economic opportunities. Inaction costs more than climate action.",
+    src: "https://www.preventionweb.net/news/10-climate-change-myths-debunked"
+  },
+  {
+    myth: "Water vapor is the most important greenhouse gas — CO₂ doesn’t matter much.",
+    fact: "Water vapor amplifies warming, but CO₂ is what controls how much additional water vapor the atmosphere can hold.",
+    src: "https://www.c2es.org/wp-content/uploads/2017/03/misconceptions-realities-climate-science-06-2012.pdf"
+  },
+  {
+    myth: "Volcanoes emit more CO₂ than humans.",
+    fact: "Human CO₂ emissions are far greater annually compared to volcanoes.",
+    src: "https://www.unep.org/news-and-stories/story/debunking-eight-common-myths-about-climate-change"
+  },
+  {
+    myth: "Deforestation only affects wildlife, not climate.",
+    fact: "Deforestation contributes massively to CO₂ emissions and destroys carbon sinks.",
+    src: "https://www.ube.ac.uk/whats-happening/articles/climate-change-denial-myths/"
+  },
+  {
+    myth: "Sea ice melt doesn’t contribute to sea-level rise.",
+    fact: "Sea ice melt doesn’t raise sea levels, but melting land ice (glaciers, ice sheets) and thermal expansion do.",
+    src: "https://climatefactchecks.org/debunking-commonn-myths-co%E2%82%82-sea-levels-and-the-reality-of-climate-change/"
+  }
+  // You can continue adding all remaining myths in similar format
+];
 
-  <!-- Myths: Individual Actions -->
-  <div class="myth" data-lang="en">
-    <h3>🌍 Myth: Individual actions don’t matter</h3>
-    <p>Truth: Small, consistent eco-friendly actions like reducing food waste, choosing local produce, and using reusable items collectively make a huge impact.</p>
-  </div>
-  <div class="myth" data-lang="hi" style="display:none;">
-    <h3>🌍 मिथक: व्यक्तिगत प्रयास मायने नहीं रखते</h3>
-    <p>सत्य: छोटे, लगातार इको-फ्रेंडली प्रयास जैसे कि खाने की बर्बादी कम करना, स्थानीय उत्पाद चुनना और पुन: प्रयोज्य आइटम का उपयोग करना मिलकर बड़ा प्रभाव डालते हैं।</p>
-  </div>
-  <div class="myth" data-lang="fr" style="display:none;">
-    <h3>🌍 Mythe : Les actions individuelles ne comptent pas</h3>
-    <p>Vérité : De petites actions éco-responsables régulières comme réduire le gaspillage alimentaire, choisir des produits locaux et utiliser des articles réutilisables ont un impact énorme collectivement.</p>
-  </div>
-  <div class="myth" data-lang="mr" style="display:none;">
-    <h3>🌍 मिथक: वैयक्तिक कृतींचा काही उपयोग नाही</h3>
-    <p>सत्य: छोटे, सातत्यपूर्ण पर्यावरणपूरक प्रयत्न जसे की अन्न वाया कमी करणे, स्थानिक उत्पादन निवडणे आणि पुनर्वापरयोग्य वस्तू वापरणे मोठा परिणाम करतात.</p>
-  </div>
-  <div class="myth" data-lang="ta" style="display:none;">
-    <h3>🌍 மிதம்: தனிப்பட்ட நடவடிக்கைகள் பொருட்படாது</h3>
-    <p>உண்மை: சிறிய, தொடர்ந்து பராமரிக்கப்பட்ட சூழல் நட்பு நடவடிக்கைகள் உணவு கழிவை குறைக்க, உள்ளூர் தயாரிப்புகளைத் தேர்வு செய்ய, மறுபயன்பாடு செய்யக்கூடிய பொருட்களை பயன்படுத்துவது ஒருங்கிணைந்த பெரிய தாக்கத்தை ஏற்படுத்துகிறது.</p>
-  </div>
-  <div class="myth" data-lang="bn" style="display:none;">
-    <h3>🌍 কল্পনা: ব্যক্তিগত পদক্ষেপ গুরুত্বপূর্ণ নয়</h3>
-    <p>সত্য: ছোট, নিয়মিত পরিবেশ-বান্ধব পদক্ষেপ যেমন খাদ্য বর্জ্য কমানো, স্থানীয় পণ্য বেছে নেওয়া এবং পুনঃব্যবহারযোগ্য আইটেম ব্যবহার করা মিলিতভাবে বিশাল প্রভাব ফেলে।</p>
-  </div>
+const container = document.getElementById('myths-container');
 
-  <script>
-    function changeLanguage(lang) {
-      const myths = document.querySelectorAll('.myth');
-      myths.forEach(myth => {
-        if (myth.dataset.lang === lang) {
-          myth.style.display = 'block';
-        } else {
-          myth.style.display = 'none';
-        }
-      });
+myths.forEach((item, i) => {
+  const div = document.createElement('div');
+  div.className = 'myth';
+  div.dataset.lang = 'en';
+  div.innerHTML = `
+    <h3>🌍 Myth ${i+1}: ${item.myth}</h3>
+    <p><b>Truth:</b> ${item.fact} <br> <a href="${item.src}" target="_blank">Source</a></p>
+  `;
+  container.appendChild(div);
+
+  // create hidden divs for other languages (you can fill translations later)
+  const langs = ['hi','fr','mr','ta','bn'];
+  langs.forEach(lang=>{
+    const d = document.createElement('div');
+    d.className='myth';
+    d.dataset.lang = lang;
+    d.style.display = 'none';
+    d.innerHTML = div.innerHTML; // placeholder for translation
+    container.appendChild(d);
+  });
+});
+
+function changeLanguage(lang) {
+  const myths = document.querySelectorAll('.myth');
+  myths.forEach(myth => {
+    if(myth.dataset.lang === lang){
+      myth.style.display='block';
+    }else{
+      myth.style.display='none';
     }
-  </script>
+  });
+}
+</script>
 
 </body>
 </html>
