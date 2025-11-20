@@ -3,177 +3,127 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Climate Myth Buster 🌍</title>
+  <title>Climate Myth Buster 🌿</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #e0f7e9, #f1fff4);
-      margin: 0;
-      padding: 0;
+    body { font-family: 'Segoe UI', sans-serif; line-height: 1.6; padding: 20px; background: #f5f9f5; color: #2c3e50; }
+    h1 { text-align: center; color: #27ae60; }
+    .language-switcher { text-align: center; margin-bottom: 25px; }
+    .language-switcher button {
+      margin: 0 8px; padding: 8px 16px; border-radius: 8px; border: none;
+      background-color: #2ecc71; color: white; cursor: pointer; font-weight: 600;
+      transition: 0.3s;
     }
-    header {
-      background: #2e8b57;
-      padding: 20px;
-      color: white;
-      text-align: center;
-    }
-    h1 {
-      margin: 0;
-      font-size: 2.2rem;
-    }
-    header p {
-      margin-top: 8px;
-      font-size: 1rem;
-      color: #d0f0d6;
-    }
-    .container {
-      max-width: 950px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
-    .search-box {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      margin-bottom: 30px;
-      font-size: 1rem;
-    }
-    .myth-card {
-      background: white;
-      padding: 22px;
-      border-radius: 16px;
-      box-shadow: 0 5px 18px rgba(0,0,0,0.12);
-      margin-bottom: 22px;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .myth-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.18);
-    }
-    .myth-title {
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #b30000;
-      margin-bottom: 10px;
-    }
-    .fact {
-      color: #004d26;
-      font-size: 1rem;
-      margin-bottom: 10px;
-      line-height: 1.5;
-    }
-    a.source {
-      font-size: 0.9rem;
-      color: #0066cc;
-      text-decoration: none;
-    }
-    a.source:hover {
-      text-decoration: underline;
-    }
-    footer {
-      text-align: center;
-      padding: 22px;
-      background: #2e8b57;
-      color: white;
-      margin-top: 40px;
-    }
+    .language-switcher button:hover { background-color: #27ae60; }
+    .myth { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .myth h3 { color: #27ae60; }
+    .myth p { margin-top: 10px; }
   </style>
 </head>
-
 <body>
 
-<header>
-  <h1>🌍 Climate Myth Buster</h1>
-  <p>High-level facts, real science, zero fluff.</p>
-</header>
+  <h1>💥 Climate Myth Buster</h1>
 
-<div class="container">
-  <input type="text" id="search" class="search-box" placeholder="🔍 Search myths...">
-  <div id="myth-list"></div>
-</div>
+  <!-- Language Selector -->
+  <div class="language-switcher">
+    <button onclick="changeLanguage('en')">English</button>
+    <button onclick="changeLanguage('hi')">हिंदी</button>
+    <button onclick="changeLanguage('fr')">Français</button>
+    <button onclick="changeLanguage('mr')">मराठी</button>
+    <button onclick="changeLanguage('ta')">தமிழ்</button>
+    <button onclick="changeLanguage('bn')">বাংলা</button>
+  </div>
 
-<footer>
-  © 2025 EatCo | Science Matters 🌱
-</footer>
+  <!-- Myths: English -->
+  <div class="myth" data-lang="en">
+    <h3>🌍 Myth: Plant-based diets aren’t filling</h3>
+    <p>Truth: A well-planned plant-based diet is rich in protein, fiber, and nutrients — very satisfying!</p>
+  </div>
+  <div class="myth" data-lang="hi" style="display:none;">
+    <h3>🌍 मिथक: शाकाहारी भोजन पेट भरा हुआ महसूस नहीं कराता</h3>
+    <p>सत्य: एक अच्छी तरह से योजना बनाई गई शाकाहारी डाइट प्रोटीन, फाइबर और पोषक तत्वों से भरपूर होती है — बहुत संतोषजनक!</p>
+  </div>
+  <div class="myth" data-lang="fr" style="display:none;">
+    <h3>🌍 Mythe : Les régimes à base de plantes ne sont pas rassasiants</h3>
+    <p>Vérité : Un régime à base de plantes bien planifié est riche en protéines, fibres et nutriments — très satisfaisant !</p>
+  </div>
+  <div class="myth" data-lang="mr" style="display:none;">
+    <h3>🌍 मिथक: वनस्पती-आधारित आहार पूर्णपणे पोट भरत नाही</h3>
+    <p>सत्य: व्यवस्थित नियोजित वनस्पती-आधारित आहार प्रथिने, तंतू आणि पोषक घटकांनी समृद्ध असतो — खूप समाधानकारक!</p>
+  </div>
+  <div class="myth" data-lang="ta" style="display:none;">
+    <h3>🌍 மிதம்: செடிப்பொருள் உணவுகள் பூர்த்தியாக உணரச் செய்யாது</h3>
+    <p>உண்மை: நன்கு திட்டமிடப்பட்ட செடிப்பொருள் உணவு புரதம், நார்ச்சத்து மற்றும் ஊட்டச்சத்துகள் நிறைந்தது — மிகவும் திருப்திகரமானது!</p>
+  </div>
+  <div class="myth" data-lang="bn" style="display:none;">
+    <h3>🌍 কল্পনা: উদ্ভিদ-ভিত্তিক খাদ্য পেট ভর্তি হয় না</h3>
+    <p>সত্য: ভালোভাবে পরিকল্পিত উদ্ভিদ-ভিত্তিক খাদ্য প্রোটিন, ফাইবার এবং পুষ্টিতে সমৃদ্ধ — খুবই তৃপ্তিদায়ক!</p>
+  </div>
 
-<script>
-const myths = [
-  // Original myths
-  { myth: "Volcanoes emit more CO₂ than humans.", fact: "Humans emit <b>over 100× more CO₂</b> annually than all volcanoes combined. This makes fossil fuels the dominant driver of recent warming.", src: "https://www.climate.gov/news-features/climate-qa/which-emits-more-carbon-dioxide-volcanoes-or-human-activities" },
-  { myth: "Solar variability drives modern warming.", fact: "Solar irradiance has been <b>stable since the 1970s</b>, while global temperatures have risen sharply, proving the Sun is not the main cause.", src: "https://climate.nasa.gov/causes/" },
-  { myth: "Climate models are unreliable.", fact: "Models from the 1980s predicted current warming trends within <b>±10%</b> accuracy. They continue to accurately forecast climate impacts.", src: "https://www.noaa.gov/education/resource-collections/climate/climate-models" },
-  { myth: "Electric cars don’t reduce emissions.", fact: "EVs produce <b>50–70% lower lifetime GHG emissions</b> than petrol cars, even when charged on fossil-heavy grids.", src: "https://www.iea.org/reports/global-ev-outlook-2023" },
-  { myth: "Renewables can’t reliably power countries.", fact: "Countries like Denmark and Germany meet <b>50–80% of electricity demand</b> from renewables on some days, proving grids can adapt.", src: "https://www.iea.org/reports/world-energy-outlook-2022" },
-  { myth: "Antarctica is gaining ice overall.", fact: "While inland snow increases, coastal ice loss exceeds <b>150 billion tons per year</b>, resulting in net ice decline.", src: "https://climate.nasa.gov/vital-signs/ice-sheets/" },
-  { myth: "Oceans absorb unlimited CO₂.", fact: "Oceans absorb ~<b>30%</b> of emissions, causing acidification that harms coral and marine ecosystems.", src: "https://www.noaa.gov/education/resource-collections/ocean-coasts/ocean-acidification" },
-  { myth: "Cows don’t significantly contribute to warming.", fact: "Methane from livestock warms the planet <b>80× more than CO₂</b> over 20 years, making agriculture a major source of emissions.", src: "https://www.ipcc.ch/report/ar6/" },
-  { myth: "We can just adapt; no need to cut emissions.", fact: "Some impacts like ice-sheet collapse and deadly heat are irreversible. <b>Mitigation is essential</b>.", src: "https://www.un.org/en/climatechange" },
-  { myth: "Climate change only affects polar regions or future generations.", fact: "It’s already impacting food security, health, migration, and infrastructure worldwide.", src: "https://www.ipcc.ch" },
-  { myth: "Hydrogen is the ultimate climate solution.", fact: "Green hydrogen is promising but <b>currently small-scale</b> and resource-intensive; it cannot replace immediate emission cuts.", src: "https://www.iea.org/reports/hydrogen" },
-  { myth: "Plastic bans alone stop pollution.", fact: "Without recycling, waste management, and producer responsibility, plastic continues polluting globally.", src: "https://www.oecd.org/environment/waste/plastic-waste.html" },
-  { myth: "Composting is ineffective for climate.", fact: "Proper composting prevents methane emissions from landfills and improves soil health, reducing net GHGs.", src: "https://www.epa.gov/recycle/composting-home" },
-  { myth: "Climate change is too slow to matter.", fact: "The planet is warming <b>10× faster than any natural cycle in 800,000 years</b>.", src: "https://www.ipcc.ch" },
-  { myth: "Electricity grids will collapse with EV adoption.", fact: "Smart grids and charging strategies allow massive EV integration without failures.", src: "https://www.iea.org/reports/global-ev-outlook-2023" },
-  { myth: "Wind turbines kill large numbers of birds.", fact: "Turbines account for <b>0.1%</b> of bird deaths; buildings and cats are far deadlier.", src: "https://www.audubon.org" },
-  { myth: "EVs are worse than petrol cars on coal grids.", fact: "EVs still produce <b>50–70% lower lifetime emissions</b> than gasoline vehicles, even on coal-heavy electricity.", src: "https://www.iea.org/reports/global-ev-outlook-2023" },
-  { myth: "Solar panels are ineffective in cloudy regions.", fact: "Cold or cloudy regions like Germany still generate substantial solar electricity; panel efficiency improves in cooler conditions.", src: "https://www.iea.org/reports/world-energy-outlook-2022" },
-  { myth: "Organic food is always lower impact.", fact: "Some organic farms require more land and water; emissions depend on methods, not labels.", src: "https://www.fao.org" },
-  { myth: "Tech will save us without emissions cuts.", fact: "No technology scales fast enough alone; immediate emission reductions are mandatory.", src: "https://www.ipcc.ch" },
-  { myth: "Methane from fossil gas is negligible.", fact: "Methane leaks from gas production contribute <b>~25% of current warming</b> in the short term.", src: "https://www.ipcc.ch/report/ar6/" },
-  { myth: "Extreme weather is unrelated to climate change.", fact: "Climate change amplifies intensity and frequency of storms, heatwaves, and floods.", src: "https://www.ipcc.ch" },
-  { myth: "CO₂ is just plant food; more is fine.", fact: "Excess CO₂ reduces crop nutrient quality and drives dangerous warming.", src: "https://www.ipcc.ch" },
-  { myth: "The Sun will solve global warming naturally.", fact: "No solar cycle can replicate the current warming rate; human emissions dominate.", src: "https://climate.nasa.gov/causes/" },
-  { myth: "Polar ice melt doesn’t affect sea levels.", fact: "Melting glaciers and ice sheets contribute ><b>1.2 mm/year</b> to sea level rise globally.", src: "https://climate.nasa.gov/vital-signs/sea-level/" },
-  { myth: "Agriculture has minimal climate impact.", fact: "Agriculture contributes <b>~24%</b> of global GHGs including land use, methane, and fertilizer emissions.", src: "https://www.ipcc.ch" },
-  { myth: "Climate change only matters for rich nations.", fact: "Low-income countries face disproportionately high risks from extreme weather, heat, and sea-level rise.", src: "https://www.ipcc.ch" },
-  { myth: "Climate action harms the economy.", fact: "Inaction costs trillions via disasters; early action reduces economic losses and creates jobs.", src: "https://www.un.org/en/climatechange" },
-  { myth: "Individual actions are pointless.", fact: "Behavioral shifts influence markets, policy, and collective change — every choice counts.", src: "https://www.un.org/en/climatechange" },
-  
-  // Extra 20 high-level myths
-  { myth: "Geoengineering can fully reverse global warming.", fact: "No geoengineering scheme is proven at scale. Solar radiation management could reduce temperatures but <b>won’t stop ocean acidification or extreme weather</b>.", src: "https://www.ipcc.ch" },
-  { myth: "Permafrost thawing is slow and harmless.", fact: "Thawing permafrost releases <b>~1.5 billion tons of CO₂ annually</b> and methane, accelerating warming.", src: "https://www.ipcc.ch" },
-  { myth: "Climate sensitivity is low and harmless.", fact: "Earth’s climate sensitivity is estimated at <b>2–5°C per CO₂ doubling</b>, enough to trigger dangerous impacts.", src: "https://www.ipcc.ch" },
-  { myth: "Renewable energy can’t replace fossil fuels.", fact: "Studies show a well-integrated mix of wind, solar, hydro, and storage can supply >50–80% of national electricity reliably.", src: "https://www.iea.org/reports/world-energy-outlook-2022" },
-  { myth: "Melting ice sheets won’t affect sea levels significantly.", fact: "Greenland and Antarctic ice melt contributes ><b>1.2 mm/year</b> to global sea level rise.", src: "https://climate.nasa.gov/vital-signs/sea-level/" },
-  { myth: "Ocean heat uptake is negligible.", fact: "Oceans absorb >90% of excess heat from global warming, driving thermal expansion and marine heatwaves.", src: "https://www.ipcc.ch" },
-  { myth: "Fossil methane leaks are insignificant.", fact: "Fugitive methane from natural gas is responsible for ~<b>25% of short-term warming</b>.", src: "https://www.ipcc.ch" },
-  { myth: "Extreme rainfall events are random.", fact: "Human warming increases atmospheric moisture, making heavy rainfall events <b>30–50% more likely</b>.", src: "https://www.ipcc.ch" },
-  { myth: "Polar jet stream changes don’t impact weather.", fact: "Warming Arctic disrupts the jet stream, causing more frequent cold snaps and heatwaves in mid-latitudes.", src: "https://www.ipcc.ch" },
-  { myth: "Climate tipping points are unlikely.", fact: "Some systems, like the Amazon rainforest or Greenland ice sheet, could cross thresholds rapidly, causing irreversible changes.", src: "https://www.ipcc.ch" },
-  { myth: "Carbon capture technology is mature and scalable.", fact: "Current direct air capture removes <b>0.01% of annual CO₂</b> — far from solving emissions alone.", src: "https://www.iea.org/reports/direct-air-capture" },
-  { myth: "Global warming won’t affect extreme droughts.", fact: "Climate change increases drought frequency and intensity, threatening water security globally.", src: "https://www.ipcc.ch" },
-  { myth: "Tropical cyclones aren’t affected by climate change.", fact: "Warmer oceans increase cyclone intensity and rainfall rates, even if frequency changes are complex.", src: "https://www.ipcc.ch" },
-  { myth: "Sea level rise is linear and predictable.", fact: "Ice sheet dynamics could cause abrupt increases, with rates ><b>1 m/century in worst-case scenarios</b>.", src: "https://www.ipcc.ch" },
-  { myth: "Climate models exaggerate warming.", fact: "Models reproduce past temperatures and trends accurately; underestimations are more common than exaggerations.", src: "https://www.noaa.gov/education/resource-collections/climate/climate-models" },
-  { myth: "Black carbon (soot) is negligible.", fact: "Black carbon accelerates ice melt and causes regional warming; it’s a potent short-term climate driver.", src: "https://www.ipcc.ch" },
-  { myth: "Deep ocean currents are unaffected.", fact: "Warming and freshwater influx disrupt thermohaline circulation, affecting global climate patterns.", src: "https://www.ipcc.ch" },
-  { myth: "Per capita emissions are the same worldwide.", fact: "High-income countries emit >10× more per person than low-income nations, though impacts hit the poor hardest.", src: "https://www.worldbank.org" },
-  { myth: "Methane hydrates are stable and safe.", fact: "Warming oceans could destabilize methane hydrates, releasing potent greenhouse gases rapidly.", src: "https://www.ipcc.ch" },
-  { myth: "Climate feedback loops are weak.", fact: "Positive feedbacks like ice-albedo and permafrost carbon release can amplify warming by <b>up to 1–2°C</b>.", src: "https://www.ipcc.ch" }
-];
+  <!-- Myths: Recycling -->
+  <div class="myth" data-lang="en">
+    <h3>🌍 Myth: Recycling doesn’t help reduce climate change</h3>
+    <p>Truth: Recycling reduces waste, saves energy, and decreases greenhouse gas emissions. Every bottle counts!</p>
+  </div>
+  <div class="myth" data-lang="hi" style="display:none;">
+    <h3>🌍 मिथक: रीसाइक्लिंग जलवायु परिवर्तन को कम नहीं करती</h3>
+    <p>सत्य: रीसाइक्लिंग कचरे को कम करती है, ऊर्जा बचाती है और ग्रीनहाउस गैसों के उत्सर्जन को घटाती है। हर बोतल मायने रखती है!</p>
+  </div>
+  <div class="myth" data-lang="fr" style="display:none;">
+    <h3>🌍 Mythe : Le recyclage n'aide pas à lutter contre le changement climatique</h3>
+    <p>Vérité : Le recyclage réduit les déchets, économise de l'énergie et diminue les émissions de gaz à effet de serre. Chaque bouteille compte !</p>
+  </div>
+  <div class="myth" data-lang="mr" style="display:none;">
+    <h3>🌍 मिथक: रिसायक्लिंग हवामान बदल कमी करत नाही</h3>
+    <p>सत्य: रिसायक्लिंग कचरा कमी करते, ऊर्जा वाचवते आणि हरितगृह वायूंचे उत्सर्जन कमी करते. प्रत्येक बाटली महत्वाची आहे!</p>
+  </div>
+  <div class="myth" data-lang="ta" style="display:none;">
+    <h3>🌍 மிதம்: மறுசுழற்சி காலநிலை மாற்றத்தை குறைக்க உதவாது</h3>
+    <p>உண்மை: மறுசுழற்சி கழிவு குறைக்கிறது, சக்தி சேமிக்கிறது மற்றும் பச்சைhouse வாயு உமிழ்வை குறைக்கிறது. ஒவ்வொரு பாட்டிலும் கணக்கில் உள்ளது!</p>
+  </div>
+  <div class="myth" data-lang="bn" style="display:none;">
+    <h3>🌍 কল্পনা: পুনর্ব্যবহার জলবায়ু পরিবর্তন কমাতে সাহায্য করে না</h3>
+    <p>সত্য: পুনর্ব্যবহার বর্জ্য কমায়, শক্তি বাঁচায় এবং গ্রীনহাউস গ্যাস নিঃসরণ হ্রাস করে। প্রতিটি বোতল গুরুত্বপূর্ণ!</p>
+  </div>
 
-const list = document.getElementById("myth-list");
+  <!-- Myths: Individual Actions -->
+  <div class="myth" data-lang="en">
+    <h3>🌍 Myth: Individual actions don’t matter</h3>
+    <p>Truth: Small, consistent eco-friendly actions like reducing food waste, choosing local produce, and using reusable items collectively make a huge impact.</p>
+  </div>
+  <div class="myth" data-lang="hi" style="display:none;">
+    <h3>🌍 मिथक: व्यक्तिगत प्रयास मायने नहीं रखते</h3>
+    <p>सत्य: छोटे, लगातार इको-फ्रेंडली प्रयास जैसे कि खाने की बर्बादी कम करना, स्थानीय उत्पाद चुनना और पुन: प्रयोज्य आइटम का उपयोग करना मिलकर बड़ा प्रभाव डालते हैं।</p>
+  </div>
+  <div class="myth" data-lang="fr" style="display:none;">
+    <h3>🌍 Mythe : Les actions individuelles ne comptent pas</h3>
+    <p>Vérité : De petites actions éco-responsables régulières comme réduire le gaspillage alimentaire, choisir des produits locaux et utiliser des articles réutilisables ont un impact énorme collectivement.</p>
+  </div>
+  <div class="myth" data-lang="mr" style="display:none;">
+    <h3>🌍 मिथक: वैयक्तिक कृतींचा काही उपयोग नाही</h3>
+    <p>सत्य: छोटे, सातत्यपूर्ण पर्यावरणपूरक प्रयत्न जसे की अन्न वाया कमी करणे, स्थानिक उत्पादन निवडणे आणि पुनर्वापरयोग्य वस्तू वापरणे मोठा परिणाम करतात.</p>
+  </div>
+  <div class="myth" data-lang="ta" style="display:none;">
+    <h3>🌍 மிதம்: தனிப்பட்ட நடவடிக்கைகள் பொருட்படாது</h3>
+    <p>உண்மை: சிறிய, தொடர்ந்து பராமரிக்கப்பட்ட சூழல் நட்பு நடவடிக்கைகள் உணவு கழிவை குறைக்க, உள்ளூர் தயாரிப்புகளைத் தேர்வு செய்ய, மறுபயன்பாடு செய்யக்கூடிய பொருட்களை பயன்படுத்துவது ஒருங்கிணைந்த பெரிய தாக்கத்தை ஏற்படுத்துகிறது.</p>
+  </div>
+  <div class="myth" data-lang="bn" style="display:none;">
+    <h3>🌍 কল্পনা: ব্যক্তিগত পদক্ষেপ গুরুত্বপূর্ণ নয়</h3>
+    <p>সত্য: ছোট, নিয়মিত পরিবেশ-বান্ধব পদক্ষেপ যেমন খাদ্য বর্জ্য কমানো, স্থানীয় পণ্য বেছে নেওয়া এবং পুনঃব্যবহারযোগ্য আইটেম ব্যবহার করা মিলিতভাবে বিশাল প্রভাব ফেলে।</p>
+  </div>
 
-myths.forEach((item) => {
-  const card = document.createElement("div");
-  card.className = "myth-card";
-  card.innerHTML = `
-    <div class="myth-title">Myth: ${item.myth}</div>
-    <div class="fact"><b>Fact:</b> ${item.fact}</div>
-    <a href="${item.src}" class="source" target="_blank">Source</a>
-  `;
-  list.appendChild(card);
-});
-
-document.getElementById("search").addEventListener("input", function () {
-  const value = this.value.toLowerCase();
-  const cards = document.querySelectorAll(".myth-card");
-  cards.forEach(card => {
-    card.style.display = card.innerText.toLowerCase().includes(value) ? "block" : "none";
-  });
-});
-</script>
+  <script>
+    function changeLanguage(lang) {
+      const myths = document.querySelectorAll('.myth');
+      myths.forEach(myth => {
+        if (myth.dataset.lang === lang) {
+          myth.style.display = 'block';
+        } else {
+          myth.style.display = 'none';
+        }
+      });
+    }
+  </script>
 
 </body>
 </html>
