@@ -36,163 +36,259 @@
 
 <div id="myths-container">
   <!-- Myths will be injected here by JavaScript -->
+
+
+<!-- High-Level Climate Myths Section (EN + translations) -->
+
+<!-- Myth 1 -->
+<div class="myth" data-lang="en">
+  <h3>🌍 Myth: Geoengineering can single-handedly solve climate change</h3>
+  <p>Truth: Large-scale interventions like solar radiation management or carbon capture are untested at scale, risky, and can’t replace systemic emission reductions.</p>
+</div>
+<div class="myth" data-lang="hi" style="display:none;">
+  <h3>🌍 मिथक: भू-इंजीनियरिंग अकेले जलवायु परिवर्तन को हल कर सकती है</h3>
+  <p>सत्य: सौर विकिरण प्रबंधन या कार्बन कैप्चर जैसी बड़े पैमाने की हस्तक्षेप परीक्षणहीन हैं, जोखिमपूर्ण हैं और प्रणालीगत उत्सर्जन कटौती की जगह नहीं ले सकते।</p>
+</div>
+<div class="myth" data-lang="fr" style="display:none;">
+  <h3>🌍 Mythe : La géoingénierie peut résoudre le changement climatique seule</h3>
+  <p>Vérité : Les interventions à grande échelle comme la gestion du rayonnement solaire ou la capture de carbone ne sont pas testées à grande échelle, sont risquées et ne peuvent pas remplacer les réductions systémiques d'émissions.</p>
+</div>
+<div class="myth" data-lang="mr" style="display:none;">
+  <h3>🌍 मिथक: भू-इंजिनीयरिंग अकेली हवामान बदल सोडवू शकते</h3>
+  <p>सत्य: सौर विकिरण व्यवस्थापन किंवा कार्बन कॅप्चरसारखी मोठ्या प्रमाणावर उपाययोजना अजमावलेली नाहीत, जोखीमपूर्ण आहेत आणि प्रणालीगत उत्सर्जन कपात बदलू शकत नाहीत.</p>
+</div>
+<div class="myth" data-lang="ta" style="display:none;">
+  <h3>🌍 மிதம்: ஜியோஎஞ்சினீயரிங் தனிப்பட்ட முறையில் காலநிலை மாற்றத்தை தீர்க்க முடியும்</h3>
+  <p>உண்மை: சூரிய கதிர் மேலாண்மை அல்லது கார்பன் பிடித்தல் போன்ற பெரிய அளவிலான நடவடிக்கைகள் பரிசோதனை செய்யப்படவில்லை, அபாயகரமானவை மற்றும் முறைசாரா வெளியீட்டு குறைப்புகளை மாற்ற முடியாது.</p>
+</div>
+<div class="myth" data-lang="bn" style="display:none;">
+  <h3>🌍 কল্পনা: জিওইঞ্জিনিয়ারিং একা জলবায়ু পরিবর্তন সমাধান করতে পারে</h3>
+  <p>সত্য: সোলার রেডিয়েশন ম্যানেজমেন্ট বা কার্বন ক্যাপচার-এর মতো বড় প্রকল্প পরীক্ষিত নয়, ঝুঁকিপূর্ণ, এবং সিস্টেম্যাটিক এমিশন হ্রাসের বিকল্প নয়।</p>
 </div>
 
-<script>
-const myths = [
-  {
-    myth: "Climate change is just a natural cycle.",
-    fact: "While Earth’s climate has changed historically, the current warming is happening unusually fast and is strongly linked to human greenhouse gas emissions.",
-    src: "https://www.unep.org/news-and-stories/story/debunking-eight-common-myths-about-climate-change"
-  },
-  {
-    myth: "There’s no scientific consensus on climate change.",
-    fact: "Over 97% (or even 99%) of climate scientists agree that climate change is driven by human activities.",
-    src: "https://www.preventionweb.net/news/10-climate-change-myths-debunked"
-  },
-  {
-    myth: "CO₂ can’t be that bad — it’s such a small part of the atmosphere.",
-    fact: "Even in small concentrations, CO₂ is a very powerful greenhouse gas, trapping heat and driving warming.",
-    src: "https://hydroreform.org/2021/01/debunking-5-common-climate-change-myths/"
-  },
-  {
-    myth: "The Sun’s changes are causing global warming.",
-    fact: "Solar output has been relatively stable, while global temperatures continue to rise — greenhouse gases are the dominant factor.",
-    src: "https://www.nationalgeographic.com/environment/article/climate-change-myth"
-  },
-  {
-    myth: "Climate models are unreliable — scientists can’t trust them.",
-    fact: "Climate models have consistently predicted major trends accurately; many models developed decades ago match observed warming.",
-    src: "https://hydroreform.org/2021/01/debunking-5-common-climate-change-myths/"
-  },
-  {
-    myth: "Cold winters disprove global warming.",
-    fact: "Short-term weather (like cold snaps) is not the same as long-term climate. Climate change refers to average conditions over decades.",
-    src: "https://www.unep.org/news-and-stories/story/debunking-eight-common-myths-about-climate-change"
-  },
-  {
-    myth: "It’s too late to do anything; we should just adapt.",
-    fact: "While adaptation is vital, many impacts are already irreversible; mitigation (cutting emissions) remains critical.",
-    src: "https://www.unep.org/news-and-stories/story/debunking-eight-common-myths-about-climate-change"
-  },
-  {
-    myth: "Planting trees is enough to solve climate change.",
-    fact: "Trees help absorb CO₂, but we still need to drastically reduce fossil fuel use — offsetting alone isn’t sufficient.",
-    src: "https://www.wea.org.uk/news-views/blog/climate-change-debunking-key-myths-surrounding-global-warming"
-  },
-  {
-    myth: "Ocean levels rising is exaggerated or not happening.",
-    fact: "Sea level is rising due to melting ice and thermal expansion, and it's accelerating.",
-    src: "https://climatefactchecks.org/debunking-commonn-myths-co%E2%82%82-sea-levels-and-the-reality-of-climate-change/"
-  },
-  {
-    myth: "Geoengineering can fix climate change safely.",
-    fact: "Geoengineering may help reduce temperatures, but it does not address root causes like CO₂ and has uncertain, potentially dangerous side‑effects.",
-    src: "https://en.wikipedia.org/wiki/Enhanced_weathering"
-  },
-  {
-    myth: "Methane doesn’t matter because it breaks down quickly.",
-    fact: "Methane is a potent greenhouse gas; leaks from fossil fuel extraction contribute significantly to warming.",
-    src: "https://arxiv.org/abs/2304.07620"
-  },
-  {
-    myth: "Ocean acidification isn’t a big deal; marine life will adapt.",
-    fact: "Acidification disrupts marine ecosystems, affecting shells, coral reefs, and food chains.",
-    src: "https://www.ipcc.ch/report/ar6/wg1/"
-  },
-  {
-    myth: "Permafrost thaw is slow and harmless.",
-    fact: "Thawing permafrost releases both CO₂ and methane, creating strong feedback loops that accelerate warming.",
-    src: "https://arxiv.org/abs/2304.07620"
-  },
-  {
-    myth: "Energy from renewables cannot meet baseload demand.",
-    fact: "With better grid design, storage, and a mix of renewable sources, it’s increasingly feasible to run reliable clean energy systems.",
-    src: "https://climatecosmos.com/climate-science/10-climate-myths-that-experts-have-debunked/"
-  },
-  {
-    myth: "Nuclear power is too unsafe to be a climate solution.",
-    fact: "Modern nuclear technologies can support low-carbon electricity with strong safety records.",
-    src: "https://www.wea.org.uk/news-views/blog/climate-change-debunking-key-myths-surrounding-global-warming"
-  },
-  {
-    myth: "Carbon offsets mean I don’t need to reduce emissions.",
-    fact: "Offsets help, but real emissions cuts are necessary — offsets should supplement, not replace, reduction efforts.",
-    src: "https://www.wea.org.uk/news-views/blog/climate-change-debunking-key-myths-surrounding-global-warming"
-  },
-  {
-    myth: "Only rich countries will feel the impacts of climate change.",
-    fact: "Vulnerable countries are already facing extreme heat, food insecurity, and flooding — they often lack the resources to adapt.",
-    src: "https://www.preventionweb.net/news/10-climate-change-myths-debunked"
-  },
-  {
-    myth: "Extreme weather isn’t linked to climate change.",
-    fact: "Climate change is increasing the frequency and intensity of events like heatwaves, heavy rainfall, and storms.",
-    src: "https://www.unep.org/news-and-stories/story/debunking-eight-common-myths-about-climate-change"
-  },
-  {
-    myth: "Greenhouse gas emissions are inevitable; cutting now will destroy economies.",
-    fact: "Investing in green infrastructure and clean energy creates economic opportunities. Inaction costs more than climate action.",
-    src: "https://www.preventionweb.net/news/10-climate-change-myths-debunked"
-  },
-  {
-    myth: "Water vapor is the most important greenhouse gas — CO₂ doesn’t matter much.",
-    fact: "Water vapor amplifies warming, but CO₂ is what controls how much additional water vapor the atmosphere can hold.",
-    src: "https://www.c2es.org/wp-content/uploads/2017/03/misconceptions-realities-climate-science-06-2012.pdf"
-  },
-  {
-    myth: "Volcanoes emit more CO₂ than humans.",
-    fact: "Human CO₂ emissions are far greater annually compared to volcanoes.",
-    src: "https://www.unep.org/news-and-stories/story/debunking-eight-common-myths-about-climate-change"
-  },
-  {
-    myth: "Deforestation only affects wildlife, not climate.",
-    fact: "Deforestation contributes massively to CO₂ emissions and destroys carbon sinks.",
-    src: "https://www.ube.ac.uk/whats-happening/articles/climate-change-denial-myths/"
-  },
-  {
-    myth: "Sea ice melt doesn’t contribute to sea-level rise.",
-    fact: "Sea ice melt doesn’t raise sea levels, but melting land ice (glaciers, ice sheets) and thermal expansion do.",
-    src: "https://climatefactchecks.org/debunking-commonn-myths-co%E2%82%82-sea-levels-and-the-reality-of-climate-change/"
-  }
-  // You can continue adding all remaining myths in similar format
-];
+<!-- Myth 2 -->
+<div class="myth" data-lang="en">
+  <h3>🌍 Myth: Climate models are unreliable and speculative</h3>
+  <p>Truth: Advanced climate models accurately simulate long-term trends and extreme events. Observed data confirms their predictions within narrow error margins.</p>
+</div>
+<div class="myth" data-lang="hi" style="display:none;">
+  <h3>🌍 मिथक: जलवायु मॉडल असत्यापनीय और अनुमानात्मक हैं</h3>
+  <p>सत्य: उन्नत जलवायु मॉडल दीर्घकालिक रुझान और चरम घटनाओं का सटीक अनुकरण करते हैं। प्रेक्षित डेटा उनके पूर्वानुमानों को संकीर्ण त्रुटि सीमाओं के भीतर पुष्टि करता है।</p>
+</div>
+<div class="myth" data-lang="fr" style="display:none;">
+  <h3>🌍 Mythe : Les modèles climatiques sont peu fiables et spéculatifs</h3>
+  <p>Vérité : Les modèles climatiques avancés simulent avec précision les tendances à long terme et les événements extrêmes. Les données observées confirment leurs prédictions avec une marge d'erreur étroite.</p>
+</div>
+<div class="myth" data-lang="mr" style="display:none;">
+  <h3>🌍 मिथक: हवामान मॉडेल अविश्वसनीय आणि अंदाजात्मक आहेत</h3>
+  <p>सत्य: प्रगत हवामान मॉडेल दीर्घकालीन प्रवृत्त्या आणि अत्यंत घटनांचे अचूक अनुकरण करतात. निरीक्षित डेटा त्यांच्या अंदाजांना मर्यादित त्रुटी मर्यादेत पुष्टी करतो.</p>
+</div>
+<div class="myth" data-lang="ta" style="display:none;">
+  <h3>🌍 மிதம்: காலநிலை மாதிரிகள் நம்பகமற்றவை மற்றும் ஊகசெயல்படும்</h3>
+  <p>உண்மை: மேம்பட்ட காலநிலை மாதிரிகள் நீண்டகாலப் போக்குகள் மற்றும் கடுமையான நிகழ்வுகளை துல்லியமாக உருவாக்குகின்றன. காணப்பட்ட தரவு குறுகிய பிழை வரம்புகளுக்குள் அவற்றின் முன்னறிவிப்புகளை உறுதிப்படுத்துகிறது.</p>
+</div>
+<div class="myth" data-lang="bn" style="display:none;">
+  <h3>🌍 কল্পনা: জলবায়ু মডেল অবিশ্বাস্য এবং অনুমানভিত্তিক</h3>
+  <p>সত্য: উন্নত জলবায়ু মডেল দীর্ঘমেয়াদী প্রবণতা এবং চরম ঘটনাগুলি সঠিকভাবে অনুকরণ করে। পর্যবেক্ষিত ডেটা তাদের পূর্বাভাসকে সীমিত ত্রুটি সীমার মধ্যে নিশ্চিত করে।</p>
+</div>
 
-const container = document.getElementById('myths-container');
+<!-- Myth 3 -->
+<div class="myth" data-lang="en">
+  <h3>🌍 Myth: Sea-level rise will be slow and manageable</h3>
+  <p>Truth: Accelerated ice sheet melt in Greenland and Antarctica is causing rapid sea-level rise, threatening low-lying cities and ecosystems within decades.</p>
+</div>
+<div class="myth" data-lang="hi" style="display:none;">
+  <h3>🌍 मिथक: समुद्र स्तर वृद्धि धीमी और नियंत्रित होगी</h3>
+  <p>सत्य: ग्रीनलैंड और अंटार्कटिका में तेजी से बर्फ की पिघलन से समुद्र स्तर तेजी से बढ़ रहा है, जो दशकों में निम्न-स्तरीय शहरों और पारिस्थितिकी तंत्र को खतरे में डाल रहा है।</p>
+</div>
+<div class="myth" data-lang="fr" style="display:none;">
+  <h3>🌍 Mythe : L'élévation du niveau de la mer sera lente et gérable</h3>
+  <p>Vérité : La fonte accélérée des calottes glaciaires au Groenland et en Antarctique provoque une élévation rapide du niveau de la mer, menaçant les villes et écosystèmes côtiers en quelques décennies.</p>
+</div>
+<div class="myth" data-lang="mr" style="display:none;">
+  <h3>🌍 मिथक: समुद्र पातळी वाढ हळू आणि व्यवस्थापनीय असेल</h3>
+  <p>सत्य: ग्रीनलँड आणि अंटार्क्टिकमधील बर्फाचा वेगवान वितळणे समुद्र पातळी लवकर वाढवत आहे, ज्यामुळे काही दशकांत कमी जागेतील शहरे आणि परिसंस्था धोक्यात येत आहेत.</p>
+</div>
+<div class="myth" data-lang="ta" style="display:none;">
+  <h3>🌍 மிதம்: கடல் மட்ட உயர்வு மெதுவாகவும் கையாளக்கூடியதாக இருக்கும்</h3>
+  <p>உண்மை: க்ரீன்லாந்து மற்றும் அன்டார்க்டிகாவில் முந்தைய பனி உருகல் கடல் மட்ட உயர்வை வேகமாக்கி, கீழ்நிலை நகரங்கள் மற்றும் экோசிஸ்டெம்களை சில தசாப்தங்களில் ஆபத்தில் ஆக்கியுள்ளது.</p>
+</div>
+<div class="myth" data-lang="bn" style="display:none;">
+  <h3>🌍 কল্পনা: সমুদ্র স্তর বৃদ্ধি ধীরে এবং পরিচালনাযোগ্য হবে</h3>
+  <p>সত্য: গ্রিনল্যান্ড এবং অ্যান্টার্কটিকার ত্বরান্বিত বরফ গলন দ্রুত সমুদ্র স্তর বৃদ্ধির কারণ হচ্ছে, যা কয়েক দশকের মধ্যে নিম্ন-উচ্চতার শহর এবং বাস্তুতন্ত্রকে হুমকির মধ্যে ফেলছে।</p>
+</div>
+<!-- Myth 4 -->
+<div class="myth" data-lang="en">
+  <h3>🌍 Myth: Methane emissions from livestock are negligible</h3>
+  <p>Truth: Livestock, especially cattle, emit significant methane — a greenhouse gas 28x more potent than CO₂ over 100 years, contributing heavily to warming.</p>
+</div>
+<div class="myth" data-lang="hi" style="display:none;">
+  <h3>🌍 मिथक: पशुधन से मीथेन उत्सर्जन नगण्य है</h3>
+  <p>सत्य: विशेष रूप से गाय, बड़ी मात्रा में मीथेन उत्सर्जित करती हैं — यह 100 वर्षों में CO₂ से 28 गुना अधिक शक्तिशाली है और गर्मी में भारी योगदान देती है।</p>
+</div>
+<div class="myth" data-lang="fr" style="display:none;">
+  <h3>🌍 Mythe : Les émissions de méthane du bétail sont négligeables</h3>
+  <p>Vérité : Le bétail, en particulier les bovins, émet beaucoup de méthane — un gaz à effet de serre 28 fois plus puissant que le CO₂ sur 100 ans, contribuant fortement au réchauffement.</p>
+</div>
+<div class="myth" data-lang="mr" style="display:none;">
+  <h3>🌍 मिथक: पशुधनातून मिथेन उत्सर्जन नगण्य आहे</h3>
+  <p>सत्य: विशेषतः गाय मोठ्या प्रमाणात मिथेन उत्सर्जित करतात — हे 100 वर्षांमध्ये CO₂ पेक्षा 28 पट अधिक प्रभावी आहे आणि तापमान वाढीस मोठा वाटा देते.</p>
+</div>
+<div class="myth" data-lang="ta" style="display:none;">
+  <h3>🌍 மிதம்: பசுமை விலங்குகளின் மெத்தேன் வெளியீடு சிறியது</h3>
+  <p>உண்மை: பசுமை விலங்குகள், குறிப்பாக பசுக்கள், குறிப்பிடத்தக்க மெத்தேன் வெளியிடுகின்றன — இது 100 ஆண்டுகளில் CO₂-ஐவிட 28 மடங்கு சக்திவாய்ந்தது, சூடாக்கத்திற்கு பெரிதும் பங்களிக்கிறது.</p>
+</div>
+<div class="myth" data-lang="bn" style="display:none;">
+  <h3>🌍 কল্পনা: গবাদি পশুর মিথেন নির্গমন নগণ্য</h3>
+  <p>সত্য: গবাদি পশু, বিশেষ করে গরু, উল্লেখযোগ্য মিথেন নির্গত করে — এটি CO₂-এর চেয়ে 100 বছরে 28 গুণ বেশি শক্তিশালী এবং তাপমাত্রা বৃদ্ধিতে বড় ভূমিকা রাখে।</p>
+</div>
 
-myths.forEach((item, i) => {
-  const div = document.createElement('div');
-  div.className = 'myth';
-  div.dataset.lang = 'en';
-  div.innerHTML = `
-    <h3>🌍 Myth ${i+1}: ${item.myth}</h3>
-    <p><b>Truth:</b> ${item.fact} <br> <a href="${item.src}" target="_blank">Source</a></p>
-  `;
-  container.appendChild(div);
+<!-- Myth 5 -->
+<div class="myth" data-lang="en">
+  <h3>🌍 Myth: Permafrost thaw has minor climate impacts</h3>
+  <p>Truth: Thawing permafrost releases CO₂ and methane trapped for millennia, accelerating warming and creating feedback loops.</p>
+</div>
+<div class="myth" data-lang="hi" style="display:none;">
+  <h3>🌍 मिथक: परमानेंट फ्रोस्ट का पिघलना जलवायु पर कम प्रभाव डालता है</h3>
+  <p>सत्य: पिघलती स्थायी बर्फ हजारों वर्षों से फंसी CO₂ और मीथेन छोड़ती है, जिससे गर्मी बढ़ती है और प्रतिक्रिया चक्र बनते हैं।</p>
+</div>
+<div class="myth" data-lang="fr" style="display:none;">
+  <h3>🌍 Mythe : Le dégel du pergélisol a un impact mineur sur le climat</h3>
+  <p>Vérité : Le dégel du pergélisol libère du CO₂ et du méthane piégés depuis des millénaires, accélérant le réchauffement et créant des boucles de rétroaction.</p>
+</div>
+<div class="myth" data-lang="mr" style="display:none;">
+  <h3>🌍 मिथक: पर्माफ्रॉस्ट वितळणे हवामानावर लहान परिणाम करते</h3>
+  <p>सत्य: वितळणारा पर्माफ्रॉस्ट हजारो वर्षांपासून साठवलेले CO₂ आणि मिथेन सोडतो, तापमान वाढवतो आणि प्रतिक्रिया लूप तयार करतो.</p>
+</div>
+<div class="myth" data-lang="ta" style="display:none;">
+  <h3>🌍 மிதம்: நிலையான பனி உருகல் காலநிலை மீது சிறிய தாக்கம் அளிக்கும்</h3>
+  <p>உண்மை: உருகும் நிலையான பனி ஆயிரக்கணக்கான ஆண்டுகளுக்கு CO₂ மற்றும் மெத்தேன் வெளியிடுகிறது, சூடாக்கத்தை விரைவுபடுத்துகிறது மற்றும் பின்னூட்டச் சுற்றுகளை உருவாக்குகிறது.</p>
+</div>
+<div class="myth" data-lang="bn" style="display:none;">
+  <h3>🌍 কল্পনা: পারমাফ্রস্ট গলানো জলবায়ুর উপর ক্ষুদ্র প্রভাব ফেলে</h3>
+  <p>সত্য: গলমান পারমাফ্রস্ট CO₂ এবং মিথেন ছাড়ে যা হাজার বছর ধরে আটকানো ছিল, দ্রুততর উষ্ণতা ঘটায় এবং ফিডব্যাক লুপ তৈরি করে।</p>
+</div>
 
-  // create hidden divs for other languages (you can fill translations later)
-  const langs = ['hi','fr','mr','ta','bn'];
-  langs.forEach(lang=>{
-    const d = document.createElement('div');
-    d.className='myth';
-    d.dataset.lang = lang;
-    d.style.display = 'none';
-    d.innerHTML = div.innerHTML; // placeholder for translation
-    container.appendChild(d);
-  });
-});
+<!-- Myth 6 -->
+<div class="myth" data-lang="en">
+  <h3>🌍 Myth: Renewable energy adoption will automatically stabilize the grid</h3>
+  <p>Truth: High penetration of solar and wind requires storage, smart grids, and backup systems — otherwise intermittent generation can destabilize supply.</p>
+</div>
+<div class="myth" data-lang="hi" style="display:none;">
+  <h3>🌍 मिथक: नवीकरणीय ऊर्जा अपनाने से ग्रिड अपने आप स्थिर हो जाएगा</h3>
+  <p>सत्य: सौर और पवन ऊर्जा के उच्च स्तर के लिए स्टोरेज, स्मार्ट ग्रिड और बैकअप सिस्टम की जरूरत होती है — अन्यथा अंतरिम उत्पादन आपूर्ति को अस्थिर कर सकता है।</p>
+</div>
+<div class="myth" data-lang="fr" style="display:none;">
+  <h3>🌍 Mythe : L'adoption des énergies renouvelables stabilisera automatiquement le réseau</h3>
+  <p>Vérité : Une forte pénétration solaire et éolienne nécessite stockage, réseaux intelligents et systèmes de secours — sinon, la génération intermittente peut déstabiliser l'approvisionnement.</p>
+</div>
+<div class="myth" data-lang="mr" style="display:none;">
+  <h3>🌍 मिथक: नवीकरणीय ऊर्जा स्वीकारल्याने ग्रिड आपोआप स्थिर होईल</h3>
+  <p>सत्य: सौर आणि वाऱ्याच्या उच्च प्रवेशासाठी संचयन, स्मार्ट ग्रिड आणि बॅकअप सिस्टम आवश्यक आहे — अन्यथा अंतरिम निर्मिती पुरवठा अस्थिर करू शकते.</p>
+</div>
+<div class="myth" data-lang="ta" style="display:none;">
+  <h3>🌍 மிதம்: புதுப்பிக்கக்கூடிய எரிசக்தி ஏற்றும் செயல்பாடு தானாக கிரிட் நிலைநிறுத்தும்</h3>
+  <p>உண்மை: சோலார் மற்றும் காற்றின் உயர் பகிர்வு சேமிப்பு, ஸ்மார்ட் கிரிட்கள் மற்றும் பேக்கப் அமைப்புகளை தேவைப்படுத்துகிறது — இல்லையெனில் இடைப்பட்ட உற்பத்தி வழங்கலை நிலைநிறுத்தாது.</p>
+</div>
+<div class="myth" data-lang="bn" style="display:none;">
+  <h3>🌍 কল্পনা: নবায়নযোগ্য শক্তি গ্রহণ স্বয়ংক্রিয়ভাবে গ্রিড স্থিতিশীল করবে</h3>
+  <p>সত্য: সোলার এবং উইন্ডের উচ্চ গ্রহণযোগ্যতা স্টোরেজ, স্মার্ট গ্রিড এবং ব্যাকআপ সিস্টেম প্রয়োজন — না হলে অন্তর্বর্তী উৎপাদন সরবরাহকে অস্থিতিশীল করতে পারে।</p>
+</div>
 
-function changeLanguage(lang) {
-  const myths = document.querySelectorAll('.myth');
-  myths.forEach(myth => {
-    if(myth.dataset.lang === lang){
-      myth.style.display='block';
-    }else{
-      myth.style.display='none';
-    }
-  });
-}
-</script>
+<!-- Myth 7 -->
+<div class="myth" data-lang="en">
+  <h3>🌍 Myth: Deforestation in one country doesn’t affect global climate</h3>
+  <p>Truth: Forest loss anywhere contributes to atmospheric CO₂ rise, biodiversity loss, and disruption of regional rainfall patterns, impacting the global system.</p>
+</div>
+<div class="myth" data-lang="hi" style="display:none;">
+  <h3>🌍 मिथक: किसी एक देश में वनों की कटाई वैश्विक जलवायु को प्रभावित नहीं करती</h3>
+  <p>सत्य: कहीं भी जंगलों का नुकसान वायुमंडलीय CO₂ वृद्धि, जैव विविधता हानि और क्षेत्रीय वर्षा पैटर्न में विघटन में योगदान करता है, जो वैश्विक प्रणाली को प्रभावित करता है।</p>
+</div>
+<div class="myth" data-lang="fr" style="display:none;">
+  <h3>🌍 Mythe : La déforestation dans un pays n'affecte pas le climat mondial</h3>
+  <p>Vérité : La perte de forêt partout contribue à l'augmentation du CO₂ atmosphérique, à la perte de biodiversité et à la perturbation des régimes de pluie régionaux, impactant le système mondial.</p>
+</div>
+<div class="myth" data-lang="mr" style="display:none;">
+  <h3>🌍 मिथक: एका देशातील वनोत्पादन जागतिक हवामानावर परिणाम करत नाही</h3>
+  <p>सत्य: कुठेही जंगल कमी झाल्यास वायुमंडलीय CO₂ वाढ, जैवविविधता नुकसान आणि प्रादेशिक पावसाचे नमुने बिघडवतात, ज्यामुळे जागतिक प्रणाली प्रभावित होते.</p>
+</div>
+<div class="myth" data-lang="ta" style="display:none;">
+  <h3>🌍 மிதம்: ஒரு நாட்டில் காடுகள் அகற்றப்படுவதால் உலக காலநிலை பாதிக்கப்படாது</h3>
+  <p>உண்மை: எங்கேயாவது காடு இழப்பு வாயுமண்டல CO₂ உயர்வு, உயிர்வழி இழப்பு மற்றும் பிராந்திய மழை முறை மீறல் ஆகியவற்றில் பங்களிக்கிறது, இது உலகளாவிய அமைப்பை பாதிக்கிறது.</p>
+</div>
+<div class="myth" data-lang="bn" style="display:none;">
+  <h3>🌍 কল্পনা: একটি দেশে বন উজাড় করা বৈশ্বিক জলবায়ুকে প্রভাবিত করে না</h3>
+  <p>সত্য: যেকোনো স্থানে বন ক্ষতি বায়ুমণ্ডলীয় CO₂ বৃদ্ধি, জীববৈচিত্র্য হ্রাস এবং আঞ্চলিক বৃষ্টিপাতের প্যাটার্নে বিঘ্ন সৃষ্টি করে, যা বৈশ্বিক ব্যবস্থাকে প্রভাবিত করে।</p>
+</div>
+
+<!-- Myth 8 -->
+<div class="myth" data-lang="en">
+  <h3>🌍 Myth: Ocean acidification is slow and harmless</h3>
+  <p>Truth: Absorbing CO₂ lowers ocean pH rapidly, threatening coral reefs, shellfish, and the entire marine food web within decades.</p>
+</div>
+<div class="myth" data-lang="hi" style="display:none;">
+  <h3>🌍 मिथक: महासागर अम्लीकरण धीमा और हानिरहित है</h3>
+  <p>सत्य: CO₂ अवशोषण समुद्र के पीएच को तेजी से कम करता है, जो दशकों में कोरल रीफ, शंख और पूरी समुद्री खाद्य श्रृंखला को खतरे में डालता है।</p>
+</div>
+<div class="myth" data-lang="fr" style="display:none;">
+  <h3>🌍 Mythe : L'acidification des océans est lente et inoffensive</h3>
+  <p>Vérité : L'absorption de CO₂ baisse rapidement le pH des océans, menaçant les récifs coralliens, les coquillages et toute la chaîne alimentaire marine en quelques décennies.</p>
+</div>
+<div class="myth" data-lang="mr" style="display:none;">
+  <h3>🌍 मिथक: महासागर आम्लीकरण हळू आणि हानिरहित आहे</h3>
+  <p>सत्य: CO₂ शोषण समुद्राचा pH लवकर कमी करते, जे काही दशकांत प्रवाळ खंड, शंख आणि संपूर्ण समुद्री अन्न जाळी धोक्यात टाकते.</p>
+</div>
+<div class="myth" data-lang="ta" style="display:none;">
+  <h3>🌍 மிதம்: கடல் அமிலமயமாக்கல் மெதுவாகவும் பாதிப்பில்லாதது</h3>
+  <p>உண்மை: CO₂ உறிஞ்சல் கடல் pH ஐ விரைவாக குறைக்கிறது, சில தசாப்தங்களில் குலாலோம்புகள், சிப்பிகள் மற்றும் முழு கடல் உணவு வலைக்கு ஆபத்தாக உள்ளது.</p>
+</div>
+<div class="myth" data-lang="bn" style="display:none;">
+  <h3>🌍 কল্পনা: মহাসাগরের অম্লতা ধীরে এবং ক্ষতিকর নয়</h3>
+  <p>সত্য: CO₂ শোষণ সমুদ্রের pH দ্রুত কমায়, যা কয়েক দশকের মধ্যে প্রবাল প্রাচীর, শেলফিশ এবং পুরো সামুদ্রিক খাদ্য জালকে বিপদে ফেলে।</p>
+</div>
+
+<!-- Myth 9 -->
+<div class="myth" data-lang="en">
+  <h3>🌍 Myth: Arctic sea ice loss doesn’t influence global weather</h3>
+  <p>Truth: Melting ice alters jet streams, polar vortex stability, and mid-latitude weather patterns, affecting extreme events worldwide.</p>
+</div>
+<div class="myth" data-lang="hi" style="display:none;">
+  <h3>🌍 मिथक: आर्कटिक समुद्री बर्फ का नुकसान वैश्विक मौसम को प्रभावित नहीं करता</h3>
+  <p>सत्य: बर्फ पिघलने से जेट स्ट्रीम, पोलर भँवर स्थिरता और मध्य-अक्षांश मौसम पैटर्न बदलते हैं, जो दुनिया भर में चरम घटनाओं को प्रभावित करते हैं।</p>
+</div>
+<div class="myth" data-lang="fr" style="display:none;">
+  <h3>🌍 Mythe : La perte de glace de mer arctique n’influence pas le climat mondial</h3>
+  <p>Vérité : La fonte de la glace modifie les courants-jets, la stabilité du vortex polaire et les régimes météorologiques des latitudes moyennes, affectant les événements extrêmes dans le monde entier.</p>
+</div>
+<div class="myth" data-lang="mr" style="display:none;">
+  <h3>🌍 मिथक: आर्कटिक समुद्र बर्फ कमी जागतिक हवामानावर परिणाम करत नाही</h3>
+  <p>सत्य: वितळणारा बर्फ जेट स्ट्रीम, ध्रुवीय भंवर स्थिरता आणि मध्यम अक्षांश हवामान नमुने बदलतो, जे जगभरातील अत्यंत घटनांना प्रभावित करते.</p>
+</div>
+<div class="myth" data-lang="ta" style="display:none;">
+  <h3>🌍 மிதம்: ஆர்க்டிக் கடல் பனியின் இழப்பு உலகளாவிய வானிலை மீது பாதிப்பை ஏற்படுத்தாது</h3>
+  <p>உண்மை: உருகும் பனி ஜெட் ஸ்ட்ரீம்கள், போலார் வோர்டெக்ஸ் நிலைத்தன்மை மற்றும் நடுத்தர அகல வானிலை முறை மாற்றுகிறது, இது உலகளாவிய கடுமையான நிகழ்வுகளை பாதிக்கிறது.</p>
+</div>
+<div class="myth" data-lang="bn" style="display:none;">
+  <h3>🌍 কল্পনা: আর্কটিক সী আইস ক্ষয় বৈশ্বিক আবহাওয়াকে প্রভাবিত করে না</h3>
+  <p>সত্য: গলতে থাকা বরফ জেট স্ট্রিম, পোলার ভরটেক্স স্থিতিশীলতা এবং মধ্য-অক্ষাংশ আবহাওয়া প্যাটার্ন পরিবর্তন করে, যা বিশ্বব্যাপী চরম ঘটনাগুলিকে প্রভাবিত করে।</p>
+</div>
+
+<!-- Myth 10 -->
+<div class="myth" data-lang="en">
+  <h3>🌍 Myth: Biofuels are a low-impact alternative to fossil fuels</h3>
+  <p>Truth: Some biofuels drive deforestation, compete with food crops, and can have similar lifecycle emissions as fossil fuels if mismanaged.</p>
+</div>
+<div class="myth" data-lang="hi" style="display:none;">
+  <h3>🌍 मिथक: बायोफ्यूल जीवाश्म ईंधन का कम प्रभाव वाला विकल्प है</h3>
+  <p>सत्य: कुछ बायोफ्यूल वनों की कटाई को बढ़ावा देते हैं, खाद्य फसलों के साथ प्रतिस्पर्धा करते हैं, और यदि गलत प्रबंधित हों तो जीवाश्म ईंधन जैसी जीवनचक्र उत्सर्जन पैदा कर सकते हैं।</p>
+</div>
+<div class="myth" data-lang="fr" style="display:none;">
+  <h3>🌍 Mythe : Les biocarburants sont une alternative à faible impact aux combustibles fossiles</h3>
+  <p>Vérité : Certains biocarburants entraînent la déforestation, concurrencent les cultures alimentaires et peuvent avoir des émissions similaires aux combustibles fossiles s'ils sont mal gérés.</p>
+</div>
+<div class="myth" data-lang="mr" style="display:none;">
+  <h3>🌍 मिथक: बायोफ्यूल जीवाश्म इंधनसाठी कमी परिणामकारक पर्याय आहे</h3>
+  <p>सत्य: काही बायोफ्यूल जंगल कमी करतात, अन्न पीकासह स्पर्धा करतात, आणि चुकीच्या व्यवस्थापनामुळे जीवाश्म इंधनासार
 
 </body>
 </html>
