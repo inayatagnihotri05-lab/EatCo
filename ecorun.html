@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>EcoRun 🌿 — EatCo</title>
 
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root{
       --accent:#2e8b57;
       --bg1:#b4f0c6;
       --bg2:#eafaf0;
+      --muted:#6aa87b;
     }
     *{box-sizing:border-box}
     body{
@@ -20,6 +24,7 @@
       flex-direction:column;
       align-items:center;
       min-height:100vh;
+      color:#124b32;
     }
 
     h1{ color: #1f513f; margin: 14px 0 6px; font-size:20px; }
@@ -35,6 +40,7 @@
       overflow:hidden;
       background: linear-gradient(to top, #dfeee1 0%, #cbefd3 40%, #b6f0c2 100%);
       margin-bottom:12px;
+      box-shadow: 0 12px 40px rgba(17,75,47,0.08);
     }
 
     /* road block */
@@ -61,6 +67,7 @@
     #gameCanvas{
       position:absolute; left:0; top:0; width:100%; height:100%;
       z-index:3; display:block;
+      touch-action: none; /* help mobile so we can intercept touch */
     }
 
     #instructions{ color:#155e2c; font-size:14px; margin:6px; text-align:center; }
@@ -78,7 +85,7 @@
     #winOverlay{
       display:none;
       position:absolute; z-index:11; left:50%; top:50%;
-      transform:translate(-50%,-50%); background:rgba(255,255,255,0.95);
+      transform:translate(-50%,-50%); background:rgba(255,255,255,0.98);
       padding:26px; border-radius:14px; text-align:center; width:80%; max-width:420px;
       box-shadow:0 8px 30px rgba(0,0,0,0.15);
     }
@@ -88,14 +95,25 @@
       text-decoration:none; color:white; background:var(--accent); border:none; cursor:pointer;
       font-weight:600;
     }
-    .btn.secondary{ background:#6aa87b; margin-left:10px }
+    .btn.secondary{ background:var(--muted); margin-left:10px }
 
     /* score box */
     #scoreBox{
       position:absolute; top:12px; left:12px; z-index:7;
       background:white; padding:8px 12px; border-radius:10px; font-weight:700;
-      color: #155e2c; box-shadow:0 2px 7px rgba(0,0,0,0.12);
+      color: #155e2c; box-shadow:0 2px 10px rgba(0,0,0,0.12);
+      display:flex; gap:12px; align-items:center;
     }
+    #scoreBox small { font-weight:600; color:#2f6d48; }
+
+    /* start overlay */
+    #startOverlay{
+      position:absolute; z-index:11; left:50%; top:50%;
+      transform:translate(-50%,-50%); background:rgba(255,255,255,0.95);
+      padding:22px; border-radius:12px; text-align:center; width:85%; max-width:420px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.12);
+    }
+    #startOverlay h3{ margin:0 0 8px; color:#155e2c }
 
     /* small controls row */
     #controls{
@@ -117,10 +135,16 @@
     <button id="muteBtn" aria-label="Mute (no audio yet)">🔈 Mute</button>
   </div>
 
-  <div id="gameContainer">
+  <div id="gameContainer" aria-label="EcoRun game area">
     <canvas id="gameCanvas"></canvas>
-    <div id="scoreBox">Score: 0 | Best: 0</div>
-    <div id="fact"></div>
+    <div id="scoreBox" aria-live="polite"><small id="hudScore">Score: 0</small><small id="hudBest">Best: 0</small></div>
+    <div id="fact" role="status" aria-atomic="true"></div>
+
+    <div id="startOverlay" role="dialog" aria-hidden="false">
+      <h3>EcoRun</h3>
+      <p>Press <b>SPACE</b> or <b>Tap</b> to jump. Collect eco items, avoid trash. 🌱</p>
+      <button id="startBtn" class="btn">Start Run</button>
+    </div>
 
     <div id="winOverlay" role="dialog" aria-hidden="true">
       <h2>🎉 You Saved the Planet!</h2>
@@ -148,35 +172,52 @@
 
     const canvas = document.getElementById('gameCanvas');
     const container = document.getElementById('gameContainer');
-    const ctx = canvas.getContext('2d');
+    let ctx = canvas.getContext('2d');
     const factBox = document.getElementById('fact');
+    const hudScore = document.getElementById('hudScore');
+    const hudBest = document.getElementById('hudBest');
     const scoreBox = document.getElementById('scoreBox');
     const winOverlay = document.getElementById('winOverlay');
     const winText = document.getElementById('winText');
     const playAgainBtn = document.getElementById('playAgain');
     const shareBtn = document.getElementById('shareBtn');
     const muteBtn = document.getElementById('muteBtn');
+    const startOverlay = document.getElementById('startOverlay');
+    const startBtn = document.getElementById('startBtn');
 
-    // responsive canvas
-    function resize(){
-      canvas.width = container.clientWidth;
-      canvas.height = container.clientHeight;
+    // retina-aware canvas resize
+    function resizeCanvas(){
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      canvas.style.width = w + 'px';
+      canvas.style.height = h + 'px';
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      // reset transform & scale for drawing in CSS pixels
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.scale(dpr, dpr);
     }
-    window.addEventListener('resize', resize);
-    resize();
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      // update ground when size changes
+      groundY = container.clientHeight - 110;
+    });
+    resizeCanvas();
 
     // game state
     let player = { x: 120, y: 0, r: 36, vy:0, jumping:false };
-    let groundY = canvas.height - 110;
-    player.y = groundY;
+    let groundY = container.clientHeight - 110;
+    player.y = groundY - player.r/2; // center y
     const gravity = 0.6;
 
     let obstacles = [];
     let items = [];
     let score = 0;
     let best = parseInt(localStorage.getItem('eatco_best')||'0',10) || 0;
-    let running = true;
-    scoreBox.textContent = `Score: ${score} | Best: ${best}`;
+    let running = false;
+    hudScore.textContent = `Score: ${score}`;
+    hudBest.textContent = `Best: ${best}`;
 
     // eco facts
     const ECO_FACTS = [
@@ -189,26 +230,53 @@
 
     // control: jump on space or tap
     function jump(){
+      if (!running) return;
       if (!player.jumping){
         player.jumping = true;
         player.vy = -13 - Math.random()*4; // small variation
       }
     }
-    document.addEventListener('keydown', e => { if (e.code === 'Space') jump(); });
-    document.addEventListener('touchstart', e => { jump(); });
+    // keyboard
+    document.addEventListener('keydown', e => {
+      if (e.code === 'Space' || e.key === ' ') {
+        e.preventDefault();
+        jump();
+      }
+    });
+    // touch on container (prevent default to avoid page scroll)
+    container.addEventListener('touchstart', e => {
+      e.preventDefault();
+      jump();
+    }, { passive:false });
 
-    // spawn functions
+    // spawn functions (emoji chosen at spawn)
     function maybeSpawnObstacle(){
       if (Math.random() < OB_SPAWN_CHANCE) {
         const size = 36 + Math.round(Math.random()*18);
-        obstacles.push({ x: canvas.width + 30, y: groundY, size, speed: SPEED + Math.random()*1.4 });
+        const emojiChoices = ['🥤','🍟','🗑️','🧴','🍕'];
+        const emoji = emojiChoices[Math.floor(Math.random()*emojiChoices.length)];
+        obstacles.push({
+          x: container.clientWidth + 30,
+          y: groundY - size/2,
+          size,
+          speed: SPEED + Math.random()*1.4,
+          emoji
+        });
       }
     }
     function maybeSpawnItem(){
       if (Math.random() < ITEM_SPAWN_CHANCE) {
-        // spawn higher sometimes
+        const size = 28 + Math.round(Math.random()*8);
         const y = groundY - (60 + Math.round(Math.random()*80));
-        items.push({ x: canvas.width + 30, y, size: 28 + Math.round(Math.random()*8), speed: SPEED - 0.6 + Math.random()*1.2 });
+        const emojiChoices = ['🍎','🥦','♻️','🍌','🍓'];
+        const emoji = emojiChoices[Math.floor(Math.random()*emojiChoices.length)];
+        items.push({
+          x: container.clientWidth + 30,
+          y,
+          size,
+          speed: SPEED - 0.6 + Math.random()*1.2,
+          emoji
+        });
       }
     }
 
@@ -228,12 +296,11 @@
       const end = Date.now() + duration;
       (function frame(){
         confetti({
-          particleCount: 8,
+          particleCount: 10,
           startVelocity: 35,
           spread: 160,
           ticks: 60,
           origin: { x: Math.random(), y: Math.random()*0.6 },
-          colors: ['#2e8b57','#81c784','#c5e1a5','#ffd166']
         });
         if (Date.now() < end) requestAnimationFrame(frame);
       })();
@@ -247,15 +314,17 @@
       if (score > best) {
         best = score;
         localStorage.setItem('eatco_best', best);
-        scoreBox.textContent = `Score: ${score} | Best: ${best}`;
+        hudBest.textContent = `Best: ${best}`;
       }
     }
 
     playAgainBtn.addEventListener('click', ()=> location.reload());
-    shareBtn.addEventListener('click', ()=>{
+    shareBtn.addEventListener('click', ()=> {
       const shareText = `I scored ${score} on EcoRun — playing on EatCo! 🌿 Try it: ${location.href}`;
       if (navigator.share) navigator.share({title:'EcoRun score', text:shareText}).catch(()=>alert(shareText));
-      else { navigator.clipboard.writeText(shareText).then(()=>alert('Score copied to clipboard — share it!')); }
+      else {
+        navigator.clipboard.writeText(shareText).then(()=>alert('Score copied to clipboard — share it!'));
+      }
     });
 
     // mute toggle (no sounds included yet)
@@ -265,30 +334,54 @@
       muteBtn.textContent = muted ? '🔇 Muted' : '🔈 Mute';
     });
 
-    // collision helpers
-    function rectsCollide(ax,ay,aw,ah, bx,by,bw,bh){
-      return !(ax > bx + bw || ax + aw < bx || ay > by + bh || ay + ah < by);
+    // collision helpers (circle vs rect approx)
+    function circleRectCollide(cx, cy, cr, rx, ry, rw, rh){
+      // rx,ry are top-left
+      const closestX = Math.max(rx, Math.min(cx, rx + rw));
+      const closestY = Math.max(ry, Math.min(cy, ry + rh));
+      const dx = cx - closestX;
+      const dy = cy - closestY;
+      return (dx*dx + dy*dy) <= (cr*cr);
     }
 
     // main loop
     function update(){
       if (!running) return;
-      // resize & adjust ground (in case of window change)
-      resize();
-      groundY = canvas.height - 110;
-      if (player.y > groundY) { player.y = groundY; player.vy = 0; player.jumping = false; }
-
-      // physics
+      // physics - gravity
       player.vy += gravity;
       player.y += player.vy;
 
-      // clear
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+      // landing detection (player.y is center Y)
+      const playerBottom = player.y + player.r/2;
+      if (playerBottom > groundY) {
+        player.y = groundY - player.r/2;
+        player.vy = 0;
+        player.jumping = false;
+      }
 
-      // draw player (emoji)
+      // clear
+      ctx.clearRect(0,0,container.clientWidth,container.clientHeight);
+
+      // draw ground shadow / parallax subtle
+      ctx.save();
+      ctx.globalAlpha = 0.08;
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, groundY + 8, container.clientWidth, 6);
+      ctx.restore();
+
+      // draw player shadow
+      ctx.save();
+      ctx.beginPath();
+      ctx.ellipse(player.x, groundY + 18, player.r * 0.7, 10, 0, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(0,0,0,0.12)';
+      ctx.fill();
+      ctx.restore();
+
+      // draw player (emoji) - use middle baseline
       ctx.font = `${player.r}px serif`;
       ctx.textAlign = 'center';
-      ctx.fillText('🏃‍♂️', player.x, player.y + player.r/4);
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🏃‍♂️', player.x, player.y);
 
       // spawn
       maybeSpawnObstacle();
@@ -298,17 +391,19 @@
       for (let i = obstacles.length-1; i>=0; i--){
         const ob = obstacles[i];
         ob.x -= ob.speed;
-        ctx.fillStyle = '#b32d00';
-        // draw emoji trash for variety
         ctx.font = `${ob.size}px serif`;
-        const trashEmoji = ['🥤','🍟','🗑️'][Math.floor(Math.random()*3)];
-        ctx.fillText(trashEmoji, ob.x, ob.y);
-        // collision box approximate
-        if (rectsCollide(player.x - player.r/2, player.y - player.r/2, player.r, player.r, ob.x - ob.size/2, ob.y - ob.size, ob.size, ob.size)){
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(ob.emoji, ob.x, ob.y);
+
+        // collision box - treat ob rectangle centered on ob.x,ob.y
+        const obLeft = ob.x - ob.size/2;
+        const obTop  = ob.y - ob.size/2;
+        if (circleRectCollide(player.x, player.y, player.r*0.45, obLeft, obTop, ob.size, ob.size)) {
           // hit
           running = false;
-          setTimeout(()=> alert(`💥 Game Over! Final Score: ${score}`), 50);
-          setTimeout(()=> location.reload(), 80);
+          setTimeout(()=> alert(`💥 Game Over! Final Score: ${score}`), 60);
+          setTimeout(()=> location.reload(), 140);
           return;
         }
         if (ob.x < -80) obstacles.splice(i,1);
@@ -319,28 +414,56 @@
         const it = items[i];
         it.x -= it.speed;
         ctx.font = `${it.size}px serif`;
-        const ecoEmoji = ['🍎','🥦','♻️'][Math.floor(Math.random()*3)];
-        ctx.fillText(ecoEmoji, it.x, it.y);
-        if (rectsCollide(player.x - player.r/2, player.y - player.r/2, player.r, player.r, it.x - it.size/2, it.y - it.size/2, it.size, it.size)){
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(it.emoji, it.x, it.y);
+
+        const itLeft = it.x - it.size/2;
+        const itTop  = it.y - it.size/2;
+        if (circleRectCollide(player.x, player.y, player.r*0.45, itLeft, itTop, it.size, it.size)) {
           score += 1;
           showFact();
           items.splice(i,1);
-          scoreBox.textContent = `Score: ${score} | Best: ${best}`;
+          hudScore.textContent = `Score: ${score}`;
           if (score >= WIN_SCORE) { gameWin(); return; }
         }
         if (it.x < -80) items.splice(i,1);
       }
 
-      // HUD
+      // HUD in-canvas optional small text
       ctx.fillStyle = '#1f513f';
-      ctx.font = '18px Poppins, sans-serif';
-      ctx.fillText(`Score: ${score}`, 20, 30);
+      ctx.font = '14px Poppins, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(`Score: ${score}`, 12, 12);
 
       requestAnimationFrame(update);
     }
 
-    // start
-    update();
+    // Start button
+    startBtn.addEventListener('click', () => {
+      startOverlay.style.display = 'none';
+      running = true;
+      // ensure canvas size & ground are current
+      resizeCanvas();
+      groundY = container.clientHeight - 110;
+      // reset player to ground
+      player.y = groundY - player.r/2;
+      player.vy = 0;
+      // begin loop
+      requestAnimationFrame(update);
+    });
+
+    // allow tapping start overlay by pressing space as well
+    document.addEventListener('keydown', e => {
+      if ((e.code === 'Space' || e.key === ' ') && startOverlay.style.display !== 'none') {
+        e.preventDefault();
+        startBtn.click();
+      }
+    });
+
+    // initialization: make sure hud shows best
+    hudBest.textContent = `Best: ${best}`;
 
   })();
   </script>
