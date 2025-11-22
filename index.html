@@ -6,43 +6,95 @@
   <title>EatCo 🌿</title>
   <link rel="stylesheet" href="style.css" />
   <meta name="description" content="EatCo – Gen Z sustainability hub with eco games, challenges, and mini-courses.">
-<meta name="keywords" content="EatCo, sustainability, eco, gen z, eco games, zero waste challenges">
-<meta name="author" content="Inayat Agnihotri">
+  <meta name="keywords" content="EatCo, sustainability, eco, gen z, eco games, zero waste challenges">
+  <meta name="author" content="Inayat Agnihotri">
 
-<!-- OPEN GRAPH (For Instagram, WhatsApp, Facebook previews) -->
-<meta property="og:title" content="EatCo 🌿 – Gen Z Sustainability Hub">
-<meta property="og:description" content="Explore EcoRun, zero-waste challenges, sustainability blogs, and Gen Z eco action.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://inayatagnihotri05-lab.github.io/EatCo/">
-<meta property="og:image" content="https://inayatagnihotri05-lab.github.io/EatCo/assets/eatco-banner.png">
+  <!-- OPEN GRAPH -->
+  <meta property="og:title" content="EatCo 🌿 – Gen Z Sustainability Hub">
+  <meta property="og:description" content="Explore EcoRun, zero-waste challenges, sustainability blogs, and Gen Z eco action.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://inayatagnihotri05-lab.github.io/EatCo/">
+  <meta property="og:image" content="https://inayatagnihotri05-lab.github.io/EatCo/assets/eatco-banner.png">
 
-<!-- TWITTER PREVIEW -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="EatCo 🌿 – Gen Z Sustainability Hub">
-<meta name="twitter:description" content="Eco games, sustainability challenges, and zero-waste learning for Gen Z.">
-<meta name="twitter:image" content="https://inayatagnihotri05-lab.github.io/EatCo/assets/eatco-banner.png">
+  <!-- TWITTER -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EatCo 🌿 – Gen Z Sustainability Hub">
+  <meta name="twitter:description" content="Eco games, sustainability challenges, and zero-waste learning for Gen Z.">
+  <meta name="twitter:image" content="https://inayatagnihotri05-lab.github.io/EatCo/assets/eatco-banner.png">
 
-<!-- SCHEMA.ORG (MAJOR SEO BOOST) -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org/",
-  "@type": "Website",
-  "name": "EatCo",
-  "url": "https://inayatagnihotri05-lab.github.io/EatCo/",
-  "description": "EatCo is a Gen Z sustainability platform with eco games, mini courses, zero-waste challenges, and a fun way to help the planet.",
-  "creator": {
-    "@type": "Person",
-    "name": "Inayat Agnihotri"
-  },
-  "sameAs": [
-    "https://github.com/inayatagnihotri05-lab"
-  ]
-}
-</script>
+  <!-- SCHEMA.ORG -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Website",
+    "name": "EatCo",
+    "url": "https://inayatagnihotri05-lab.github.io/EatCo/",
+    "description": "EatCo is a Gen Z sustainability platform with eco games, mini courses, zero-waste challenges, and a fun way to help the planet.",
+    "creator": {
+      "@type": "Person",
+      "name": "Inayat Agnihotri"
+    },
+    "sameAs": ["https://github.com/inayatagnihotri05-lab"]
+  }
+  </script>
 
-<link rel="icon" type="image/png" href="assets/leaf.png" />
+  <link rel="icon" type="image/png" href="assets/leaf.png" />
+
+  <style>
+    /* ---- General Styles ---- */
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f0fef4; color:#222; }
+    h2 { text-align:center; margin-top:40px; color:#2e8b57; }
+    p { line-height:1.6; }
+
+    /* ---- Navbar ---- */
+    nav { display:flex; justify-content:space-between; align-items:center; padding:15px 30px; background:#2e8b57; color:#fff; }
+    nav .logo { font-size:1.5rem; font-weight:bold; }
+    nav ul { display:flex; list-style:none; gap:20px; }
+    nav ul li a { color:#fff; text-decoration:none; font-weight:500; }
+    nav ul li a:hover { text-decoration:underline; }
+
+    /* ---- Hero ---- */
+    .hero { position:relative; text-align:center; padding:80px 20px; background:#b4f0c6; }
+    .hero h1 { font-size:2.5rem; margin-bottom:15px; }
+    .hero p { font-size:1.2rem; }
+    .hero .btn { display:inline-block; margin-top:15px; padding:10px 25px; background:#2e8b57; color:#fff; border-radius:25px; text-decoration:none; font-weight:bold; }
+    .hero .btn:hover { background:#276a46; }
+
+    /* ---- Sections ---- */
+    section { padding:50px 20px; }
+    section ul { list-style: none; padding-left:0; }
+    section ul li { margin-bottom:10px; }
+
+    /* ---- Recipe Cards ---- */
+    .recipes-container { display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:20px; max-width:1200px; margin:40px auto; }
+    .recipe-card {
+      background:linear-gradient(135deg, #dff7e0, #b4f0c6);
+      padding:20px; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .recipe-card:hover {
+      transform: translateY(-5px);
+      box-shadow:0 10px 25px rgba(0,0,0,0.2);
+    }
+    .recipe-title { font-size:1.3rem; font-weight:bold; margin-bottom:10px; color:#2e8b57; }
+    .recipe-badge { font-size:0.9rem; margin-bottom:10px; display:inline-block; }
+    .recipe-ingredients, .recipe-carbon { font-size:0.9rem; margin-bottom:5px; }
+    .recipe-ingredients strong, .recipe-carbon strong { color:#2e8b57; }
+
+    /* ---- Footprint Section ---- */
+    #footprint input { padding:10px; border-radius:5px; border:1px solid #ccc; width:60%; margin-right:10px; }
+    #footprint button { padding:10px 20px; border:none; border-radius:5px; background:#2e8b57; color:#fff; cursor:pointer; }
+    #footprint button:hover { background:#276a46; }
+    .progress-container { width:100%; background:#e0f2e9; height:20px; border-radius:10px; margin:10px 0; }
+    #progressBar { height:100%; width:0%; background:#2e8b57; border-radius:10px; }
+    .meter { position:relative; width:120px; height:120px; margin:10px auto; }
+    #meterValue { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-weight:bold; }
+
+    /* Footer */
+    footer { text-align:center; padding:20px; background:#2e8b57; color:#fff; margin-top:50px; }
+
+  </style>
 </head>
-
 <body>
 
   <!-- Navbar -->
@@ -57,265 +109,174 @@
     </ul>
   </nav>
 
-  <!-- 🔥 Scrolling Banner -->
-  <div class="marquee">
-    <div class="marquee-inner">
-      ♻️ Reduce Waste • 🌱 Choose Reusable • 🚴 Move Greener • 💧 Save Water •  
-      🌍 Eat Local • 🍃 Protect Nature • ✨ Small Steps Matter •  
-      ♻️ Reduce Waste • 🌱 Choose Reusable • 🚴 Move Greener • 💧 Save Water
-    </div>
-  </div>
-
- <!-- Hero Section -->
-<section id="home" class="hero fade-in">
-  <div class="hero-overlay"></div>
-  <div class="hero-content">
+  <!-- Hero -->
+  <section id="home" class="hero fade-in">
     <h1>Welcome to EatCo 🌱</h1>
     <p>Building a world where every bite counts — for you and the planet.</p>
     <a href="#join" class="btn">Join the Movement</a>
-    <a href="newsletter.html" class="btn" style="margin-top: 15px; background:#2ecc71;">
-      📨 EatCo Newsletter
-    </a>
-  </div>
-</section>
+    <a href="newsletter.html" class="btn" style="margin-top:15px; background:#2ecc71;">📨 EatCo Newsletter</a>
+  </section>
 
-<!-- About Section -->
-<section id="about" class="fade-in">
-  <h2>Mindful. Local. Sustainable.</h2>
-  <p>EatCo promotes eco-friendly eating habits — reducing waste, supporting farmers, and making sustainability simple and delicious.</p>
-  <a href="about.html" class="btn">About our founder</a>
-</section>
+  <!-- About Section -->
+  <section id="about" class="fade-in">
+    <h2>Mindful. Local. Sustainable.</h2>
+    <p>EatCo promotes eco-friendly eating habits — reducing waste, supporting farmers, and making sustainability simple and delicious.</p>
+    <a href="about.html" class="btn">About our founder</a>
+  </section>
 
-<!-- Mission Section -->
-<section id="mission" class="fade-in">
-  <h2>Our Mission</h2>
-  <a href="mission.html" class="mission-btn">Read Our Full Mission →</a>
-  <ul>
-    <li>🌾 Sustainable Agriculture – Supporting local, seasonal, and organic food systems.</li>
-    <li>🍴 Zero-Waste Eating – Turning leftovers into art and reducing food waste.</li>
-    <li>🌍 Carbon Awareness – Helping people track and reduce their food footprint.</li>
-  </ul>
-</section>
+  <!-- Mission Section -->
+  <section id="mission" class="fade-in">
+    <h2>Our Mission</h2>
+    <a href="mission.html" class="mission-btn">Read Our Full Mission →</a>
+    <ul>
+      <li>🌾 Sustainable Agriculture – Supporting local, seasonal, and organic food systems.</li>
+      <li>🍴 Zero-Waste Eating – Turning leftovers into art and reducing food waste.</li>
+      <li>🌍 Carbon Awareness – Helping people track and reduce their food footprint.</li>
+    </ul>
+  </section>
 
-<!-- Join Section -->
-<section id="join" class="join-box fade-in">
-  <h2>Join the Movement 🌍</h2>
-  <p>Be part of the eco-food revolution. Let’s make every meal meaningful.</p>
-
-  <div class="join-buttons">
-    <a href="challenge.html" class="btn">🚀 Zero Waste Challenge</a>
-    <a href="eco-quiz.html" class="btn quiz-btn">Eco Personality Quiz</a>
-    <a href="ecorun.html" class="btn">🎮 Play EcoRun</a>
-    <a href="ecobuzz.html" class="btn">🌿 EcoBuzz</a>
-    <a href="climate-myth-buster.html" class="btn myth-btn">💥 Climate Myth Buster</a>
-  </div>
-</section>
-
-<!-- ⭐ PREMIUM CARBON CHECKER -->
-<section id="footprint" class="footprint-section fade-in">
-  <h2>🌾 Food & Daily Impact Carbon Checker</h2>
-  <p>Type any food item or your daily plastic use.</p>
-  <input type="text" id="foodInput" placeholder="e.g. rice, chicken, apple OR 5 plastics/day">
-  <button onclick="calculateFootprint()">Check</button>
-
-  <div id="footprintCard" class="hidden">
-    <div class="progress-container">
-      <div id="progressBar"></div>
-    </div>
-
-    <div class="meter">
-      <svg width="120" height="120">
-        <circle cx="60" cy="60" r="50" stroke="#e8f5ee" stroke-width="12" fill="none"/>
-        <circle id="meterFill" cx="60" cy="60" r="50" stroke="#2e8b57" stroke-width="12" fill="none"
-          stroke-linecap="round" transform="rotate(-90 60 60)"/>
-      </svg>
-      <div id="meterValue">0%</div>
-    </div>
-
-    <p id="result"></p>
-    <p id="weekly"></p>
-    <p id="yearly"></p>
-    <p id="compare"></p>
-    <p id="suggestion" class="suggestion"></p>
-    <p id="ecoFact" class="eco-fact"></p>
-  </div>
-</section>
-
-<!-- 🌿 Eco Recipes / Meal Planner Section -->
-<section id="recipes" class="recipes-section fade-in">
-  <h2>🍴 Eco Recipes & Meal Planner</h2>
-  <p>Discover plant-based, low-waste, seasonal recipes that are delicious and planet-friendly.</p>
-
-  <div class="recipe-cards">
-    <div class="recipe-card">
-      <img src="assets/vegan-buddha-bowl.jpg" alt="Vegan Buddha Bowl">
-      <div class="recipe-info">
-        <h3>Vegan Buddha Bowl</h3>
-        <p>Quinoa, chickpeas, seasonal veggies, tahini. 🌱 Low CO₂ impact!</p>
+  <!-- Recipes Section -->
+  <section id="recipes" class="fade-in">
+    <h2>🌱 Eco Recipes & Meal Planner</h2>
+    <div class="recipes-container">
+      
+      <!-- Recipe 1 -->
+      <div class="recipe-card">
+        <div class="recipe-title">🥗 Quinoa & Veggie Bowl</div>
+        <div class="recipe-badge">Main Dish</div>
+        <div class="recipe-ingredients"><strong>Ingredients:</strong> Quinoa, Carrots, Spinach, Peas, Olive Oil</div>
+        <div class="recipe-carbon"><strong>Carbon Footprint:</strong> ~1.2 kg CO₂/kg</div>
       </div>
-    </div>
-    <div class="recipe-card">
-      <img src="assets/chickpea-salad.jpg" alt="Chickpea Salad">
-      <div class="recipe-info">
-        <h3>Chickpea Salad</h3>
-        <p>Chickpeas, tomato, cucumber, olive oil, lemon. Quick & refreshing!</p>
+
+      <!-- Recipe 2 -->
+      <div class="recipe-card">
+        <div class="recipe-title">🍌 Banana Oat Cookies</div>
+        <div class="recipe-badge">Sweet</div>
+        <div class="recipe-ingredients"><strong>Ingredients:</strong> Bananas, Oats, Almonds, Cinnamon</div>
+        <div class="recipe-carbon"><strong>Carbon Footprint:</strong> ~0.4 kg CO₂/kg</div>
       </div>
-    </div>
-    <div class="recipe-card">
-      <img src="assets/banana-oat-cookies.jpg" alt="Banana Oat Cookies">
-      <div class="recipe-info">
-        <h3>Banana Oat Cookies</h3>
-        <p>Banana, oats, cinnamon. Sweet, minimal ingredients, low waste!</p>
+
+      <!-- Recipe 3 -->
+      <div class="recipe-card">
+        <div class="recipe-title">🥑 Avocado Toast</div>
+        <div class="recipe-badge">Snack</div>
+        <div class="recipe-ingredients"><strong>Ingredients:</strong> Whole Grain Bread, Avocado, Lemon, Olive Oil</div>
+        <div class="recipe-carbon"><strong>Carbon Footprint:</strong> ~0.8 kg CO₂/kg</div>
       </div>
-    </div>
-    <div class="recipe-card">
-      <img src="assets/green-smoothie.jpg" alt="Green Smoothie">
-      <div class="recipe-info">
-        <h3>Green Smoothie</h3>
-        <p>Spinach, banana, apple, almond milk. Energizing & eco-friendly!</p>
+
+      <!-- Recipe 4 -->
+      <div class="recipe-card">
+        <div class="recipe-title">🍫 Dark Chocolate Energy Bites</div>
+        <div class="recipe-badge">Sweet</div>
+        <div class="recipe-ingredients"><strong>Ingredients:</strong> Dates, Cacao, Almonds, Coconut</div>
+        <div class="recipe-carbon"><strong>Carbon Footprint:</strong> ~0.5 kg CO₂/kg</div>
       </div>
+
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- Footer -->
-<footer>
-  <p>© 2025 EatCo | Made with 💚 by Inayat Agnihotri</p>
-</footer>
+  <!-- Join Section -->
+  <section id="join" class="join-box fade-in">
+    <h2>Join the Movement 🌍</h2>
+    <p>Be part of the eco-food revolution. Let’s make every meal meaningful.</p>
+    <div class="join-buttons">
+      <a href="challenge.html" class="btn">🚀 Zero Waste Challenge</a>
+      <a href="eco-quiz.html" class="btn quiz-btn">Eco Personality Quiz</a>
+      <a href="ecorun.html" class="btn">🎮 Play EcoRun</a>
+      <a href="ecobuzz.html" class="btn">🌿 EcoBuzz</a>
+      <a href="climate-myth-buster.html" class="btn myth-btn">💥 Climate Myth Buster</a>
+    </div>
+  </section>
 
-<script>
-function calculateFootprint() {
-    let input = document.getElementById("foodInput").value.trim().toLowerCase();
-    const card = document.getElementById("footprintCard");
-    const resultEl = document.getElementById("result");
-    const weeklyEl = document.getElementById("weekly");
-    const yearlyEl = document.getElementById("yearly");
-    const compEl = document.getElementById("compare");
-    const suggEl = document.getElementById("suggestion");
-    const factEl = document.getElementById("ecoFact");
-    const progressBar = document.getElementById("progressBar");
-    const meterFill = document.getElementById("meterFill");
-    const meterValue = document.getElementById("meterValue");
+  <!-- Footprint Section -->
+  <section id="footprint" class="footprint-section fade-in">
+    <h2>🌾 Food & Daily Impact Carbon Checker</h2>
+    <p>Type any food item or your daily plastic use.</p>
+    <input type="text" id="foodInput" placeholder="e.g. rice, chicken, apple OR 5 plastics/day">
+    <button onclick="calculateFootprint()">Check</button>
 
-    card.classList.remove("hidden");
+    <div id="footprintCard" class="hidden">
+      <div class="progress-container"><div id="progressBar"></div></div>
+      <div class="meter">
+        <svg width="120" height="120">
+          <circle cx="60" cy="60" r="50" stroke="#e8f5ee" stroke-width="12" fill="none"/>
+          <circle id="meterFill" cx="60" cy="60" r="50" stroke="#2e8b57" stroke-width="12" fill="none"
+            stroke-linecap="round" transform="rotate(-90 60 60)"/>
+        </svg>
+        <div id="meterValue">0%</div>
+      </div>
+      <p id="result"></p>
+      <p id="weekly"></p>
+      <p id="yearly"></p>
+      <p id="compare"></p>
+      <p id="suggestion" class="suggestion"></p>
+      <p id="ecoFact" class="eco-fact"></p>
+    </div>
+  </section>
 
-    const foodData = {
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 EatCo | Made with 💚 by Inayat Agnihotri</p>
+  </footer>
+
+  <script>
+    function calculateFootprint() {
+      let input = document.getElementById("foodInput").value.trim().toLowerCase();
+      const card = document.getElementById("footprintCard");
+      const resultEl = document.getElementById("result");
+      const weeklyEl = document.getElementById("weekly");
+      const yearlyEl = document.getElementById("yearly");
+      const compEl = document.getElementById("compare");
+      const suggEl = document.getElementById("suggestion");
+      const factEl = document.getElementById("ecoFact");
+      const progressBar = document.getElementById("progressBar");
+      const meterFill = document.getElementById("meterFill");
+      const meterValue = document.getElementById("meterValue");
+
+      card.classList.remove("hidden");
+
+      const foodData = {
         rice: 2.7, chicken: 6.9, egg: 4.8, beef: 27, milk: 1.3,
         apple: 0.4, banana: 0.7, wheat: 1.4, cheese: 13.5, potato: 0.3
-    };
+      };
 
-    let score = 0;
+      let score = 0;
 
-    if (!isNaN(Number(input))) {
+      if (!isNaN(Number(input))) {
         let daily = Number(input);
         score = daily * 3;
-
         resultEl.innerHTML = `🧴 You use <b>${daily}</b> plastics/day.`;
-        weeklyEl.innerHTML = `📅 Weekly: <b>${daily * 7} plastics</b>`;
-        yearlyEl.innerHTML = `📆 Yearly: <b>${daily * 365}</b>`;
+        weeklyEl.innerHTML = `📅 Weekly: <b>${daily*7} plastics</b>`;
+        yearlyEl.innerHTML = `📆 Yearly: <b>${daily*365}</b>`;
         compEl.innerHTML = daily > 8 ? "⚠️ Higher than Indian average (8/day)" : "✅ Lower than Indian average";
-
-        suggEl.innerHTML = daily > 10 ?
-            "💡 Try replacing 1 daily plastic item with a reusable option." :
-            "💡 You're doing great! Keep it up!";
-    }
-
-    else if (foodData[input]) {
+        suggEl.innerHTML = daily > 10 ? "💡 Try replacing 1 daily plastic item with a reusable option." : "💡 You're doing great! Keep it up!";
+      } else if (foodData[input]) {
         let co2 = foodData[input];
         score = co2 * 5;
-
         resultEl.innerHTML = `🍽️ <b>${input}</b> emits <b>${co2} kg CO₂/kg</b>`;
-        weeklyEl.innerHTML = ``;
-        yearlyEl.innerHTML = ``;
+        weeklyEl.innerHTML = yearlyEl.innerHTML = '';
         compEl.innerHTML = `📊 Tip: Choose local & seasonal for lower emissions.`;
         suggEl.innerHTML = `💡 Swap once a week with a low-carbon food.`;
-    }
+      } else { resultEl.innerHTML = "❌ No data available for that item."; return; }
 
-    else {
-        resultEl.innerHTML = "❌ No data available for that item.";
-        return;
-    }
+      let percent = Math.min(100, score);
+      progressBar.style.width = percent + "%";
+      let dash = 314 - (314*percent)/100;
+      meterFill.style.strokeDashoffset = dash;
+      meterValue.innerHTML = percent + "%";
 
-    let percent = Math.min(100, score);
-    progressBar.style.width = percent + "%";
-
-    let dash = 314 - (314 * percent) / 100;
-    meterFill.style.strokeDashoffset = dash;
-    meterValue.innerHTML = percent + "%";
-
-    const facts = [
+      const facts = [
         "Food waste is the 3rd largest global emitter.",
         "Eating local reduces emissions by 70%.",
         "Plastic takes 500 years to break down.",
         "A reusable bottle saves 1,460 bottles yearly.",
         "Recycling 1 bottle powers a LED light for 3 hours."
-    ];
-    factEl.innerHTML = "🔍 Did you know? " + facts[Math.floor(Math.random() * facts.length)];
-}
-</script>
+      ];
+      factEl.innerHTML = "🔍 Did you know? " + facts[Math.floor(Math.random()*facts.length)];
+    }
+  </script>
 
-<!-- Recipes Section CSS -->
-<style>
-.recipes-section {
-  padding: 50px 20px;
-  text-align: center;
-  background: #eafaf0;
-}
-
-.recipe-cards {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 25px;
-}
-
-.recipe-card {
-  width: 220px;
-  border-radius: 15px;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.recipe-card img {
-  width: 100%;
-  height: 160px;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.recipe-card:hover img {
-  transform: scale(1.05);
-}
-
-.recipe-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-}
-
-.recipe-info {
-  padding: 12px;
-  text-align: left;
-}
-
-.recipe-info h3 {
-  margin: 0 0 6px 0;
-  color: #2e8b57;
-  font-size: 1.1em;
-}
-
-.recipe-info p {
-  margin: 0;
-  font-size: 0.95em;
-  color: #555;
-}
-</style>
-
-<p style="text-align:center; font-size:12px; color:#666; margin-top:30px;">
-  Last updated: November 2025
-</p>
+  <p style="text-align:center; font-size:12px; color:#666; margin-top:30px;">Last updated: November 2025</p>
 
 </body>
 </html>
