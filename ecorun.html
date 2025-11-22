@@ -1,142 +1,496 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EcoRun 🌿</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EcoRun 🌿 — Emoji Runner</title>
   <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: #c7f8ff;
-      font-family: Arial;
+    :root{
+      --accent:#2e8b57;
+      --bg1:#b4f0c6;
+      --bg2:#eafaf0;
     }
-    #facts {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255,255,255,0.75);
-      padding: 10px 20px;
-      border-radius: 12px;
-      font-size: 14px;
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg1),var(--bg2));font-family:Poppins,system-ui,Segoe UI,Arial;}
+    #gameCanvas{display:block; width:100%; height:calc(100vh - 90px); touch-action:none;}
+    #facts{
+      position:fixed;
+      bottom:12px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(255,255,255,0.85);
+      padding:8px 14px;
+      border-radius:12px;
+      font-size:14px;
+      color:#14472f;
+      box-shadow:0 8px 24px rgba(17,75,47,0.08);
       backdrop-filter: blur(6px);
+      z-index:40;
+    }
+    .ui-top{
+      display:flex; align-items:center; gap:12px; justify-content:center;
+      padding:10px 12px;
+    }
+    .hint { color:#124b32; font-weight:600; }
+    @media (max-width:480px){
+      #gameCanvas{height:60vh}
+      #facts{font-size:13px}
     }
   </style>
 </head>
 <body>
-  <canvas id="gameCanvas"></canvas>
+  <div class="ui-top">
+    <div class="hint">EcoRun 🌍 — Emoji Runner</div>
+    <div style="color:#155e2c;font-weight:600">Controls: <b>SPACE</b> / Tap</div>
+  </div>
+
+  <canvas id="gameCanvas" aria-label="EcoRun game area"></canvas>
   <div id="facts">Loading eco facts...</div>
 
-  <script>
-    const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+<script>
+(() => {
+  // ====== CONFIG ======
+  const WIN_SCORE = 12;           // optional target for a "win"
+  const SPAWN_TRASH_MS = 1500;
+  const SPAWN_GOOD_MS = 2000;
+  const GRAVITY = 0.9;
+  const PLAYER_SIZE = 72;         // emoji size in px
+  const BASE_SPEED = 6;
 
-    // PARALLAX
-    const layers = [
-      { color: "#bde9ff", speed: 0.2 },
-      { color: "#a1cff7", speed: 0.4 },
-      { color: "#78b0e8", speed: 0.7 }
-    ];
+  // ====== CANVAS SETUP ======
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d', { alpha: false });
 
-    const clouds = [];
-    for (let i = 0; i < 6; i++) {
-      clouds.push({ x: Math.random()*canvas.width, y: 60+Math.random()*80 });
+  function resizeCanvas(){
+    // Fit canvas to CSS size with DPR scaling for crisp emojis
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.max(1, window.devicePixelRatio || 1);
+    canvas.width = Math.round(rect.width * dpr);
+    canvas.height = Math.round(rect.height * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    // recalc game ground
+    groundY = rect.height - 120;
+    // keep player on ground when resized
+    if(player) player.y = Math.min(player.y, groundY - player.h);
+  }
+
+  // Put canvas CSS height dynamically (so it fills remaining viewport)
+  function setCanvasHeight(){
+    const topUiHeight = document.querySelector('.ui-top').offsetHeight;
+    const vh = Math.max(window.innerHeight - topUiHeight - 24, 300);
+    canvas.style.height = vh + 'px';
+  }
+  window.addEventListener('resize', () => { setCanvasHeight(); resizeCanvas(); });
+
+  // initial set
+  setCanvasHeight();
+  resizeCanvas();
+
+  // ====== PARALLAX LAYERS ======
+  let cloudData = [], mountainX = 0, treeX = 0;
+  function initParallax(){
+    cloudData = [];
+    const cloudCount = 6;
+    const width = canvas.getBoundingClientRect().width;
+    for(let i=0;i<cloudCount;i++){
+      cloudData.push({ x: Math.random()*width, y: 60 + Math.random()*100, r: 36+Math.random()*26, speed: 0.2 + Math.random()*0.25 });
     }
+    mountainX = 0; treeX = 0;
+  }
+  initParallax();
 
-    let mountainOffset = 0;
-    let treeOffset = 0;
+  function drawParallax(){
+    const w = canvas.getBoundingClientRect().width;
+    const h = canvas.getBoundingClientRect().height;
 
-    function drawParallax() {
-      layers.forEach((layer, i) => {
-        ctx.fillStyle = layer.color;
-        ctx.fillRect(0, i * canvas.height/3, canvas.width, canvas.height/3);
-      });
+    // Sky gradient
+    const sky = ctx.createLinearGradient(0,0,0,h);
+    sky.addColorStop(0, '#bde9ff');
+    sky.addColorStop(1, '#e7fdff');
+    ctx.fillStyle = sky;
+    ctx.fillRect(0,0,w,h);
 
-      ctx.fillStyle = "white";
-      clouds.forEach(c => {
-        c.x -= 0.3;
-        if (c.x < -120) c.x = canvas.width + 100;
-        ctx.beginPath(); ctx.arc(c.x, c.y, 40, 0, 2*Math.PI); ctx.fill();
-      });
-
-      mountainOffset -= 0.5;
-      if (mountainOffset <= -canvas.width) mountainOffset = 0;
-      ctx.fillStyle = "#8db0d9";
-      drawMountain(mountainOffset);
-      drawMountain(mountainOffset + canvas.width);
-
-      treeOffset -= 2;
-      if (treeOffset <= -canvas.width) treeOffset = 0;
-      ctx.fillStyle = "#2e7d32";
-      drawTrees(treeOffset);
-      drawTrees(treeOffset + canvas.width);
-    }
-
-    function drawMountain(x) {
+    // Clouds - layer farthest (slow)
+    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    cloudData.forEach(c => {
+      c.x -= c.speed;
+      if(c.x < -200) c.x = w + 200;
+      // soft cloud (3 circles)
       ctx.beginPath();
-      ctx.moveTo(x, canvas.height - 150);
-      ctx.lineTo(x + 250, canvas.height - 350);
-      ctx.lineTo(x + 500, canvas.height - 150);
+      ctx.arc(c.x, c.y, c.r, 0, Math.PI*2);
+      ctx.arc(c.x + c.r*0.6, c.y - c.r*0.35, c.r*0.8,0,Math.PI*2);
+      ctx.arc(c.x - c.r*0.6, c.y - c.r*0.25, c.r*0.7,0,Math.PI*2);
+      ctx.fill();
+    });
+
+    // Mountains - mid layer
+    mountainX -= 0.9;
+    if(mountainX <= -w) mountainX = 0;
+    ctx.fillStyle = '#8db0d9';
+    drawMountains(mountainX);
+    drawMountains(mountainX + w);
+
+    // Trees - foreground (fastest)
+    treeX -= 3;
+    if(treeX <= -w) treeX = 0;
+    ctx.fillStyle = '#2e7d32';
+    drawTrees(treeX);
+    drawTrees(treeX + w);
+
+    // Road stripe / ground shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.06)';
+    ctx.fillRect(0, h - 110, w, 110);
+    // small center stripe pattern
+    ctx.fillStyle = 'rgba(246,229,141,0.95)';
+    const stripeH = 10;
+    ctx.fillRect(0, h - 85, w, stripeH);
+  }
+
+  function drawMountains(x){
+    const w = canvas.getBoundingClientRect().width;
+    const h = canvas.getBoundingClientRect().height;
+    ctx.beginPath();
+    ctx.moveTo(x, h - 150);
+    ctx.lineTo(x + 220, h - 380);
+    ctx.lineTo(x + 450, h - 150);
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  function drawTrees(x){
+    const w = canvas.getBoundingClientRect().width;
+    const h = canvas.getBoundingClientRect().height;
+    for(let i=0;i<10;i++){
+      const tx = x + i * 160;
+      // trunk
+      ctx.fillStyle = '#6b3b1a';
+      ctx.fillRect(tx + 12, h - 160, 16, 60);
+      // leaves (triangle)
+      ctx.fillStyle = '#1f7a2a';
+      ctx.beginPath();
+      ctx.moveTo(tx, h - 160);
+      ctx.lineTo(tx + 30, h - 220);
+      ctx.lineTo(tx + 60, h - 160);
       ctx.closePath();
       ctx.fill();
     }
+  }
 
-    function drawTrees(x) {
-      for (let i = 0; i < 8; i++) {
-        let tx = x + i * 150;
-        ctx.fillRect(tx, canvas.height - 140, 35, 140);
+  // ====== PLAYER - Emoji style ======
+  let groundY = canvas.getBoundingClientRect().height - 120;
+  const playerEmoji = '🏃‍♀️'; // emoji runner (female runner, looks good)
+  let player = { x: 140, y: groundY - PLAYER_SIZE, w: PLAYER_SIZE, h: PLAYER_SIZE, vy: 0, jumping: false };
+
+  function drawPlayer(){
+    // emoji rendering - use a big font and draw centered
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = `${player.w}px serif`; // large size to render emoji
+    // Add a subtle shadow / circle behind
+    ctx.beginPath();
+    ctx.ellipse(player.x + player.w/2, player.y + player.h*0.75, player.w*0.6, 10, 0, 0, Math.PI*2);
+    ctx.fillStyle = 'rgba(0,0,0,0.08)';
+    ctx.fill();
+    ctx.fillStyle = '#000';
+    ctx.fillText(playerEmoji, player.x + player.w/2, player.y + player.h/2 + 6);
+    ctx.restore();
+  }
+
+  function updatePlayer(){
+    player.vy += GRAVITY;
+    player.y += player.vy;
+    const maxY = groundY - player.h;
+    if(player.y >= maxY){
+      player.y = maxY;
+      player.vy = 0;
+      player.jumping = false;
+    }
+  }
+
+  function playerJump(){
+    if(!gameRunning) return;
+    if(player.jumping) return;
+    player.jumping = true;
+    player.vy = -20 - Math.random()*6; // varied jump
+    // simple whoosh sound (optional)
+    if(!muted) playBeep(880, 0.08);
+  }
+
+  // ====== ITEMS & OBSTACLES (emoji) ======
+  let obstacles = []; // {x,y,w,h,emoji}
+  let items = [];     // {x,y,w,h,emoji,points}
+
+  function spawnObstacle(){
+    const w = 56 + Math.round(Math.random()*20);
+    const h = w;
+    const y = groundY - h + 8;
+    const emojis = ['🗑️','🗑️','🧶','🥤','🍟'];
+    const emoji = emojis[Math.floor(Math.random()*emojis.length)];
+    obstacles.push({ x: canvas.getBoundingClientRect().width + 60, y, w, h, emoji, speed: BASE_SPEED + Math.random()*2 });
+  }
+  function spawnGoodItem(){
+    const w = 46;
+    const h = 46;
+    const y = groundY - 140 - Math.random()*60;
+    const pool = [{e:'♻️',p:1},{e:'🍎',p:1},{e:'🥦',p:1},{e:'🥇',p:3}];
+    const chosen = pool[Math.floor(Math.random()*pool.length)];
+    items.push({ x: canvas.getBoundingClientRect().width + 60, y, w, h, emoji: chosen.e, points: chosen.p, speed: BASE_SPEED - 1 + Math.random()*1.5, bounce:0, dir:1 });
+  }
+
+  // collision helpers (rect vs rect)
+  function rectCollision(a,b){
+    return !(a.x + a.w < b.x || a.x > b.x + b.w || a.y + a.h < b.y || a.y > b.y + b.h);
+  }
+
+  // ====== GAME STATE ======
+  let score = 0;
+  let health = 3;
+  let best = parseInt(localStorage.getItem('eatco_best')||'0',10) || 0;
+  let gameRunning = false;
+  let gameOver = false;
+  let spawnTrashTimer = null;
+  let spawnGoodTimer = null;
+  let lastFrame = 0;
+  let muted = false;
+
+  // ====== START / RESTART / HUD ======
+  function startGame(){
+    if(gameRunning && !gameOver) return;
+    // reset
+    obstacles.length = 0; items.length = 0;
+    score = 0; health = 3; gameOver = false; gameRunning = true;
+    player.y = groundY - player.h; player.vy = 0; player.jumping = false;
+    if(spawnTrashTimer) clearInterval(spawnTrashTimer);
+    if(spawnGoodTimer) clearInterval(spawnGoodTimer);
+    spawnTrashTimer = setInterval(spawnObstacle, SPAWN_TRASH_MS);
+    spawnGoodTimer = setInterval(spawnGoodItem, SPAWN_GOOD_MS);
+    if(!muted) playBeep(720, 0.12);
+  }
+
+  function endGame(){
+    gameRunning = false;
+    gameOver = true;
+    clearInterval(spawnTrashTimer); clearInterval(spawnGoodTimer);
+    if(score > best){ best = score; localStorage.setItem('eatco_best', String(best)); }
+  }
+
+  function drawHUD(){
+    ctx.save();
+    ctx.fillStyle = '#08361f';
+    ctx.font = '20px Poppins, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(`Score: ${score}`, 18, 30);
+    ctx.textAlign = 'right';
+    ctx.fillText(`Best: ${best}`, canvas.getBoundingClientRect().width - 18, 30);
+    // health hearts
+    const hx = 18;
+    ctx.textAlign = 'left';
+    ctx.font = '20px serif';
+    ctx.fillText('❤'.repeat(health), hx, 58);
+    ctx.restore();
+  }
+
+  function drawStartOverlay(){
+    const w = canvas.getBoundingClientRect().width, h = canvas.getBoundingClientRect().height;
+    ctx.save();
+    ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.fillRect(0,0,w,h);
+    ctx.fillStyle = 'white'; ctx.textAlign='center';
+    ctx.font = '36px Poppins, sans-serif'; ctx.fillText('EcoRun 🌿', w/2, h/2 - 40);
+    ctx.font = '18px Poppins, sans-serif'; ctx.fillText('Tap or press SPACE to start', w/2, h/2 + 6);
+    ctx.font = '14px Poppins, sans-serif'; ctx.fillText('Collect ♻️ / 🍎 — avoid 🗑️', w/2, h/2 + 42);
+    ctx.restore();
+  }
+
+  function drawGameOverOverlay(){
+    const w = canvas.getBoundingClientRect().width, h = canvas.getBoundingClientRect().height;
+    ctx.save();
+    ctx.fillStyle = 'rgba(0,0,0,0.55)'; ctx.fillRect(0,0,w,h);
+    ctx.fillStyle = 'white'; ctx.textAlign='center';
+    ctx.font = '36px Poppins, sans-serif'; ctx.fillText('Game Over 💥', w/2, h/2 - 40);
+    ctx.font = '20px Poppins, sans-serif'; ctx.fillText(`Final Score: ${score}`, w/2, h/2 + 6);
+    ctx.font = '16px Poppins, sans-serif'; ctx.fillText('Tap or press SPACE to restart', w/2, h/2 + 46);
+    ctx.restore();
+  }
+
+  // ====== AUDIO (small beep using WebAudio) ======
+  let audioCtx = null;
+  function ensureAudio(){ if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+  function playBeep(freq = 440, dur = 0.08){
+    if(muted) return;
+    ensureAudio();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    g.gain.setValueAtTime(0.001, audioCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.18, audioCtx.currentTime + 0.02);
+    o.connect(g).connect(audioCtx.destination);
+    o.start();
+    o.stop(audioCtx.currentTime + dur);
+  }
+
+  // ====== MAIN DRAW & UPDATE LOOP ======
+  function gameLoop(ts){
+    if(!lastFrame) lastFrame = ts;
+    const dt = ts - lastFrame;
+    lastFrame = ts;
+
+    // Clear
+    const w = canvas.getBoundingClientRect().width, h = canvas.getBoundingClientRect().height;
+    ctx.clearRect(0,0,w,h);
+
+    // parallax
+    drawParallax();
+
+    // draw & update items (good)
+    for(let i = items.length - 1; i >= 0; i--){
+      const it = items[i];
+      // bounce animation
+      it.bounce += 0.18 * it.dir;
+      if(it.bounce > 8 || it.bounce < -2) it.dir *= -1;
+      it.x -= it.speed;
+      // draw emoji
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `${it.w}px serif`;
+      ctx.fillText(it.emoji, it.x + it.w/2, it.y + it.h/2 + it.bounce);
+      ctx.restore();
+
+      // collision with player
+      if(rectCollision({x: it.x, y: it.y, w: it.w, h: it.h}, {x: player.x, y: player.y, w: player.w, h: player.h})){
+        score += it.points;
+        if(!muted) playBeep(1000, 0.06);
+        // small particle / popup effect (simple)
+        items.splice(i,1);
+        continue;
       }
+      // offscreen remove
+      if(it.x + it.w < -120) items.splice(i,1);
     }
 
-    // SIMPLE PLAYER
-    let player = { x: 100, y: canvas.height - 160, vy: 0, jumping: false };
+    // draw & update obstacles (trash)
+    for(let i = obstacles.length - 1; i >= 0; i--){
+      const ob = obstacles[i];
+      ob.x -= ob.speed;
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `${ob.w}px serif`;
+      ctx.fillText(ob.emoji, ob.x + ob.w/2, ob.y + ob.h/2);
+      ctx.restore();
 
-    function drawPlayer() {
-      ctx.fillStyle = "#ffdd57";
-      ctx.fillRect(player.x, player.y, 50, 50);
-    }
-
-    function updatePlayer() {
-      player.vy += 1.1;
-      player.y += player.vy;
-
-      if (player.y >= canvas.height - 160) {
-        player.y = canvas.height - 160;
-        player.vy = 0;
-        player.jumping = false;
+      if(rectCollision({x: ob.x, y: ob.y, w: ob.w, h: ob.h}, {x: player.x, y: player.y, w: player.w, h: player.h})){
+        // hit!
+        // remove or keep? reduce health and remove obstacle
+        obstacles.splice(i,1);
+        health -= 1;
+        if(!muted) playBeep(160, 0.12);
+        // hit flash
+        if(health <= 0){
+          endGame();
+        }
+        continue;
       }
+      if(ob.x + ob.w < -120) obstacles.splice(i,1);
     }
 
-    window.addEventListener("keydown", e => {
-      if (e.code === "Space" && !player.jumping) {
-        player.vy = -22;
-        player.jumping = true;
+    // player
+    drawPlayer();
+    updatePlayer();
+
+    // HUD
+    drawHUD();
+
+    // Overlays
+    if(!gameRunning && !gameOver){
+      drawStartOverlay();
+    }
+    if(gameOver){
+      drawGameOverOverlay();
+    }
+
+    // Win check (optional)
+    if(score >= WIN_SCORE && !gameOver){
+      // brief celebration
+      if(!muted) playBeep(1200, 0.16);
+      // confetti (if confetti lib available it will run; if not, ignore)
+      if(typeof confetti === 'function') confetti({ particleCount: 40, spread: 140 });
+      // reset score target (or end)
+      // here we just keep going, but you could endGame() if preferred
+    }
+
+    requestAnimationFrame(gameLoop);
+  }
+
+  // ====== Input handlers (start + jump) ======
+  window.addEventListener('keydown', (e) => {
+    if(e.code === 'Space'){
+      e.preventDefault();
+      if(!gameRunning){
+        startGame();
+        return;
       }
-    });
-
-    function loop() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      drawParallax();
-      drawPlayer();
-      updatePlayer();
-      requestAnimationFrame(loop);
+      if(gameOver){
+        startGame();
+        return;
+      }
+      playerJump();
     }
-    loop();
+    if(e.code === 'KeyM'){ muted = !muted; } // quick toggle
+  });
 
-    // UNIQUE ECO FACTS
-    const ecoFacts = [
-      "Recycling one plastic bottle saves enough energy to power a light bulb for 3 hours!",
-      "Glass can be recycled endlessly without losing quality.",
-      "Every ton of recycled paper saves 17 trees.",
-      "Composting can reduce household waste by up to 30%.",
-      "Producing recycled aluminum uses 95% less energy than new aluminum.",
-      "A single tree absorbs about 22 kg of CO2 every year."
-    ];
+  // touch handlers (tap to start or jump)
+  canvas.addEventListener('touchstart', (ev) => {
+    ev.preventDefault();
+    if(!gameRunning){
+      startGame();
+      return;
+    }
+    if(gameOver){
+      startGame();
+      return;
+    }
+    playerJump();
+  }, {passive:false});
 
-    document.getElementById("facts").innerText = ecoFacts[Math.floor(Math.random()*ecoFacts.length)];
-  </script>
+  // click support as well
+  canvas.addEventListener('mousedown', (ev) => {
+    if(!gameRunning){
+      startGame();
+      return;
+    }
+    if(gameOver){
+      startGame();
+      return;
+    }
+    playerJump();
+  });
+
+  // ====== Spawners (timers) handled via startGame/clear intervals ======
+  // Already set up in startGame()
+
+  // ====== FACTS BOX ======
+  const ecoFacts = [
+    "Recycling one plastic bottle saves enough energy to power a light bulb for 3 hours!",
+    "Glass can be recycled endlessly without losing quality.",
+    "Every ton of recycled paper saves 17 trees.",
+    "Composting can reduce household waste by up to 30%.",
+    "Producing recycled aluminum uses 95% less energy than new aluminum.",
+    "A single tree absorbs about 22 kg of CO2 every year."
+  ];
+  document.getElementById('facts').innerText = ecoFacts[Math.floor(Math.random()*ecoFacts.length)];
+
+  // ====== INIT & START LOOP ======
+  initParallax();
+  resizeCanvas();
+  // show start overlay until user starts
+  requestAnimationFrame(gameLoop);
+
+  // ====== Ensure canvas resizes properly the first time after assets settled ======
+  setTimeout(()=>{ setCanvasHeight(); resizeCanvas(); }, 60);
+
+})();
+</script>
 </body>
 </html>
