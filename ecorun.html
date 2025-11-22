@@ -86,7 +86,6 @@ h1{ color: #1f513f; margin: 14px 0 6px; font-size:20px; }
 #muteBtn { background:#fff; border:1px solid #e6f0ea; padding:6px 8px; border-radius:8px; cursor:pointer; }
 
 @media (max-width:480px){ #gameContainer{ height:420px } }
-
 </style>
 </head>
 <body>
@@ -95,7 +94,7 @@ h1{ color: #1f513f; margin: 14px 0 6px; font-size:20px; }
 <div id="controls">
   <div style="color:#155e2c; font-weight:600; margin-right:8px;">Controls:</div>
   <div style="background:white;padding:6px 8px;border-radius:8px;">Space / Tap</div>
-  <button id="muteBtn" aria-label="Mute (no audio yet)">🔈 Mute</button>
+  <button id="muteBtn" aria-label="Mute">🔈 Mute</button>
 </div>
 
 <div id="gameContainer" aria-label="EcoRun game area">
@@ -107,16 +106,12 @@ h1{ color: #1f513f; margin: 14px 0 6px; font-size:20px; }
   <div id="winOverlay" role="dialog" aria-hidden="true">
     <h2>🎉 You Saved the Planet!</h2>
     <p id="winText">Final score: 0</p>
-    <div>
-      <button id="playAgainWin" class="btn">Play Again</button>
-    </div>
+    <div><button id="playAgainWin" class="btn">Play Again</button></div>
   </div>
   <div id="gameOverOverlay" role="dialog" aria-hidden="true">
     <h2>💥 Game Over!</h2>
     <p id="overText">Score: 0</p>
-    <div>
-      <button id="playAgainOver" class="btn">Try Again</button>
-    </div>
+    <div><button id="playAgainOver" class="btn">Try Again</button></div>
   </div>
 </div>
 
@@ -126,8 +121,8 @@ h1{ color: #1f513f; margin: 14px 0 6px; font-size:20px; }
 
 <script>
 (() => {
-  const WIN_SCORE = 10, OB_SPAWN_CHANCE = 0.01, ITEM_SPAWN_CHANCE = 0.03, SPEED = 4.2;
-  const MASTER_VOLUME = 0.9;
+  const WIN_SCORE = 10, OB_SPAWN_CHANCE = 0.012, ITEM_SPAWN_CHANCE = 0.04;
+  const SPEED = 4.2, MASTER_VOLUME = 0.9;
 
   const canvas = document.getElementById('gameCanvas');
   const container = document.getElementById('gameContainer');
@@ -143,40 +138,34 @@ h1{ color: #1f513f; margin: 14px 0 6px; font-size:20px; }
   const playAgainOver = document.getElementById('playAgainOver');
   const muteBtn = document.getElementById('muteBtn');
 
-  let audioCtx = null, muted = false;
+  let audioCtx=null, muted=false;
   function ensureAudio(){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }
   function playChime(){ if(muted) return; ensureAudio(); const o=audioCtx.createOscillator(); const g=audioCtx.createGain(); o.type='sine'; o.frequency.setValueAtTime(880,audioCtx.currentTime); g.gain.setValueAtTime(0.2*MASTER_VOLUME,audioCtx.currentTime); o.connect(g).connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.2);}
   function playClunk(){ if(muted) return; ensureAudio(); const o=audioCtx.createOscillator(); const g=audioCtx.createGain(); o.type='sine'; o.frequency.setValueAtTime(140,audioCtx.currentTime); g.gain.setValueAtTime(0.7*MASTER_VOLUME,audioCtx.currentTime); o.connect(g).connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.25);}
   function playWhoosh(){ if(muted) return; }
 
-  let groundY;
+  let groundY, player, obstacles=[], items=[], score=0, running=false;
+  let best=parseInt(localStorage.getItem('eatco_best')||'0',10)||0;
+
+  const ECO_FACTS=["🍎 Local food reduces CO₂!","🥦 Broccoli absorbs carbon.","♻️ Recycling saves energy!","🚴 Biking cuts emissions.","🌍 Plant-based meals reduce carbon."];
+
   function resizeCanvas(){
-    const dpr = Math.max(1, window.devicePixelRatio||1);
-    const w = container.clientWidth, h = container.clientHeight;
+    const dpr=Math.max(1,window.devicePixelRatio||1);
+    const w=container.clientWidth,h=container.clientHeight;
     canvas.style.width=w+'px'; canvas.style.height=h+'px';
     canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr);
     ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr,dpr);
-    groundY = container.clientHeight - 110;
+    groundY = container.clientHeight-110;
+    if(!player) initPlayer();
   }
-  window.addEventListener('resize', resizeCanvas);
-  resizeCanvas();
 
-  let player = {x:120, y:0, r:36, vy:0, jumping:false};
-  player.y = groundY - player.r/2;
-  const gravity = 0.6;
-
-  let obstacles = [], items = [], score = 0;
-  let best = parseInt(localStorage.getItem('eatco_best')||'0',10) || 0;
-  let running = false;
-
-  const ECO_FACTS=["🍎 Eating local reduces CO₂!","🥦 Broccoli absorbs carbon.","♻️ Recycling one can saves energy!","🚴 Biking cuts emissions.","🌍 Plant-based meals reduce carbon."];
-
+  function initPlayer(){ player={x:120,y:groundY-36/2,r:36,vy:0,jumping:false}; }
   function jump(){ if(!running||player.jumping) return; player.jumping=true; player.vy=-13-Math.random()*4; playWhoosh(); }
-  document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.key===' '){ e.preventDefault(); jump(); }});
+  document.addEventListener('keydown', e=>{ if(e.code==='Space'||e.key===' '){ e.preventDefault(); jump(); }});
   container.addEventListener('touchstart', e=>{ e.preventDefault(); jump();},{passive:false});
 
-  function maybeSpawnObstacle(){ if(Math.random()<OB_SPAWN_CHANCE){ const size=36+Math.round(Math.random()*18); const emoji=['🥤','🍟','🗑️','🧴','🍕'][Math.floor(Math.random()*5)]; obstacles.push({x:container.clientWidth+30,y:groundY-size/2,size,speed:SPEED+Math.random()*1.4,emoji});}}
-  function maybeSpawnItem(){ if(Math.random()<ITEM_SPAWN_CHANCE){ const size=28+Math.round(Math.random()*8); const y=groundY-(60+Math.round(Math.random()*80)); const emoji=['🍎','🥦','♻️','🍌','🍓'][Math.floor(Math.random()*5)]; items.push({x:container.clientWidth+30,y,size,speed:SPEED-0.6+Math.random()*1.2,emoji,bounce:0,bounceDir:1});}}
+  function maybeSpawnObstacle(){ if(Math.random()<OB_SPAWN_CHANCE){ const size=36+Math.round(Math.random()*18); const emoji=['🥤','🍟','🗑️','🧴','🍕'][Math.floor(Math.random()*5)]; obstacles.push({x:container.clientWidth+30,y:groundY-size/2,size,speed:SPEED+Math.random()*1.4,emoji,angle:0,rotDir:Math.random()<0.5?1:-1});}}
+  function maybeSpawnItem(){ if(Math.random()<ITEM_SPAWN_CHANCE){ const size=28+Math.round(Math.random()*8); const y=groundY-(60+Math.round(Math.random()*80)); const emoji=['🍎','🥦','♻️','🍌','🍓','🥇'][Math.floor(Math.random()*6)]; const multiplier = (emoji==='🥇'?3:1); items.push({x:container.clientWidth+30,y,size,speed:SPEED-0.6+Math.random()*1.2,emoji,bounce:0,bounceDir:1,multiplier});}}
 
   function circleRectCollide(cx,cy,cr,rx,ry,rw,rh){ const closestX=Math.max(rx,Math.min(cx,rx+rw)); const closestY=Math.max(ry,Math.min(cy,ry+rh)); const dx=cx-closestX, dy=cy-closestY; return (dx*dx+dy*dy)<=(cr*cr); }
 
@@ -195,31 +184,48 @@ h1{ color: #1f513f; margin: 14px 0 6px; font-size:20px; }
 
   muteBtn.addEventListener('click', ()=>{ muted=!muted; muteBtn.textContent=muted?'🔇 Muted':'🔈 Mute'; if(audioCtx){ muted?audioCtx.suspend?.():audioCtx.resume?.(); } });
 
+  const gravity=0.6;
   function update(){
     if(!running) return;
-    player.vy += gravity; player.y += player.vy;
-    if(player.y + player.r/2 > groundY){ player.y = groundY-player.r/2; player.vy=0; player.jumping=false; }
+    player.vy+=gravity; player.y+=player.vy;
+    if(player.y+player.r/2>groundY){ player.y=groundY-player.r/2; player.vy=0; player.jumping=false; }
 
     ctx.clearRect(0,0,container.clientWidth,container.clientHeight);
-    // shadow
+
+    // player shadow
     ctx.save(); ctx.globalAlpha=0.08; ctx.fillStyle='#000'; ctx.fillRect(0,groundY+8,container.clientWidth,6); ctx.restore();
     ctx.save(); ctx.beginPath(); ctx.ellipse(player.x,groundY+18,player.r*0.7,10,0,0,Math.PI*2); ctx.fillStyle='rgba(0,0,0,0.12)'; ctx.fill(); ctx.restore();
-    // player
+
+    // player emoji
     ctx.font=`${player.r}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('🏃‍♂️',player.x,player.y);
 
     maybeSpawnObstacle(); maybeSpawnItem();
 
-    for(let i=obstacles.length-1;i>=0;i--){ const ob=obstacles[i]; ob.x-=ob.speed; ctx.font=`${ob.size}px serif`; ctx.fillText(ob.emoji,ob.x,ob.y); const obLeft=ob.x-ob.size/2, obTop=ob.y-ob.size/2; if(circleRectCollide(player.x,player.y,player.r*0.45,obLeft,obTop,ob.size,ob.size)){ gameOver(); return; } if(ob.x<-80) obstacles.splice(i,1); }
+    // obstacles
+    for(let i=obstacles.length-1;i>=0;i--){ 
+      const ob=obstacles[i]; ob.x-=ob.speed; ob.angle+=0.05*ob.rotDir; ctx.save(); ctx.translate(ob.x,ob.y); ctx.rotate(ob.angle); ctx.font=`${ob.size}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(ob.emoji,0,0); ctx.restore();
+      const obLeft=ob.x-ob.size/2, obTop=ob.y-ob.size/2;
+      if(circleRectCollide(player.x,player.y,player.r*0.45,obLeft,obTop,ob.size,ob.size)){ gameOver(); return; }
+      if(ob.x<-80) obstacles.splice(i,1);
+    }
 
-    for(let i=items.length-1;i>=0;i--){ const it=items[i]; it.x-=it.speed; it.bounce+=it.bounceDir*0.15; if(it.bounce>6||it.bounce<0) it.bounceDir*=-1; ctx.font=`${it.size}px serif`; ctx.fillText(it.emoji,it.x,it.y-it.bounce); const itLeft=it.x-it.size/2, itTop=it.y-it.size/2; if(circleRectCollide(player.x,player.y,player.r*0.45,itLeft,itTop,it.size,it.size)){ score++; playChime(); showFact(); items.splice(i,1); hudScore.textContent=`Score: ${score}`; updateProgress(); if(score>=WIN_SCORE) gameWin(); } if(it.x<-80) items.splice(i,1); }
+    // items
+    for(let i=items.length-1;i>=0;i--){ 
+      const it=items[i]; it.x-=it.speed; it.bounce+=it.bounceDir*0.15; if(it.bounce>6||it.bounce<0) it.bounceDir*=-1; ctx.font=`${it.size}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(it.emoji,it.x,it.y-it.bounce);
+      if(circleRectCollide(player.x,player.y,player.r*0.45,it.x-it.size/2,it.y-it.size/2,it.size,it.size)){
+        score+=it.multiplier; playChime(); showFact(); items.splice(i,1); hudScore.textContent=`Score: ${score}`; updateProgress(); if(score>=WIN_SCORE) gameWin(); 
+      }
+      if(it.x<-80) items.splice(i,1);
+    }
 
     requestAnimationFrame(update);
   }
 
-  function startGame(){ if(running) return; running=true; resizeCanvas(); groundY=container.clientHeight-110; player.y=groundY-player.r/2; player.vy=0; player.jumping=false; winOverlay.style.display='none'; gameOverOverlay.style.display='none'; ensureAudio(); audioCtx.resume?.(); requestAnimationFrame(update); }
+  function startGame(){ if(running) return; running=true; resizeCanvas(); player.y=groundY-player.r/2; player.vy=0; player.jumping=false; winOverlay.style.display='none'; gameOverOverlay.style.display='none'; ensureAudio(); audioCtx.resume?.(); requestAnimationFrame(update); }
 
   document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.key===' ') startGame(); });
   container.addEventListener('touchstart', e=>{ startGame(); },{passive:false});
+  resizeCanvas();
 })();
 </script>
 </body>
