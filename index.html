@@ -157,8 +157,66 @@
     </div>
   </section>
 
-  <!-- ⭐ Carbon Checker -->
-  <!-- (unchanged — keeping your original code here) -->
+ <!-- ⭐ Carbon Footprint Checker -->
+<section id="footprint" class="fade-in" style="padding:40px; text-align:center;">
+  <h2>🌍 Carbon Footprint Checker</h2>
+  <p>Calculate how much CO₂ your food choices create.</p>
+
+  <div style="
+    max-width:400px;
+    margin:20px auto;
+    background:#f0f9f4;
+    padding:20px;
+    border-radius:12px;
+    border-left:6px solid #2e8b57;
+    text-align:left;
+  ">
+    <label><b>🍽️ Number of Meals per Day:</b></label>
+    <input id="meals" type="number" min="1" max="10" value="3"
+      style="width:100%; padding:10px; border-radius:8px; margin:10px 0;">
+
+    <label><b>🥗 Diet Type:</b></label>
+    <select id="diet" style="width:100%; padding:10px; border-radius:8px; margin:10px 0;">
+      <option value="2.5">Veg</option>
+      <option value="3.3">Mixed</option>
+      <option value="5">Non-Veg (High Meat)</option>
+    </select>
+
+    <button onclick="calculateCarbon()" style="
+      width:100%;
+      padding:12px;
+      background:#2ecc71;
+      border:none;
+      border-radius:10px;
+      color:white;
+      margin-top:10px;
+      cursor:pointer;
+    ">
+      Calculate Footprint
+    </button>
+
+    <p id="result" style="margin-top:15px; font-size:1.1em; color:#276749;">
+      Your carbon footprint will appear here.
+    </p>
+  </div>
+</section>
+
+<script>
+function calculateCarbon() {
+  let meals = document.getElementById("meals").value;
+  let diet = document.getElementById("diet").value;
+
+  let daily = meals * diet;         // kg CO2 per day
+  let monthly = daily * 30;         // monthly estimate
+  let yearly = daily * 365;         // yearly estimate
+
+  document.getElementById("result").innerHTML =
+    `🌱 <b>Daily:</b> ${daily.toFixed(1)} kg CO₂<br>
+     🌍 <b>Monthly:</b> ${monthly.toFixed(1)} kg CO₂<br>
+     ⭐ <b>Yearly:</b> ${yearly.toFixed(1)} kg CO₂`;
+}
+</script>
+
 
   <!-- 🌱 Eco Recipes Section -->
  <!-- 🌱 Eco Recipes Section -->
