@@ -158,64 +158,120 @@
   </section>
 
  <!-- ⭐ Carbon Footprint Checker -->
-<section id="footprint" class="fade-in" style="padding:40px; text-align:center;">
-  <h2>🌍 Carbon Footprint Checker</h2>
-  <p>Calculate how much CO₂ your food choices create.</p>
+<!-- 🌿 Ultra-Simple CO2 Footprint Checker -->
+<section class="co2-checker">
+  <h2>🌍 Quick CO₂ Footprint Checker</h2>
+  <p class="subtext">Answer 3 simple questions to estimate your daily CO₂ impact.</p>
 
-  <div style="
-    max-width:400px;
-    margin:20px auto;
-    background:#f0f9f4;
-    padding:20px;
-    border-radius:12px;
-    border-left:6px solid #2e8b57;
-    text-align:left;
-  ">
-    <label><b>🍽️ Number of Meals per Day:</b></label>
-    <input id="meals" type="number" min="1" max="10" value="3"
-      style="width:100%; padding:10px; border-radius:8px; margin:10px 0;">
-
-    <label><b>🥗 Diet Type:</b></label>
-    <select id="diet" style="width:100%; padding:10px; border-radius:8px; margin:10px 0;">
-      <option value="2.5">Veg</option>
-      <option value="3.3">Mixed</option>
-      <option value="5">Non-Veg (High Meat)</option>
+  <div class="quiz-box">
+    <label>🚶 How do you usually travel?</label>
+    <select id="travel">
+      <option value="1">Walking / Cycle</option>
+      <option value="3">Bus / Metro</option>
+      <option value="7">Car</option>
     </select>
 
-    <button onclick="calculateCarbon()" style="
-      width:100%;
-      padding:12px;
-      background:#2ecc71;
-      border:none;
-      border-radius:10px;
-      color:white;
-      margin-top:10px;
-      cursor:pointer;
-    ">
-      Calculate Footprint
-    </button>
+    <label>🍔 What’s your daily diet like?</label>
+    <select id="diet">
+      <option value="2">Veg</option>
+      <option value="3">Mixed</option>
+      <option value="5">Non-Veg daily</option>
+    </select>
 
-    <p id="result" style="margin-top:15px; font-size:1.1em; color:#276749;">
-      Your carbon footprint will appear here.
-    </p>
+    <label>💡 How much electricity do you use?</label>
+    <select id="electric">
+      <option value="2">Very low</option>
+      <option value="4">Medium</option>
+      <option value="7">High</option>
+    </select>
+
+    <button onclick="calcCO2()">Check My CO₂</button>
+
+    <div class="result" id="result"></div>
   </div>
 </section>
 
+<style>
+  .co2-checker{
+    padding:40px;
+    background:#e6ffe6;
+    border-radius:20px;
+    margin:40px auto;
+    max-width:600px;
+    font-family:Arial;
+  }
+
+  .co2-checker h2{
+    text-align:center;
+    font-size:28px;
+  }
+
+  .subtext{
+    text-align:center;
+    margin-bottom:20px;
+    font-size:16px;
+    color:#333;
+  }
+
+  .quiz-box{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+  }
+
+  label{
+    font-weight:bold;
+  }
+
+  select, button{
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #aaa;
+  }
+
+  button{
+    background:#2e8b57;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+  }
+
+  .result{
+    margin-top:20px;
+    padding:15px;
+    background:white;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+    display:none;
+  }
+</style>
+
 <script>
-function calculateCarbon() {
-  let meals = document.getElementById("meals").value;
-  let diet = document.getElementById("diet").value;
+  function calcCO2(){
+    let travel = Number(document.getElementById("travel").value);
+    let diet = Number(document.getElementById("diet").value);
+    let electric = Number(document.getElementById("electric").value);
 
-  let daily = meals * diet;         // kg CO2 per day
-  let monthly = daily * 30;         // monthly estimate
-  let yearly = daily * 365;         // yearly estimate
+    let total = travel + diet + electric;
 
-  document.getElementById("result").innerHTML =
-    `🌱 <b>Daily:</b> ${daily.toFixed(1)} kg CO₂<br>
-     🌍 <b>Monthly:</b> ${monthly.toFixed(1)} kg CO₂<br>
-     ⭐ <b>Yearly:</b> ${yearly.toFixed(1)} kg CO₂`;
-}
+    let msg = "";
+    if(total <= 5){
+      msg = "🌱 Excellent! Your CO₂ footprint is very low!";
+    } 
+    else if(total <= 10){
+      msg = "✨ Good! You’re doing okay — small improvements will help.";
+    }
+    else {
+      msg = "🔥 High CO₂! Try reducing car use or saving power.";
+    }
+
+    document.getElementById("result").style.display = "block";
+    document.getElementById("result").innerHTML = 
+      "Your CO₂ Score: <strong>" + total + "</strong><br>" + msg;
+  }
 </script>
+
 
 
   <!-- 🌱 Eco Recipes Section -->
