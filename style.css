@@ -163,7 +163,7 @@ section {
 
 /* Backgrounds */
 #about { background: linear-gradient(145deg, #e0f7e9, #f1fff4); }
-#mission { background: linear-gradient(145deg, #d8f1e1, #e8fff5); }
+#mission { background: linear-gradient(145deg, #d8f1e1, #e8fff5); position: relative; overflow: hidden;}
 #join { background: linear-gradient(145deg, #c8e9d4, #d8f7e8); }
 
 /* -------------------- CARBON CHECKER -------------------- */
@@ -301,6 +301,40 @@ footer {
   font-size: 16px;
   line-height: 1.6;
   color: #234f3f;
+}
+
+/* Mission Button */
+.mission-btn {
+  background-color: #2e8b57;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 1rem;
+  transition: 0.3s;
+}
+
+.mission-btn:hover {
+  background-color: #256d47;
+  transform: scale(1.05);
+}
+
+/* Floating Leaves */
+.leaf {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background: url('https://i.ibb.co/7z7Q5Qw/leaf.png') no-repeat center/contain;
+  opacity: 0.8;
+  animation: floatLeaf linear infinite;
+}
+
+@keyframes floatLeaf {
+  0% { transform: translateY(-40px) rotate(0deg); opacity: 0.6; }
+  50% { opacity: 0.9; }
+  100% { transform: translateY(120vh) rotate(360deg); opacity: 0; }
 }
 
 /* Stats Grid */
