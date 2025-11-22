@@ -144,123 +144,82 @@ h1{ color: #1f513f; margin: 14px 0 6px; font-size:20px; }
   const muteBtn = document.getElementById('muteBtn');
 
   let audioCtx = null, muted = false;
-
   function ensureAudio(){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }
   function playChime(){ if(muted) return; ensureAudio(); const o=audioCtx.createOscillator(); const g=audioCtx.createGain(); o.type='sine'; o.frequency.setValueAtTime(880,audioCtx.currentTime); g.gain.setValueAtTime(0.2*MASTER_VOLUME,audioCtx.currentTime); o.connect(g).connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.2);}
   function playClunk(){ if(muted) return; ensureAudio(); const o=audioCtx.createOscillator(); const g=audioCtx.createGain(); o.type='sine'; o.frequency.setValueAtTime(140,audioCtx.currentTime); g.gain.setValueAtTime(0.7*MASTER_VOLUME,audioCtx.currentTime); o.connect(g).connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.25);}
-  function playWhoosh(){ if(muted) return; /* simplified for brevity */ }
+  function playWhoosh(){ if(muted) return; }
 
+  let groundY;
   function resizeCanvas(){
     const dpr = Math.max(1, window.devicePixelRatio||1);
     const w = container.clientWidth, h = container.clientHeight;
     canvas.style.width=w+'px'; canvas.style.height=h+'px';
     canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr);
     ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr,dpr);
-    groundY = container.clientHeight-110;
+    groundY = container.clientHeight - 110;
   }
-  window.addEventListener('resize',resizeCanvas);
+  window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
-  let player={x:120,y:0,r:36,vy:0,jumping:false};
-  let groundY=container.clientHeight-110;
-  player.y=groundY-player.r/2;
-  const gravity=0.6;
+  let player = {x:120, y:0, r:36, vy:0, jumping:false};
+  player.y = groundY - player.r/2;
+  const gravity = 0.6;
 
-  let obstacles=[], items=[], score=0;
-  let best=parseInt(localStorage.getItem('eatco_best')||'0',10)||0;
-  let running=false;
+  let obstacles = [], items = [], score = 0;
+  let best = parseInt(localStorage.getItem('eatco_best')||'0',10) || 0;
+  let running = false;
 
   const ECO_FACTS=["🍎 Eating local reduces CO₂!","🥦 Broccoli absorbs carbon.","♻️ Recycling one can saves energy!","🚴 Biking cuts emissions.","🌍 Plant-based meals reduce carbon."];
 
   function jump(){ if(!running||player.jumping) return; player.jumping=true; player.vy=-13-Math.random()*4; playWhoosh(); }
   document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.key===' '){ e.preventDefault(); jump(); }});
-  container.addEventListener('touchstart',e=>{ e.preventDefault(); jump();},{passive:false});
+  container.addEventListener('touchstart', e=>{ e.preventDefault(); jump();},{passive:false});
 
   function maybeSpawnObstacle(){ if(Math.random()<OB_SPAWN_CHANCE){ const size=36+Math.round(Math.random()*18); const emoji=['🥤','🍟','🗑️','🧴','🍕'][Math.floor(Math.random()*5)]; obstacles.push({x:container.clientWidth+30,y:groundY-size/2,size,speed:SPEED+Math.random()*1.4,emoji});}}
   function maybeSpawnItem(){ if(Math.random()<ITEM_SPAWN_CHANCE){ const size=28+Math.round(Math.random()*8); const y=groundY-(60+Math.round(Math.random()*80)); const emoji=['🍎','🥦','♻️','🍌','🍓'][Math.floor(Math.random()*5)]; items.push({x:container.clientWidth+30,y,size,speed:SPEED-0.6+Math.random()*1.2,emoji,bounce:0,bounceDir:1});}}
 
-  function circleRectCollide(cx,cy,cr,rx,ry,rw,rh){
-    const closestX=Math.max(rx,Math.min(cx,rx+rw));
-    const closestY=Math.max(ry,Math.min(cy,ry+rh));
-    const dx=cx-closestX, dy=cy-closestY;
-    return (dx*dx+dy*dy)<=(cr*cr);
-  }
+  function circleRectCollide(cx,cy,cr,rx,ry,rw,rh){ const closestX=Math.max(rx,Math.min(cx,rx+rw)); const closestY=Math.max(ry,Math.min(cy,ry+rh)); const dx=cx-closestX, dy=cy-closestY; return (dx*dx+dy*dy)<=(cr*cr); }
 
-  function showFact(){ const f=ECO_FACTS[Math.floor(Math.random()*ECO_FACTS.length)]; /* optional: display */ }
+  function showFact(){ const f=ECO_FACTS[Math.floor(Math.random()*ECO_FACTS.length)]; }
 
   function doConfetti(){ const duration=2.5*1000; const end=Date.now()+duration; (function frame(){ confetti({particleCount:10,startVelocity:35,spread:160,ticks:60,origin:{x:Math.random(),y:Math.random()*0.6}}); if(Date.now()<end) requestAnimationFrame(frame); })(); }
 
   function updateProgress(){ const p=Math.min(score/WIN_SCORE,1)*100; progressInner.style.width=p+'%'; }
 
-  function gameWin(){
-    running=false; winText.textContent=`Final score: ${score}`;
-    winOverlay.style.display='block'; playChime(); doConfetti();
-    if(score>best){ best=score; localStorage.setItem('eatco_best',best); hudBest.textContent=`Best: ${best}`;}
-  }
+  function gameWin(){ running=false; winText.textContent=`Final score: ${score}`; winOverlay.style.display='block'; playChime(); doConfetti(); if(score>best){ best=score; localStorage.setItem('eatco_best',best); hudBest.textContent=`Best: ${best}`;} }
 
   function gameOver(){ running=false; overText.textContent=`Score: ${score}`; gameOverOverlay.style.display='block'; playClunk(); }
 
-  playAgainWin.addEventListener('click',()=>location.reload());
-  playAgainOver.addEventListener('click',()=>location.reload());
+  playAgainWin.addEventListener('click', ()=>location.reload());
+  playAgainOver.addEventListener('click', ()=>location.reload());
 
-  muteBtn.addEventListener('click',()=>{
-    muted=!muted;
-    muteBtn.textContent=muted?'🔇 Muted':'🔈 Mute';
-    if(audioCtx){ if(muted) audioCtx.suspend?.(); else audioCtx.resume?.(); }
-  });
+  muteBtn.addEventListener('click', ()=>{ muted=!muted; muteBtn.textContent=muted?'🔇 Muted':'🔈 Mute'; if(audioCtx){ muted?audioCtx.suspend?.():audioCtx.resume?.(); } });
 
   function update(){
     if(!running) return;
-    player.vy+=gravity; player.y+=player.vy;
-    if(player.y+player.r/2>groundY){ player.y=groundY-player.r/2; player.vy=0; player.jumping=false;}
+    player.vy += gravity; player.y += player.vy;
+    if(player.y + player.r/2 > groundY){ player.y = groundY-player.r/2; player.vy=0; player.jumping=false; }
 
     ctx.clearRect(0,0,container.clientWidth,container.clientHeight);
+    // shadow
     ctx.save(); ctx.globalAlpha=0.08; ctx.fillStyle='#000'; ctx.fillRect(0,groundY+8,container.clientWidth,6); ctx.restore();
     ctx.save(); ctx.beginPath(); ctx.ellipse(player.x,groundY+18,player.r*0.7,10,0,0,Math.PI*2); ctx.fillStyle='rgba(0,0,0,0.12)'; ctx.fill(); ctx.restore();
-
+    // player
     ctx.font=`${player.r}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('🏃‍♂️',player.x,player.y);
 
     maybeSpawnObstacle(); maybeSpawnItem();
 
-    // Obstacles
-    for(let i=obstacles.length-1;i>=0;i--){
-      const ob=obstacles[i]; ob.x-=ob.speed;
-      ctx.font=`${ob.size}px serif`; ctx.fillText(ob.emoji,ob.x,ob.y);
-      const obLeft=ob.x-ob.size/2, obTop=ob.y-ob.size/2;
-      if(circleRectCollide(player.x,player.y,player.r*0.45,obLeft,obTop,ob.size,ob.size)){ gameOver(); return;}
-      if(ob.x<-80) obstacles.splice(i,1);
-    }
+    for(let i=obstacles.length-1;i>=0;i--){ const ob=obstacles[i]; ob.x-=ob.speed; ctx.font=`${ob.size}px serif`; ctx.fillText(ob.emoji,ob.x,ob.y); const obLeft=ob.x-ob.size/2, obTop=ob.y-ob.size/2; if(circleRectCollide(player.x,player.y,player.r*0.45,obLeft,obTop,ob.size,ob.size)){ gameOver(); return; } if(ob.x<-80) obstacles.splice(i,1); }
 
-    // Items with bounce
-    for(let i=items.length-1;i>=0;i--){
-      const it=items[i]; it.x-=it.speed;
-      it.bounce+=it.bounceDir*0.15;
-      if(it.bounce>6||it.bounce<0) it.bounceDir*=-1;
-      ctx.font=`${it.size}px serif`; ctx.fillText(it.emoji,it.x,it.y-it.bounce);
-      const itLeft=it.x-it.size/2, itTop=it.y-it.size/2;
-      if(circleRectCollide(player.x,player.y,player.r*0.45,itLeft,itTop,it.size,it.size)){
-        score++; playChime(); showFact(); items.splice(i,1); hudScore.textContent=`Score: ${score}`;
-        updateProgress(); if(score>=WIN_SCORE){ gameWin(); return; }
-      }
-      if(it.x<-80) items.splice(i,1);
-    }
-
-    ctx.fillStyle='#1f513f'; ctx.font='14px Poppins, sans-serif'; ctx.textAlign='left'; ctx.textBaseline='top';
-    ctx.fillText(`Score: ${score}`,12,12);
+    for(let i=items.length-1;i>=0;i--){ const it=items[i]; it.x-=it.speed; it.bounce+=it.bounceDir*0.15; if(it.bounce>6||it.bounce<0) it.bounceDir*=-1; ctx.font=`${it.size}px serif`; ctx.fillText(it.emoji,it.x,it.y-it.bounce); const itLeft=it.x-it.size/2, itTop=it.y-it.size/2; if(circleRectCollide(player.x,player.y,player.r*0.45,itLeft,itTop,it.size,it.size)){ score++; playChime(); showFact(); items.splice(i,1); hudScore.textContent=`Score: ${score}`; updateProgress(); if(score>=WIN_SCORE) gameWin(); } if(it.x<-80) items.splice(i,1); }
 
     requestAnimationFrame(update);
   }
 
-  function startGame(){
-    running=true; resizeCanvas(); groundY=container.clientHeight-110; player.y=groundY-player.r/2; player.vy=0;
-    winOverlay.style.display='none'; gameOverOverlay.style.display='none';
-    ensureAudio(); audioCtx.resume?.();
-    requestAnimationFrame(update);
-  }
+  function startGame(){ if(running) return; running=true; resizeCanvas(); groundY=container.clientHeight-110; player.y=groundY-player.r/2; player.vy=0; player.jumping=false; winOverlay.style.display='none'; gameOverOverlay.style.display='none'; ensureAudio(); audioCtx.resume?.(); requestAnimationFrame(update); }
 
-  // Quick start on tap or space
-  document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.key===' ') startGame();});
-  container.addEventListener('touchstart',e=>{ startGame(); },{passive:false});
+  document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.key===' ') startGame(); });
+  container.addEventListener('touchstart', e=>{ startGame(); },{passive:false});
 })();
 </script>
 </body>
