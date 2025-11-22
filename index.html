@@ -8,7 +8,6 @@
   <meta name="description" content="EatCo – Gen Z sustainability hub with eco games, challenges, and mini-courses.">
   <meta name="keywords" content="EatCo, sustainability, eco, gen z, eco games, zero waste challenges">
   <meta name="author" content="Inayat Agnihotri">
-
   <!-- BASIC SEO -->
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -50,8 +49,9 @@
   }
   </script>
 
-  <!-- FAVICON (small icon in browser tabs) -->
+  <!-- FAVICON -->
   <link rel="icon" type="image/png" href="assets/leaf.png" />
+
 </head>
 
 <body>
@@ -86,7 +86,6 @@
 
     <a href="#join" class="btn">Join the Movement</a>
 
-    <!-- ✨ Newsletter Button Added -->
     <a href="newsletter.html" class="btn" style="margin-top: 15px; background:#2ecc71;">
       📨 EatCo Newsletter
     </a>
@@ -111,6 +110,7 @@
     </ul>
   </section>
   
+
   <!-- Join Section -->
   <section id="join" class="join-box fade-in">
     <h2>Join the Movement 🌍</h2>
@@ -121,8 +121,6 @@
       <a href="eco-quiz.html" class="btn quiz-btn">Eco Personality Quiz</a>
       <a href="ecorun.html" class="btn">🎮 Play EcoRun</a>
       <a href="ecobuzz.html" class="btn">🌿 EcoBuzz</a>
-
-      <!-- ✨ CLIMATE MYTH BUSTER ADDED HERE -->
       <a href="climate-myth-buster.html" class="btn myth-btn">💥 Climate Myth Buster</a>
     </div>
   </section>
@@ -136,13 +134,10 @@
     <button onclick="calculateFootprint()">Check</button>
 
     <div id="footprintCard" class="hidden">
-
-      <!-- Progress Bar -->
       <div class="progress-container">
         <div id="progressBar"></div>
       </div>
 
-      <!-- Circular Meter -->
       <div class="meter">
         <svg width="120" height="120">
           <circle cx="60" cy="60" r="50" stroke="#e8f5ee" stroke-width="12" fill="none"/>
@@ -152,37 +147,30 @@
         <div id="meterValue">0%</div>
       </div>
 
-      <!-- Results -->
       <p id="result"></p>
       <p id="weekly"></p>
       <p id="yearly"></p>
       <p id="compare"></p>
-
       <p id="suggestion" class="suggestion"></p>
       <p id="ecoFact" class="eco-fact"></p>
     </div>
   </section>
 
-  <!-- 🌱 Eco Meal Planner & Recipes -->
-  <section id="ecoRecipes" class="fade-in" style="max-width:900px;margin:30px auto;padding:20px;border-radius:12px;background:#eafaf0;box-shadow:0 8px 20px rgba(0,0,0,0.08);">
-    <h2 style="color:#2e8b57;text-align:center;margin-bottom:16px;">🌱 Eco Meal Planner & Recipes</h2>
-    <p style="text-align:center;color:#155e2c;margin-bottom:18px;">Discover seasonal, plant-based meals that are low-waste and delicious! Select the ingredients you have and see what you can cook. 🍳</p>
+  <!-- 🌿 Meal Planner / Eco Recipes Section -->
+  <section id="recipes" class="recipes-section fade-in">
+    <h2>🥗 Eco Recipes & Meal Planner</h2>
+    <p>Delicious plant-based, low-waste recipes with seasonal ingredients. Each recipe shows CO₂ saved! 🌍</p>
+    
+    <label for="seasonSelect">Filter by season:</label>
+    <select id="seasonSelect" onchange="showRecipes()">
+      <option value="All">All</option>
+      <option value="Spring">Spring</option>
+      <option value="Summer">Summer</option>
+      <option value="Autumn">Autumn</option>
+      <option value="Winter">Winter</option>
+    </select>
 
-    <!-- Ingredient Selector -->
-    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:16px;" id="ingredientSelector"></div>
-
-    <!-- Filter Buttons -->
-    <div style="text-align:center;margin-bottom:16px;">
-      <button class="filterBtn" data-season="All" style="margin:4px;padding:6px 12px;border-radius:8px;border:none;background:#2e8b57;color:white;cursor:pointer;">All</button>
-      <button class="filterBtn" data-season="Spring/Summer" style="margin:4px;padding:6px 12px;border-radius:8px;border:none;background:#2e8b57;color:white;cursor:pointer;">Spring/Summer</button>
-      <button class="filterBtn" data-season="Summer/Fall" style="margin:4px;padding:6px 12px;border-radius:8px;border:none;background:#2e8b57;color:white;cursor:pointer;">Summer/Fall</button>
-      <button class="filterBtn" data-season="Winter/Fall" style="margin:4px;padding:6px 12px;border-radius:8px;border:none;background:#2e8b57;color:white;cursor:pointer;">Winter/Fall</button>
-      <button class="filterBtn" data-season="All Year" style="margin:4px;padding:6px 12px;border-radius:8px;border:none;background:#2e8b57;color:white;cursor:pointer;">All Year</button>
-    </div>
-
-    <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;" id="recipesContainer">
-      <!-- Recipes will be injected here via JS -->
-    </div>
+    <div id="recipeCards" class="recipe-cards"></div>
   </section>
 
   <!-- Footer -->
@@ -260,80 +248,38 @@ function calculateFootprint() {
     factEl.innerHTML = "🔍 Did you know? " + facts[Math.floor(Math.random() * facts.length)];
 }
 
-// 🌱 Eco Meal Planner JS
+// 🌿 Eco Recipes
 const recipes = [
-    { name:"Seasonal Veggie Stir-Fry 🥦", ingredients:["Broccoli","Carrot","Bell Pepper","Garlic","Soy Sauce"], season:"Spring/Summer", emoji:"🥦", co2Saved:1.2 },
-    { name:"Chickpea Salad 🥗", ingredients:["Chickpeas","Cucumber","Tomato","Olive Oil","Lemon Juice"], season:"All Year", emoji:"🥗", co2Saved:0.9 },
-    { name:"Banana Oat Pancakes 🍌", ingredients:["Banana","Oats","Plant Milk","Cinnamon"], season:"All Year", emoji:"🍌", co2Saved:1.0 },
-    { name:"Stuffed Bell Peppers 🌶️", ingredients:["Bell Pepper","Quinoa","Corn","Beans","Tomato"], season:"Summer/Fall", emoji:"🌶️", co2Saved:1.5 },
-    { name:"Lentil Soup 🥣", ingredients:["Red Lentils","Carrot","Celery","Onion","Herbs"], season:"Winter/Fall", emoji:"🥣", co2Saved:1.3 }
+    {name:"Veggie Stir Fry", season:"Summer", ingredients:["broccoli","carrot","pepper"], co2Saved:1.2, emoji:"🥦"},
+    {name:"Pumpkin Soup", season:"Autumn", ingredients:["pumpkin","onion","garlic"], co2Saved:1.0, emoji:"🎃"},
+    {name:"Spring Salad", season:"Spring", ingredients:["lettuce","radish","peas"], co2Saved:0.8, emoji:"🥗"},
+    {name:"Winter Stew", season:"Winter", ingredients:["potato","carrot","bean"], co2Saved:1.5, emoji:"🥘"},
+    {name:"Banana Oatmeal", season:"All", ingredients:["banana","oats"], co2Saved:0.5, emoji:"🍌"},
+    {name:"Choco Avocado Mousse", season:"All", ingredients:["avocado","cocoa","maple syrup"], co2Saved:0.6, emoji:"🍫"},
+    {name:"Apple Cinnamon Muffins", season:"Autumn", ingredients:["apple","cinnamon","flour"], co2Saved:0.7, emoji:"🧁"},
+    {name:"Strawberry Smoothie", season:"Spring", ingredients:["strawberry","banana","oats"], co2Saved:0.5, emoji:"🍓"},
+    {name:"Pumpkin Pie Bites", season:"Autumn", ingredients:["pumpkin","flour","maple syrup"], co2Saved:0.8, emoji:"🥧"},
+    {name:"Coconut Chia Pudding", season:"All", ingredients:["coconut","chia seeds","almond milk"], co2Saved:0.4, emoji:"🥥"}
 ];
 
-const allIngredients = [...new Set(recipes.flatMap(r => r.ingredients))].sort();
-const ingredientSelector = document.getElementById("ingredientSelector");
-const selectedIngredients = new Set();
-
-allIngredients.forEach(ing => {
-    const btn = document.createElement("button");
-    btn.textContent = ing;
-    btn.style.margin="4px"; btn.style.padding="6px 12px";
-    btn.style.borderRadius="8px"; btn.style.border="1px solid #2e8b57";
-    btn.style.background="#fff"; btn.style.cursor="pointer"; btn.style.color="#2e8b57";
-    btn.addEventListener("click", () => {
-        if(selectedIngredients.has(ing)) {
-            selectedIngredients.delete(ing); btn.style.background="#fff"; btn.style.color="#2e8b57";
-        } else {
-            selectedIngredients.add(ing); btn.style.background="#2e8b57"; btn.style.color="#fff";
-        }
-        renderRecipes(currentSeason);
-    });
-    ingredientSelector.appendChild(btn);
-});
-
-const container = document.getElementById("recipesContainer");
-let currentSeason = "All";
-
-function renderRecipes(filterSeason = "All") {
-    currentSeason = filterSeason;
+function showRecipes() {
+    const season = document.getElementById("seasonSelect").value;
+    const container = document.getElementById("recipeCards");
     container.innerHTML = "";
-    recipes.forEach(recipe => {
-        if(filterSeason !== "All" && recipe.season !== filterSeason) return;
-
-        const hasIngredients = [...selectedIngredients].every(ing => recipe.ingredients.includes(ing));
-        if(selectedIngredients.size > 0 && !hasIngredients) return;
-
-        const card = document.createElement("div");
-        card.style.background = "white";
-        card.style.borderRadius = "12px";
-        card.style.padding = "14px";
-        card.style.width = "220px";
-        card.style.boxShadow = "0 6px 16px rgba(0,0,0,0.08)";
-        card.style.display = "flex";
-        card.style.flexDirection = "column";
-        card.style.alignItems = "center";
-        card.style.textAlign = "center";
-
-        card.innerHTML = `
-            <div style="font-size:32px;margin-bottom:8px;">${recipe.emoji}</div>
-            <h3 style="margin:6px 0;color:#2e8b57;font-size:16px;">${recipe.name}</h3>
-            <p style="font-size:13px;color:#155e2c;margin:4px 0;"><b>Season:</b> ${recipe.season}</p>
-            <p style="font-size:13px;color:#155e2c;margin:4px 0;"><b>Ingredients:</b> ${recipe.ingredients.join(", ")}</p>
-            <p style="font-size:13px;color:#2e8b57;margin:4px 0;"><b>CO₂ Saved per serving:</b> ${recipe.co2Saved} kg</p>
-        `;
-        container.appendChild(card);
+    const filtered = recipes.filter(r => season === "All" || r.season === season);
+    filtered.forEach(r => {
+        const div = document.createElement("div");
+        div.className = "recipe-card";
+        div.innerHTML = `<h3>${r.emoji} ${r.name}</h3>
+                         <p>Season: ${r.season}</p>
+                         <p>Ingredients: ${r.ingredients.join(", ")}</p>
+                         <p>CO₂ Saved: ${r.co2Saved} kg</p>`;
+        container.appendChild(div);
     });
-
-    if(container.innerHTML === "") container.innerHTML="<p style='color:#155e2c;text-align:center;width:100%;'>No recipes match your selected ingredients.</p>";
 }
 
-renderRecipes();
-
-document.querySelectorAll(".filterBtn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const season = btn.getAttribute("data-season");
-        renderRecipes(season);
-    });
-});
+// Load all recipes initially
+showRecipes();
 </script>
 
 <p style="text-align:center; font-size:12px; color:#666; margin-top:30px;">
