@@ -161,7 +161,7 @@
 <!-- 🌿 Ultra-Simple CO2 Footprint Checker -->
 <section class="co2-checker">
   <h2>🌍 Quick CO₂ Footprint Checker</h2>
-  <p class="subtext">Answer 3 simple questions to estimate your daily CO₂ impact.</p>
+  <p class="subtext">Answer simple questions to estimate your daily CO₂ impact.</p>
 
   <div class="quiz-box">
     <label>🚶 How do you usually travel?</label>
@@ -185,85 +185,55 @@
       <option value="7">High</option>
     </select>
 
+    <!-- NEW QUESTIONS -->
+
+    <label>🚿 How often do you take long showers?</label>
+    <select id="water">
+      <option value="1">Rarely / short</option>
+      <option value="3">Sometimes</option>
+      <option value="5">Daily / long</option>
+    </select>
+
+    <label>🛍️ How much single-use plastic do you use?</label>
+    <select id="plastic">
+      <option value="1">Almost none</option>
+      <option value="3">Sometimes</option>
+      <option value="5">Daily / high</option>
+    </select>
+
+    <label>✈️ Do you take flights often?</label>
+    <select id="flights">
+      <option value="1">Rarely / none</option>
+      <option value="4">1-2 per year</option>
+      <option value="7">3+ per year</option>
+    </select>
+
     <button onclick="calcCO2()">Check My CO₂</button>
 
     <div class="result" id="result"></div>
   </div>
 </section>
 
-<style>
-  .co2-checker{
-    padding:40px;
-    background:#e6ffe6;
-    border-radius:20px;
-    margin:40px auto;
-    max-width:600px;
-    font-family:Arial;
-  }
-
-  .co2-checker h2{
-    text-align:center;
-    font-size:28px;
-  }
-
-  .subtext{
-    text-align:center;
-    margin-bottom:20px;
-    font-size:16px;
-    color:#333;
-  }
-
-  .quiz-box{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-  }
-
-  label{
-    font-weight:bold;
-  }
-
-  select, button{
-    padding:10px;
-    border-radius:10px;
-    border:1px solid #aaa;
-  }
-
-  button{
-    background:#2e8b57;
-    color:white;
-    cursor:pointer;
-    font-size:16px;
-  }
-
-  .result{
-    margin-top:20px;
-    padding:15px;
-    background:white;
-    border-radius:10px;
-    font-size:18px;
-    font-weight:bold;
-    display:none;
-  }
-</style>
-
 <script>
   function calcCO2(){
     let travel = Number(document.getElementById("travel").value);
     let diet = Number(document.getElementById("diet").value);
     let electric = Number(document.getElementById("electric").value);
+    let water = Number(document.getElementById("water").value);
+    let plastic = Number(document.getElementById("plastic").value);
+    let flights = Number(document.getElementById("flights").value);
 
-    let total = travel + diet + electric;
+    let total = travel + diet + electric + water + plastic + flights;
 
     let msg = "";
-    if(total <= 5){
+    if(total <= 10){
       msg = "🌱 Excellent! Your CO₂ footprint is very low!";
     } 
-    else if(total <= 10){
-      msg = "✨ Good! You’re doing okay — small improvements will help.";
+    else if(total <= 20){
+      msg = "✨ Good! Small improvements can make a difference.";
     }
     else {
-      msg = "🔥 High CO₂! Try reducing car use or saving power.";
+      msg = "🔥 High CO₂! Try reducing car use, flights, or single-use items.";
     }
 
     document.getElementById("result").style.display = "block";
@@ -271,6 +241,7 @@
       "Your CO₂ Score: <strong>" + total + "</strong><br>" + msg;
   }
 </script>
+
 
 
 
