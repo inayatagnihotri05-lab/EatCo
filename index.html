@@ -144,55 +144,35 @@
 <!-- 🌿 Eco Recipes / Meal Planner Section -->
 <section id="recipes" class="recipes-section fade-in">
   <h2>🍴 Eco Recipes & Meal Planner</h2>
-  <p>Discover plant-based, low-waste, and seasonal recipes that are delicious and kind to the planet.</p>
+  <p>Discover plant-based, low-waste, seasonal recipes that are delicious and planet-friendly.</p>
 
   <div class="recipe-cards">
     <div class="recipe-card">
       <img src="assets/vegan-buddha-bowl.jpg" alt="Vegan Buddha Bowl">
-      <div class="overlay">
-        <h3>Ingredients:</h3>
-        <p>Quinoa, chickpeas, seasonal veggies, tahini</p>
-        <p>🌱 CO₂ impact: 1.2 kg CO₂/kg</p>
-      </div>
       <div class="recipe-info">
         <h3>Vegan Buddha Bowl</h3>
-        <p>Colorful, protein-packed meal!</p>
+        <p>Quinoa, chickpeas, seasonal veggies, tahini. 🌱 Low CO₂ impact!</p>
       </div>
     </div>
     <div class="recipe-card">
       <img src="assets/chickpea-salad.jpg" alt="Chickpea Salad">
-      <div class="overlay">
-        <h3>Ingredients:</h3>
-        <p>Chickpeas, tomatoes, cucumber, olive oil, lemon</p>
-        <p>🌱 CO₂ impact: 0.8 kg CO₂/kg</p>
-      </div>
       <div class="recipe-info">
         <h3>Chickpea Salad</h3>
-        <p>Quick, refreshing, and full of plant protein.</p>
+        <p>Chickpeas, tomato, cucumber, olive oil, lemon. Quick & refreshing!</p>
       </div>
     </div>
     <div class="recipe-card">
       <img src="assets/banana-oat-cookies.jpg" alt="Banana Oat Cookies">
-      <div class="overlay">
-        <h3>Ingredients:</h3>
-        <p>Banana, oats, cinnamon, a pinch of salt</p>
-        <p>🌱 CO₂ impact: 0.5 kg CO₂/kg</p>
-      </div>
       <div class="recipe-info">
         <h3>Banana Oat Cookies</h3>
-        <p>Sweet treat with minimal ingredients!</p>
+        <p>Banana, oats, cinnamon. Sweet, minimal ingredients, low waste!</p>
       </div>
     </div>
     <div class="recipe-card">
       <img src="assets/green-smoothie.jpg" alt="Green Smoothie">
-      <div class="overlay">
-        <h3>Ingredients:</h3>
-        <p>Spinach, banana, apple, almond milk</p>
-        <p>🌱 CO₂ impact: 0.7 kg CO₂/kg</p>
-      </div>
       <div class="recipe-info">
         <h3>Green Smoothie</h3>
-        <p>Boost energy and reduce food waste.</p>
+        <p>Spinach, banana, apple, almond milk. Energizing & eco-friendly!</p>
       </div>
     </div>
   </div>
@@ -282,34 +262,21 @@ function calculateFootprint() {
   background: #eafaf0;
 }
 
-.recipes-section h2 {
-  font-size: 2em;
-  margin-bottom: 15px;
-}
-
-.recipes-section p {
-  margin-bottom: 40px;
-  font-size: 1.1em;
-  color: #333;
-}
-
 .recipe-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 25px;
-  justify-items: center;
 }
 
 .recipe-card {
-  position: relative;
-  background: #fff;
+  width: 220px;
   border-radius: 15px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #fff;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
   cursor: pointer;
-  width: 100%;
-  max-width: 250px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .recipe-card img {
@@ -319,64 +286,30 @@ function calculateFootprint() {
   transition: transform 0.3s ease;
 }
 
-.recipe-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.2);
-}
-
 .recipe-card:hover img {
   transform: scale(1.05);
 }
 
+.recipe-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
 .recipe-info {
-  padding: 15px;
+  padding: 12px;
   text-align: left;
-  z-index: 1;
-  position: relative;
 }
 
 .recipe-info h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.2em;
+  margin: 0 0 6px 0;
   color: #2e8b57;
-}
-
-.recipe-info p {
-  font-size: 0.95em;
-  color: #555;
-}
-
-/* Overlay effect */
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(46, 139, 87, 0.9);
-  color: #fff;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-  border-radius: 15px;
-}
-
-.recipe-card:hover .overlay {
-  opacity: 1;
-}
-
-.overlay h3 {
-  margin-bottom: 10px;
   font-size: 1.1em;
 }
 
-.overlay p {
-  font-size: 0.9em;
-  margin: 4px 0;
+.recipe-info p {
+  margin: 0;
+  font-size: 0.95em;
+  color: #555;
 }
 </style>
 
