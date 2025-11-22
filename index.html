@@ -158,54 +158,52 @@
   </section>
 
  <!-- ⭐ Carbon Footprint Checker -->
-<!-- 🌿 Ultra-Simple CO2 Footprint Checker -->
+<!-- 🌿 Interactive CO2 Footprint Checker -->
 <section class="co2-checker">
   <h2>🌍 Quick CO₂ Footprint Checker</h2>
-  <p class="subtext">Answer simple questions to estimate your daily CO₂ impact.</p>
+  <p class="subtext">Select your habits and see your CO₂ impact instantly!</p>
 
   <div class="quiz-box">
     <label>🚶 How do you usually travel?</label>
-    <select id="travel">
-      <option value="1">Walking / Cycle</option>
-      <option value="3">Bus / Metro</option>
-      <option value="7">Car</option>
+    <select id="travel" onchange="updateColor('travel')">
+      <option value="1">🚶 Walking / 🚲 Cycling</option>
+      <option value="3">🚌 Bus / 🚇 Metro</option>
+      <option value="7">🚗 Car</option>
     </select>
 
     <label>🍔 What’s your daily diet like?</label>
-    <select id="diet">
-      <option value="2">Veg</option>
-      <option value="3">Mixed</option>
-      <option value="5">Non-Veg daily</option>
+    <select id="diet" onchange="updateColor('diet')">
+      <option value="2">🥗 Veg</option>
+      <option value="3">🍲 Mixed</option>
+      <option value="5">🥩 Non-Veg daily</option>
     </select>
 
     <label>💡 How much electricity do you use?</label>
-    <select id="electric">
-      <option value="2">Very low</option>
-      <option value="4">Medium</option>
-      <option value="7">High</option>
+    <select id="electric" onchange="updateColor('electric')">
+      <option value="2">🔌 Very low</option>
+      <option value="4">💡 Medium</option>
+      <option value="7">⚡ High</option>
     </select>
 
-    <!-- NEW QUESTIONS -->
-
     <label>🚿 How often do you take long showers?</label>
-    <select id="water">
-      <option value="1">Rarely / short</option>
-      <option value="3">Sometimes</option>
-      <option value="5">Daily / long</option>
+    <select id="water" onchange="updateColor('water')">
+      <option value="1">💧 Rarely / short</option>
+      <option value="3">🚿 Sometimes</option>
+      <option value="5">🛁 Daily / long</option>
     </select>
 
     <label>🛍️ How much single-use plastic do you use?</label>
-    <select id="plastic">
-      <option value="1">Almost none</option>
-      <option value="3">Sometimes</option>
-      <option value="5">Daily / high</option>
+    <select id="plastic" onchange="updateColor('plastic')">
+      <option value="1">♻️ Almost none</option>
+      <option value="3">🔹 Sometimes</option>
+      <option value="5">⚠️ Daily / high</option>
     </select>
 
     <label>✈️ Do you take flights often?</label>
-    <select id="flights">
-      <option value="1">Rarely / none</option>
-      <option value="4">1-2 per year</option>
-      <option value="7">3+ per year</option>
+    <select id="flights" onchange="updateColor('flights')">
+      <option value="1">🛬 Rarely / none</option>
+      <option value="4">🛫 1-2 per year</option>
+      <option value="7">🌍 3+ per year</option>
     </select>
 
     <button onclick="calcCO2()">Check My CO₂</button>
@@ -214,7 +212,79 @@
   </div>
 </section>
 
+<style>
+  .co2-checker{
+    padding:40px;
+    background:#e6ffe6;
+    border-radius:20px;
+    margin:40px auto;
+    max-width:600px;
+    font-family:Arial;
+  }
+
+  .co2-checker h2{
+    text-align:center;
+    font-size:28px;
+  }
+
+  .subtext{
+    text-align:center;
+    margin-bottom:20px;
+    font-size:16px;
+    color:#333;
+  }
+
+  .quiz-box{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+  }
+
+  label{
+    font-weight:bold;
+  }
+
+  select, button{
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #aaa;
+    font-size:16px;
+  }
+
+  button{
+    background:#2e8b57;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+  }
+
+  .result{
+    margin-top:20px;
+    padding:15px;
+    border-radius:10px;
+    font-size:18px;
+    font-weight:bold;
+    display:none;
+    text-align:center;
+  }
+
+  /* Dynamic select colors */
+  select.green{background:#d4f7d4;}
+  select.yellow{background:#fff3b3;}
+  select.red{background:#f7d4d4;}
+</style>
+
 <script>
+  // Update select background color based on value
+  function updateColor(id){
+    let val = Number(document.getElementById(id).value);
+    let sel = document.getElementById(id);
+    if(val <= 2) sel.className = 'green';
+    else if(val <=4) sel.className = 'yellow';
+    else sel.className = 'red';
+  }
+
+  // Calculate CO2 score
   function calcCO2(){
     let travel = Number(document.getElementById("travel").value);
     let diet = Number(document.getElementById("diet").value);
@@ -226,22 +296,30 @@
     let total = travel + diet + electric + water + plastic + flights;
 
     let msg = "";
+    let color = "";
+
     if(total <= 10){
       msg = "🌱 Excellent! Your CO₂ footprint is very low!";
+      color = "#d4f7d4";
     } 
     else if(total <= 20){
       msg = "✨ Good! Small improvements can make a difference.";
+      color = "#fff3b3";
     }
     else {
       msg = "🔥 High CO₂! Try reducing car use, flights, or single-use items.";
+      color = "#f7d4d4";
     }
 
-    document.getElementById("result").style.display = "block";
-    document.getElementById("result").innerHTML = 
-      "Your CO₂ Score: <strong>" + total + "</strong><br>" + msg;
+    let resultDiv = document.getElementById("result");
+    resultDiv.style.display = "block";
+    resultDiv.style.background = color;
+    resultDiv.innerHTML = "Your CO₂ Score: <strong>" + total + "</strong><br>" + msg;
   }
-</script>
 
+  // Initialize colors on load
+  ['travel','diet','electric','water','plastic','flights'].forEach(id=>updateColor(id));
+</script>
 
 
 
