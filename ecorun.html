@@ -1,725 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>EcoRun 🌿 — EatCo</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>EcoRun 🌿 — EatCo</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Google font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --accent:#2e8b57;
+  --bg1:#b4f0c6;
+  --bg2:#eafaf0;
+  --muted:#6aa87b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family: 'Poppins', system-ui, sans-serif;
+  background: linear-gradient(to bottom, var(--bg1) 0%, var(--bg2) 60%);
+  display:flex; flex-direction:column; align-items:center;
+  min-height:100vh; color:#124b32;
+}
+h1{ color: #1f513f; margin: 14px 0 6px; font-size:20px; }
 
-  <style>
-    :root{
-      --accent:#2e8b57;
-      --bg1:#b4f0c6;
-      --bg2:#eafaf0;
-      --muted:#6aa87b;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: 'Poppins', system-ui, sans-serif;
-      background: linear-gradient(to bottom, var(--bg1) 0%, var(--bg2) 60%);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      min-height:100vh;
-      color:#124b32;
-    }
+#gameContainer{
+  position:relative; width:100%; max-width:900px; height:560px;
+  border:4px solid #1f513f; border-radius:12px; overflow:hidden;
+  background: linear-gradient(to top, #dfeee1 0%, #cbefd3 40%, #b6f0c2 100%);
+  margin-bottom:12px; box-shadow: 0 12px 40px rgba(17,75,47,0.08);
+}
 
-    h1{ color: #1f513f; margin: 14px 0 6px; font-size:20px; }
+#gameContainer::before{
+  content:""; position:absolute; left:0; right:0; bottom:0;
+  height:170px; background: linear-gradient(#5a5a5a,#4a4a4a); z-index:1;
+}
 
-    /* game container with "moving street" */
-    #gameContainer{
-      position:relative;
-      width:100%;
-      max-width:900px;
-      height:560px;
-      border:4px solid #1f513f;
-      border-radius:12px;
-      overflow:hidden;
-      background: linear-gradient(to top, #dfeee1 0%, #cbefd3 40%, #b6f0c2 100%);
-      margin-bottom:12px;
-      box-shadow: 0 12px 40px rgba(17,75,47,0.08);
-    }
+#gameContainer::after{
+  content:""; position:absolute; left:0; bottom:85px;
+  width:200%; height:10px;
+  background-image: linear-gradient(90deg, transparent 0 40px, #f6e58d 40px 60px);
+  background-size:160px 10px; z-index:2; opacity:.95;
+  animation: moveStripe 2s linear infinite;
+}
+@keyframes moveStripe{ from{transform:translateX(0)} to{transform:translateX(-160px)} }
 
-    /* road block */
-    #gameContainer::before{
-      content:"";
-      position:absolute; left:0; right:0; bottom:0;
-      height:170px;
-      background: linear-gradient(#5a5a5a,#4a4a4a);
-      z-index:1;
-    }
+#gameCanvas{
+  position:absolute; left:0; top:0; width:100%; height:100%;
+  z-index:3; display:block; touch-action:none;
+}
 
-    /* moving stripes */
-    #gameContainer::after{
-      content:""; position:absolute; left:0; bottom:85px;
-      width:200%; height:10px;
-      background-image: linear-gradient(90deg, transparent 0 40px, #f6e58d 40px 60px);
-      background-size:160px 10px;
-      z-index:2; opacity:.95;
-      animation: moveStripe 2s linear infinite;
-    }
-    @keyframes moveStripe{ from{transform:translateX(0)} to{transform:translateX(-160px)} }
+#scoreBox{
+  position:absolute; top:12px; left:12px; z-index:7;
+  background:white; padding:8px 12px; border-radius:10px; font-weight:700;
+  color: #155e2c; box-shadow:0 2px 10px rgba(0,0,0,0.12);
+  display:flex; gap:12px; align-items:center;
+}
 
-    /* canvas covers on top */
-    #gameCanvas{
-      position:absolute; left:0; top:0; width:100%; height:100%;
-      z-index:3; display:block;
-      touch-action: none; /* help mobile so we can intercept touch */
-    }
+#scoreBox small { font-weight:600; color:#2f6d48; }
 
-    #instructions{ color:#155e2c; font-size:14px; margin:6px; text-align:center; }
+#progressBar{
+  position:absolute; bottom:12px; left:12px; right:12px; height:12px;
+  background:#c4f0c2; border-radius:6px; overflow:hidden; z-index:7;
+}
+#progressBarInner{
+  height:100%; width:0%; background:var(--accent); transition:width 0.2s ease;
+  border-radius:6px;
+}
 
-    /* fact popup */
-    #fact{
-      display:none;
-      position:absolute; left:50%; transform:translateX(-50%);
-      bottom:20px; background:rgba(0,0,0,0.7); color:white;
-      padding:10px 14px; border-radius:10px; z-index:6; max-width:85%;
-      text-align:center; font-size:14px;
-    }
+#winOverlay, #gameOverOverlay{
+  display:none; position:absolute; z-index:11; left:50%; top:50%;
+  transform:translate(-50%,-50%); background:rgba(255,255,255,0.98);
+  padding:26px; border-radius:14px; text-align:center; width:80%; max-width:420px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.15);
+}
+#winOverlay h2, #gameOverOverlay h2{ margin:0 0 8px; color:var(--accent); }
+.btn{
+  display:inline-block; margin-top:10px; padding:8px 14px; border-radius:10px;
+  text-decoration:none; color:white; background:var(--accent); border:none; cursor:pointer;
+  font-weight:600;
+}
+.btn.secondary{ background:var(--muted); margin-left:10px }
 
-    /* win overlay */
-    #winOverlay{
-      display:none;
-      position:absolute; z-index:11; left:50%; top:50%;
-      transform:translate(-50%,-50%); background:rgba(255,255,255,0.98);
-      padding:26px; border-radius:14px; text-align:center; width:80%; max-width:420px;
-      box-shadow:0 8px 30px rgba(0,0,0,0.15);
-    }
-    #winOverlay h2{ margin:0 0 8px; color:var(--accent) }
-    .btn{
-      display:inline-block; margin-top:10px; padding:8px 14px; border-radius:10px;
-      text-decoration:none; color:white; background:var(--accent); border:none; cursor:pointer;
-      font-weight:600;
-    }
-    .btn.secondary{ background:var(--muted); margin-left:10px }
+#controls{
+  margin-bottom:14px; display:flex; gap:8px; align-items:center; font-size:14px;
+}
+#muteBtn { background:#fff; border:1px solid #e6f0ea; padding:6px 8px; border-radius:8px; cursor:pointer; }
 
-    /* score box */
-    #scoreBox{
-      position:absolute; top:12px; left:12px; z-index:7;
-      background:white; padding:8px 12px; border-radius:10px; font-weight:700;
-      color: #155e2c; box-shadow:0 2px 10px rgba(0,0,0,0.12);
-      display:flex; gap:12px; align-items:center;
-    }
-    #scoreBox small { font-weight:600; color:#2f6d48; }
+@media (max-width:480px){ #gameContainer{ height:420px } }
 
-    /* rules overlay (before starting) */
-    #rulesOverlay{
-      position:absolute; z-index:11; left:50%; top:50%;
-      transform:translate(-50%,-50%); background:rgba(255,255,255,0.98);
-      padding:20px; border-radius:12px; text-align:left; width:90%; max-width:520px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.12);
-    }
-    #rulesOverlay h3{ margin:0 0 8px; color:#155e2c }
-    #rulesOverlay ul { margin:10px 0 0 18px; color:#154a33; }
-    #rulesOverlay .rules-actions { text-align:center; margin-top:14px; }
-
-    /* small controls row */
-    #controls{
-      margin-bottom:14px; display:flex; gap:8px; align-items:center; font-size:14px;
-    }
-    #muteBtn { background:#fff; border:1px solid #e6f0ea; padding:6px 8px; border-radius:8px; cursor:pointer; }
-
-    @media (max-width:480px){
-      #gameContainer{ height:420px }
-    }
-  </style>
+</style>
 </head>
 <body>
-  <h1>EcoRun 🌍 — Save the Planet in Style</h1>
+<h1>EcoRun 🌍 — Save the Planet in Style</h1>
 
-  <div id="controls">
-    <div style="color:#155e2c; font-weight:600; margin-right:8px;">Controls:</div>
-    <div style="background:white;padding:6px 8px;border-radius:8px;">Space / Tap</div>
-    <button id="muteBtn" aria-label="Mute (no audio yet)">🔈 Mute</button>
-  </div>
+<div id="controls">
+  <div style="color:#155e2c; font-weight:600; margin-right:8px;">Controls:</div>
+  <div style="background:white;padding:6px 8px;border-radius:8px;">Space / Tap</div>
+  <button id="muteBtn" aria-label="Mute (no audio yet)">🔈 Mute</button>
+</div>
 
-  <div id="gameContainer" aria-label="EcoRun game area">
-    <canvas id="gameCanvas"></canvas>
-    <div id="scoreBox" aria-live="polite"><small id="hudScore">Score: 0</small><small id="hudBest">Best: 0</small></div>
-    <div id="fact" role="status" aria-atomic="true"></div>
+<div id="gameContainer" aria-label="EcoRun game area">
+  <canvas id="gameCanvas"></canvas>
+  <div id="scoreBox" aria-live="polite"><small id="hudScore">Score: 0</small><small id="hudBest">Best: 0</small></div>
+  <div id="progressBar"><div id="progressBarInner"></div></div>
 
-    <!-- Rules overlay shown before starting -->
-    <div id="rulesOverlay" role="dialog" aria-hidden="false">
-      <h3>How to Play — EcoRun</h3>
-      <p>Help the runner collect eco items and avoid trash. Reach the target to win!</p>
-      <ul>
-        <li>Press <b>Space</b> or <b>Tap</b> to jump.</li>
-        <li>Collect eco items (each +1 point).</li>
-        <li>Avoid trash — hitting trash ends the run.</li>
-        <li>Reach <b>10 points</b> to win and celebrate 🌟.</li>
-      </ul>
-      <div class="rules-actions">
-        <label style="display:inline-flex;align-items:center;gap:8px;margin-top:10px;">
-          <input id="showRulesCheckbox" type="checkbox" /> <small>Show rules before every run</small>
-        </label>
-        <div style="margin-top:12px">
-          <button id="startBtn" class="btn">Start Run</button>
-          <button id="rulesClose" class="btn secondary" style="margin-left:8px">Close (Play)</button>
-        </div>
-      </div>
-    </div>
-
-    <div id="winOverlay" role="dialog" aria-hidden="true">
-      <h2>🎉 You Saved the Planet!</h2>
-      <p id="winText">Final score: 0</p>
-      <div style="margin-top:12px">
-        <button id="playAgain" class="btn">Play Again</button>
-        <button id="shareBtn" class="btn secondary">Share Score</button>
-      </div>
+  <!-- Win & Game Over overlays -->
+  <div id="winOverlay" role="dialog" aria-hidden="true">
+    <h2>🎉 You Saved the Planet!</h2>
+    <p id="winText">Final score: 0</p>
+    <div>
+      <button id="playAgainWin" class="btn">Play Again</button>
     </div>
   </div>
+  <div id="gameOverOverlay" role="dialog" aria-hidden="true">
+    <h2>💥 Game Over!</h2>
+    <p id="overText">Score: 0</p>
+    <div>
+      <button id="playAgainOver" class="btn">Try Again</button>
+    </div>
+  </div>
+</div>
 
-  <p id="instructions">Press <b>SPACE</b> (or tap) to jump — collect eco items, avoid trash. 🌱</p>
+<p id="instructions">Press <b>SPACE</b> (or tap) to jump — collect eco items, avoid trash. 🌱</p>
 
-  <!-- confetti lib -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <script>
-  (() => {
-    // --- config ---
-    const WIN_SCORE = 10;        // score needed to win
-    const OB_SPAWN_CHANCE = 0.01; // lower = easier
-    const ITEM_SPAWN_CHANCE = 0.03;
-    const SPEED = 4.2;           // base object speed
+<script>
+(() => {
+  const WIN_SCORE = 10, OB_SPAWN_CHANCE = 0.01, ITEM_SPAWN_CHANCE = 0.03, SPEED = 4.2;
+  const MASTER_VOLUME = 0.9;
 
-    // MASTER volume 0..1 (adjust to taste)
-    const MASTER_VOLUME = 0.9;
-    // --------------
+  const canvas = document.getElementById('gameCanvas');
+  const container = document.getElementById('gameContainer');
+  const ctx = canvas.getContext('2d');
+  const hudScore = document.getElementById('hudScore');
+  const hudBest = document.getElementById('hudBest');
+  const progressInner = document.getElementById('progressBarInner');
+  const winOverlay = document.getElementById('winOverlay');
+  const gameOverOverlay = document.getElementById('gameOverOverlay');
+  const winText = document.getElementById('winText');
+  const overText = document.getElementById('overText');
+  const playAgainWin = document.getElementById('playAgainWin');
+  const playAgainOver = document.getElementById('playAgainOver');
+  const muteBtn = document.getElementById('muteBtn');
 
-    // DOM
-    const canvas = document.getElementById('gameCanvas');
-    const container = document.getElementById('gameContainer');
-    let ctx = canvas.getContext('2d');
-    const factBox = document.getElementById('fact');
-    const hudScore = document.getElementById('hudScore');
-    const hudBest = document.getElementById('hudBest');
-    const scoreBox = document.getElementById('scoreBox');
-    const winOverlay = document.getElementById('winOverlay');
-    const winText = document.getElementById('winText');
-    const playAgainBtn = document.getElementById('playAgain');
-    const shareBtn = document.getElementById('shareBtn');
-    const muteBtn = document.getElementById('muteBtn');
-    const startBtn = document.getElementById('startBtn');
-    const rulesOverlay = document.getElementById('rulesOverlay');
-    const rulesClose = document.getElementById('rulesClose');
-    const showRulesCheckbox = document.getElementById('showRulesCheckbox');
+  let audioCtx = null, muted = false;
 
-    // audio context + helpers (we create audio on user gesture)
-    let audioCtx = null;
-    let muted = false;
+  function ensureAudio(){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); }
+  function playChime(){ if(muted) return; ensureAudio(); const o=audioCtx.createOscillator(); const g=audioCtx.createGain(); o.type='sine'; o.frequency.setValueAtTime(880,audioCtx.currentTime); g.gain.setValueAtTime(0.2*MASTER_VOLUME,audioCtx.currentTime); o.connect(g).connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.2);}
+  function playClunk(){ if(muted) return; ensureAudio(); const o=audioCtx.createOscillator(); const g=audioCtx.createGain(); o.type='sine'; o.frequency.setValueAtTime(140,audioCtx.currentTime); g.gain.setValueAtTime(0.7*MASTER_VOLUME,audioCtx.currentTime); o.connect(g).connect(audioCtx.destination); o.start(); o.stop(audioCtx.currentTime+0.25);}
+  function playWhoosh(){ if(muted) return; /* simplified for brevity */ }
 
-    function ensureAudio() {
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function resizeCanvas(){
+    const dpr = Math.max(1, window.devicePixelRatio||1);
+    const w = container.clientWidth, h = container.clientHeight;
+    canvas.style.width=w+'px'; canvas.style.height=h+'px';
+    canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr);
+    ctx.setTransform(1,0,0,1,0,0); ctx.scale(dpr,dpr);
+    groundY = container.clientHeight-110;
+  }
+  window.addEventListener('resize',resizeCanvas);
+  resizeCanvas();
+
+  let player={x:120,y:0,r:36,vy:0,jumping:false};
+  let groundY=container.clientHeight-110;
+  player.y=groundY-player.r/2;
+  const gravity=0.6;
+
+  let obstacles=[], items=[], score=0;
+  let best=parseInt(localStorage.getItem('eatco_best')||'0',10)||0;
+  let running=false;
+
+  const ECO_FACTS=["🍎 Eating local reduces CO₂!","🥦 Broccoli absorbs carbon.","♻️ Recycling one can saves energy!","🚴 Biking cuts emissions.","🌍 Plant-based meals reduce carbon."];
+
+  function jump(){ if(!running||player.jumping) return; player.jumping=true; player.vy=-13-Math.random()*4; playWhoosh(); }
+  document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.key===' '){ e.preventDefault(); jump(); }});
+  container.addEventListener('touchstart',e=>{ e.preventDefault(); jump();},{passive:false});
+
+  function maybeSpawnObstacle(){ if(Math.random()<OB_SPAWN_CHANCE){ const size=36+Math.round(Math.random()*18); const emoji=['🥤','🍟','🗑️','🧴','🍕'][Math.floor(Math.random()*5)]; obstacles.push({x:container.clientWidth+30,y:groundY-size/2,size,speed:SPEED+Math.random()*1.4,emoji});}}
+  function maybeSpawnItem(){ if(Math.random()<ITEM_SPAWN_CHANCE){ const size=28+Math.round(Math.random()*8); const y=groundY-(60+Math.round(Math.random()*80)); const emoji=['🍎','🥦','♻️','🍌','🍓'][Math.floor(Math.random()*5)]; items.push({x:container.clientWidth+30,y,size,speed:SPEED-0.6+Math.random()*1.2,emoji,bounce:0,bounceDir:1});}}
+
+  function circleRectCollide(cx,cy,cr,rx,ry,rw,rh){
+    const closestX=Math.max(rx,Math.min(cx,rx+rw));
+    const closestY=Math.max(ry,Math.min(cy,ry+rh));
+    const dx=cx-closestX, dy=cy-closestY;
+    return (dx*dx+dy*dy)<=(cr*cr);
+  }
+
+  function showFact(){ const f=ECO_FACTS[Math.floor(Math.random()*ECO_FACTS.length)]; /* optional: display */ }
+
+  function doConfetti(){ const duration=2.5*1000; const end=Date.now()+duration; (function frame(){ confetti({particleCount:10,startVelocity:35,spread:160,ticks:60,origin:{x:Math.random(),y:Math.random()*0.6}}); if(Date.now()<end) requestAnimationFrame(frame); })(); }
+
+  function updateProgress(){ const p=Math.min(score/WIN_SCORE,1)*100; progressInner.style.width=p+'%'; }
+
+  function gameWin(){
+    running=false; winText.textContent=`Final score: ${score}`;
+    winOverlay.style.display='block'; playChime(); doConfetti();
+    if(score>best){ best=score; localStorage.setItem('eatco_best',best); hudBest.textContent=`Best: ${best}`;}
+  }
+
+  function gameOver(){ running=false; overText.textContent=`Score: ${score}`; gameOverOverlay.style.display='block'; playClunk(); }
+
+  playAgainWin.addEventListener('click',()=>location.reload());
+  playAgainOver.addEventListener('click',()=>location.reload());
+
+  muteBtn.addEventListener('click',()=>{
+    muted=!muted;
+    muteBtn.textContent=muted?'🔇 Muted':'🔈 Mute';
+    if(audioCtx){ if(muted) audioCtx.suspend?.(); else audioCtx.resume?.(); }
+  });
+
+  function update(){
+    if(!running) return;
+    player.vy+=gravity; player.y+=player.vy;
+    if(player.y+player.r/2>groundY){ player.y=groundY-player.r/2; player.vy=0; player.jumping=false;}
+
+    ctx.clearRect(0,0,container.clientWidth,container.clientHeight);
+    ctx.save(); ctx.globalAlpha=0.08; ctx.fillStyle='#000'; ctx.fillRect(0,groundY+8,container.clientWidth,6); ctx.restore();
+    ctx.save(); ctx.beginPath(); ctx.ellipse(player.x,groundY+18,player.r*0.7,10,0,0,Math.PI*2); ctx.fillStyle='rgba(0,0,0,0.12)'; ctx.fill(); ctx.restore();
+
+    ctx.font=`${player.r}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('🏃‍♂️',player.x,player.y);
+
+    maybeSpawnObstacle(); maybeSpawnItem();
+
+    // Obstacles
+    for(let i=obstacles.length-1;i>=0;i--){
+      const ob=obstacles[i]; ob.x-=ob.speed;
+      ctx.font=`${ob.size}px serif`; ctx.fillText(ob.emoji,ob.x,ob.y);
+      const obLeft=ob.x-ob.size/2, obTop=ob.y-ob.size/2;
+      if(circleRectCollide(player.x,player.y,player.r*0.45,obLeft,obTop,ob.size,ob.size)){ gameOver(); return;}
+      if(ob.x<-80) obstacles.splice(i,1);
+    }
+
+    // Items with bounce
+    for(let i=items.length-1;i>=0;i--){
+      const it=items[i]; it.x-=it.speed;
+      it.bounce+=it.bounceDir*0.15;
+      if(it.bounce>6||it.bounce<0) it.bounceDir*=-1;
+      ctx.font=`${it.size}px serif`; ctx.fillText(it.emoji,it.x,it.y-it.bounce);
+      const itLeft=it.x-it.size/2, itTop=it.y-it.size/2;
+      if(circleRectCollide(player.x,player.y,player.r*0.45,itLeft,itTop,it.size,it.size)){
+        score++; playChime(); showFact(); items.splice(i,1); hudScore.textContent=`Score: ${score}`;
+        updateProgress(); if(score>=WIN_SCORE){ gameWin(); return; }
       }
+      if(it.x<-80) items.splice(i,1);
     }
 
-    function playWhoosh() {
-      if (muted) return;
-      ensureAudio();
-      const now = audioCtx.currentTime;
-      // whoosh: filtered noise + rising pitch
-      const bufferSize = 2 * audioCtx.sampleRate;
-      const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-      const data = noiseBuffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) data[i] = (Math.random()*2 - 1) * Math.exp(-i / (bufferSize * 0.4));
-      const noise = audioCtx.createBufferSource();
-      noise.buffer = noiseBuffer;
+    ctx.fillStyle='#1f513f'; ctx.font='14px Poppins, sans-serif'; ctx.textAlign='left'; ctx.textBaseline='top';
+    ctx.fillText(`Score: ${score}`,12,12);
 
-      const bandpass = audioCtx.createBiquadFilter();
-      bandpass.type = 'bandpass';
-      bandpass.frequency.setValueAtTime(400, now);
-      bandpass.frequency.linearRampToValueAtTime(2200, now + 0.18);
+    requestAnimationFrame(update);
+  }
 
-      const gain = audioCtx.createGain();
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.exponentialRampToValueAtTime(0.25 * MASTER_VOLUME, now + 0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+  function startGame(){
+    running=true; resizeCanvas(); groundY=container.clientHeight-110; player.y=groundY-player.r/2; player.vy=0;
+    winOverlay.style.display='none'; gameOverOverlay.style.display='none';
+    ensureAudio(); audioCtx.resume?.();
+    requestAnimationFrame(update);
+  }
 
-      noise.connect(bandpass).connect(gain).connect(audioCtx.destination);
-      noise.start(now);
-      noise.stop(now + 0.30);
-    }
-
-    function playChime() {
-      if (muted) return;
-      ensureAudio();
-      const now = audioCtx.currentTime;
-      const out = audioCtx.destination;
-
-      // two bells, slightly detuned
-      const o1 = audioCtx.createOscillator();
-      const o2 = audioCtx.createOscillator();
-      o1.type = 'sine'; o2.type = 'sine';
-      o1.frequency.setValueAtTime(880, now);
-      o2.frequency.setValueAtTime(1320, now);
-      o2.frequency.setValueAtTime(1320 * 0.996, now); // tiny detune
-      const gain = audioCtx.createGain();
-      gain.gain.setValueAtTime(0.0001, now);
-      gain.gain.linearRampToValueAtTime(0.22 * MASTER_VOLUME, now + 0.01);
-      gain.gain.exponentialRampToValueAtTime(0.0005, now + 1.6);
-
-      // add a little high resonance
-      const filter = audioCtx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(5000, now);
-
-      o1.connect(filter);
-      o2.connect(filter);
-      filter.connect(gain).connect(out);
-
-      o1.start(now); o2.start(now);
-      o1.stop(now + 1.6); o2.stop(now + 1.6);
-    }
-
-    function playClunk() {
-      if (muted) return;
-      ensureAudio();
-      const now = audioCtx.currentTime;
-      const out = audioCtx.destination;
-
-      // clunk: short low sine + quick noise thump
-      const o = audioCtx.createOscillator();
-      o.type = 'sine';
-      o.frequency.setValueAtTime(140, now);
-      const g = audioCtx.createGain();
-      g.gain.setValueAtTime(0.001, now);
-      g.gain.linearRampToValueAtTime(0.7 * MASTER_VOLUME, now + 0.02);
-      g.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
-
-      // quick filtered noise
-      const b = audioCtx.createBufferSource();
-      const buf = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.3, audioCtx.sampleRate);
-      const data = buf.getChannelData(0);
-      for (let i = 0; i < data.length; i++) data[i] = (Math.random()*2 - 1) * (1 - i/data.length);
-      b.buffer = buf;
-      const flt = audioCtx.createBiquadFilter();
-      flt.type = 'lowpass'; flt.frequency.setValueAtTime(800, now);
-
-      o.connect(g);
-      b.connect(flt).connect(g);
-      g.connect(out);
-
-      o.start(now); o.stop(now + 0.5);
-      b.start(now); b.stop(now + 0.25);
-    }
-
-    function playMagic() {
-      if (muted) return;
-      ensureAudio();
-      const now = audioCtx.currentTime;
-      const out = audioCtx.destination;
-
-      // layered shimmer
-      const freqs = [660,880,1320].map(f => f * (1 + (Math.random()-0.5)*0.008));
-      const master = audioCtx.createGain();
-      master.gain.setValueAtTime(0.0001, now);
-      master.gain.linearRampToValueAtTime(0.28 * MASTER_VOLUME, now + 0.02);
-      master.gain.exponentialRampToValueAtTime(0.0001, now + 2.0);
-
-      freqs.forEach((f, idx) => {
-        const o = audioCtx.createOscillator();
-        const g = audioCtx.createGain();
-        o.type = idx === 0 ? 'triangle' : 'sine';
-        o.frequency.setValueAtTime(f, now);
-        g.gain.setValueAtTime(0.0001, now);
-        g.gain.linearRampToValueAtTime(0.18 * (1/(idx+1)), now + 0.02);
-        g.gain.exponentialRampToValueAtTime(0.0001, now + 1.6);
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = 'highpass';
-        filter.frequency.setValueAtTime(180, now);
-        o.connect(filter).connect(g).connect(master);
-        o.start(now); o.stop(now + 1.8);
-      });
-
-      // small sparkles (short clicks)
-      for (let i=0;i<6;i++){
-        const t = now + 0.08 + Math.random()*0.6;
-        const o = audioCtx.createOscillator();
-        o.type = 'triangle';
-        o.frequency.setValueAtTime(2200 + Math.random()*800, t);
-        const g = audioCtx.createGain();
-        g.gain.setValueAtTime(0.0001, t);
-        g.gain.exponentialRampToValueAtTime(0.28 * MASTER_VOLUME, t + 0.001);
-        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.1);
-        o.connect(g).connect(master);
-        o.start(t); o.stop(t + 0.12);
-      }
-
-      master.connect(out);
-    }
-
-    // retina-aware canvas resize
-    function resizeCanvas(){
-      const dpr = Math.max(1, window.devicePixelRatio || 1);
-      const w = container.clientWidth;
-      const h = container.clientHeight;
-      canvas.style.width = w + 'px';
-      canvas.style.height = h + 'px';
-      canvas.width = Math.round(w * dpr);
-      canvas.height = Math.round(h * dpr);
-      // reset transform & scale for drawing in CSS pixels
-      ctx.setTransform(1,0,0,1,0,0);
-      ctx.scale(dpr, dpr);
-    }
-    window.addEventListener('resize', () => {
-      resizeCanvas();
-      groundY = container.clientHeight - 110;
-    });
-    resizeCanvas();
-
-    // game state
-    let player = { x: 120, y: 0, r: 36, vy:0, jumping:false };
-    let groundY = container.clientHeight - 110;
-    player.y = groundY - player.r/2; // center y
-    const gravity = 0.6;
-
-    let obstacles = [];
-    let items = [];
-    let score = 0;
-    let best = parseInt(localStorage.getItem('eatco_best')||'0',10) || 0;
-    let running = false;
-    hudScore.textContent = `Score: ${score}`;
-    hudBest.textContent = `Best: ${best}`;
-
-    // eco facts
-    const ECO_FACTS = [
-      "🍎 Eating local reduces CO₂ by 13%!",
-      "🥦 Broccoli absorbs carbon while growing.",
-      "♻️ Recycling one can saves enough energy to power a bulb for 3 hours!",
-      "🚴 Biking instead of driving cuts emissions by 80%.",
-      "🌍 Plant-based meals can cut carbon by 60%."
-    ];
-
-    // control: jump on space or tap
-    function jump(){
-      if (!running) return;
-      if (!player.jumping){
-        player.jumping = true;
-        player.vy = -13 - Math.random()*4; // small variation
-        playWhoosh();
-      }
-    }
-    // keyboard
-    document.addEventListener('keydown', e => {
-      if (e.code === 'Space' || e.key === ' ') {
-        e.preventDefault();
-        jump();
-      }
-    });
-    // touch on container (prevent default to avoid page scroll)
-    container.addEventListener('touchstart', e => {
-      e.preventDefault();
-      jump();
-    }, { passive:false });
-
-    // spawn functions (emoji chosen at spawn)
-    function maybeSpawnObstacle(){
-      if (Math.random() < OB_SPAWN_CHANCE) {
-        const size = 36 + Math.round(Math.random()*18);
-        const emojiChoices = ['🥤','🍟','🗑️','🧴','🍕'];
-        const emoji = emojiChoices[Math.floor(Math.random()*emojiChoices.length)];
-        obstacles.push({
-          x: container.clientWidth + 30,
-          y: groundY - size/2,
-          size,
-          speed: SPEED + Math.random()*1.4,
-          emoji
-        });
-      }
-    }
-    function maybeSpawnItem(){
-      if (Math.random() < ITEM_SPAWN_CHANCE) {
-        const size = 28 + Math.round(Math.random()*8);
-        const y = groundY - (60 + Math.round(Math.random()*80));
-        const emojiChoices = ['🍎','🥦','♻️','🍌','🍓'];
-        const emoji = emojiChoices[Math.floor(Math.random()*emojiChoices.length)];
-        items.push({
-          x: container.clientWidth + 30,
-          y,
-          size,
-          speed: SPEED - 0.6 + Math.random()*1.2,
-          emoji
-        });
-      }
-    }
-
-    // show fact popup
-    let factTimeout = null;
-    function showFact(){
-      const f = ECO_FACTS[Math.floor(Math.random()*ECO_FACTS.length)];
-      factBox.textContent = f;
-      factBox.style.display = 'block';
-      clearTimeout(factTimeout);
-      factTimeout = setTimeout(()=>factBox.style.display='none', 2200);
-    }
-
-    // confetti celebration
-    function doConfetti(){
-      const duration = 2.5 * 1000;
-      const end = Date.now() + duration;
-      (function frame(){
-        confetti({
-          particleCount: 10,
-          startVelocity: 35,
-          spread: 160,
-          ticks: 60,
-          origin: { x: Math.random(), y: Math.random()*0.6 },
-        });
-        if (Date.now() < end) requestAnimationFrame(frame);
-      })();
-    }
-
-    function gameWin(){
-      running = false;
-      winText.textContent = `Final score: ${score}`;
-      winOverlay.style.display = 'block';
-      playMagic();
-      doConfetti();
-      if (score > best) {
-        best = score;
-        localStorage.setItem('eatco_best', best);
-        hudBest.textContent = `Best: ${best}`;
-      }
-    }
-
-    playAgainBtn.addEventListener('click', ()=> location.reload());
-    shareBtn.addEventListener('click', ()=> {
-      const shareText = `I scored ${score} on EcoRun — playing on EatCo! 🌿 Try it: ${location.href}`;
-      if (navigator.share) navigator.share({title:'EcoRun score', text:shareText}).catch(()=>alert(shareText));
-      else {
-        navigator.clipboard.writeText(shareText).then(()=>alert('Score copied to clipboard — share it!'));
-      }
-    });
-
-    // mute toggle
-    muteBtn.addEventListener('click', ()=> {
-      muted = !muted;
-      muteBtn.textContent = muted ? '🔇 Muted' : '🔈 Mute';
-      // optional: suspend/resume AudioContext for some browsers
-      if (audioCtx) {
-        if (muted) audioCtx.suspend?.();
-        else audioCtx.resume?.();
-      }
-    });
-
-    // collision helpers (circle vs rect approx)
-    function circleRectCollide(cx, cy, cr, rx, ry, rw, rh){
-      // rx,ry are top-left
-      const closestX = Math.max(rx, Math.min(cx, rx + rw));
-      const closestY = Math.max(ry, Math.min(cy, ry + rh));
-      const dx = cx - closestX;
-      const dy = cy - closestY;
-      return (dx*dx + dy*dy) <= (cr*cr);
-    }
-
-    // main loop
-    function update(){
-      if (!running) return;
-      // physics - gravity
-      player.vy += gravity;
-      player.y += player.vy;
-
-      // landing detection (player.y is center Y)
-      const playerBottom = player.y + player.r/2;
-      if (playerBottom > groundY) {
-        player.y = groundY - player.r/2;
-        player.vy = 0;
-        player.jumping = false;
-      }
-
-      // clear
-      ctx.clearRect(0,0,container.clientWidth,container.clientHeight);
-
-      // draw ground shadow / parallax subtle
-      ctx.save();
-      ctx.globalAlpha = 0.08;
-      ctx.fillStyle = '#000';
-      ctx.fillRect(0, groundY + 8, container.clientWidth, 6);
-      ctx.restore();
-
-      // draw player shadow
-      ctx.save();
-      ctx.beginPath();
-      ctx.ellipse(player.x, groundY + 18, player.r * 0.7, 10, 0, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(0,0,0,0.12)';
-      ctx.fill();
-      ctx.restore();
-
-      // draw player (emoji) - use middle baseline
-      ctx.font = `${player.r}px serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('🏃‍♂️', player.x, player.y);
-
-      // spawn
-      maybeSpawnObstacle();
-      maybeSpawnItem();
-
-      // obstacles
-      for (let i = obstacles.length-1; i>=0; i--){
-        const ob = obstacles[i];
-        ob.x -= ob.speed;
-        ctx.font = `${ob.size}px serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(ob.emoji, ob.x, ob.y);
-
-        // collision box - treat ob rectangle centered on ob.x,ob.y
-        const obLeft = ob.x - ob.size/2;
-        const obTop  = ob.y - ob.size/2;
-        if (circleRectCollide(player.x, player.y, player.r*0.45, obLeft, obTop, ob.size, ob.size)) {
-          // hit
-          running = false;
-          playClunk();
-          setTimeout(()=> alert(`💥 Game Over! Final Score: ${score}`), 60);
-          setTimeout(()=> location.reload(), 140);
-          return;
-        }
-        if (ob.x < -80) obstacles.splice(i,1);
-      }
-
-      // items
-      for (let i = items.length-1; i>=0; i--){
-        const it = items[i];
-        it.x -= it.speed;
-        ctx.font = `${it.size}px serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(it.emoji, it.x, it.y);
-
-        const itLeft = it.x - it.size/2;
-        const itTop  = it.y - it.size/2;
-        if (circleRectCollide(player.x, player.y, player.r*0.45, itLeft, itTop, it.size, it.size)) {
-          score += 1;
-          playChime();
-          showFact();
-          items.splice(i,1);
-          hudScore.textContent = `Score: ${score}`;
-          if (score >= WIN_SCORE) { gameWin(); return; }
-        }
-        if (it.x < -80) items.splice(i,1);
-      }
-
-      // HUD in-canvas optional small text
-      ctx.fillStyle = '#1f513f';
-      ctx.font = '14px Poppins, sans-serif';
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      ctx.fillText(`Score: ${score}`, 12, 12);
-
-      requestAnimationFrame(update);
-    }
-
-    // Rules overlay controls
-    function openRules() {
-      rulesOverlay.style.display = 'block';
-      rulesOverlay.setAttribute('aria-hidden','false');
-    }
-    function closeRules() {
-      rulesOverlay.style.display = 'none';
-      rulesOverlay.setAttribute('aria-hidden','true');
-    }
-
-    // Start button (resumes audio and begins game)
-    startBtn.addEventListener('click', async () => {
-      // create / resume audio context on gesture
-      ensureAudio();
-      if (audioCtx.state === 'suspended') await audioCtx.resume();
-      // respect "Show rules" checkbox — store preference
-      const showRules = showRulesCheckbox.checked;
-      localStorage.setItem('eatco_show_rules', showRules ? '1' : '0');
-      closeRules();
-      running = true;
-      resizeCanvas();
-      groundY = container.clientHeight - 110;
-      player.y = groundY - player.r/2;
-      player.vy = 0;
-      requestAnimationFrame(update);
-    });
-
-    rulesClose.addEventListener('click', () => {
-      // If user closes rules, still start the run (for quick play)
-      const showRules = showRulesCheckbox.checked;
-      localStorage.setItem('eatco_show_rules', showRules ? '1' : '0');
-      closeRules();
-      running = true;
-      resizeCanvas();
-      groundY = container.clientHeight - 110;
-      player.y = groundY - player.r/2;
-      player.vy = 0;
-      // ensure audio context created (but may remain suspended until user interacts)
-      ensureAudio();
-      requestAnimationFrame(update);
-    });
-
-    // allow pressing Space to start if rules shown
-    document.addEventListener('keydown', e => {
-      if ((e.code === 'Space' || e.key === ' ') && rulesOverlay.style.display !== 'none') {
-        e.preventDefault();
-        startBtn.click();
-      }
-    });
-
-    // allow tapping overlay area to start (optional)
-    rulesOverlay.addEventListener('touchstart', e => {
-      // do not auto-start when tapping the overlay area; user should press start or close
-    }, { passive:false });
-
-    // allow restart/rules preference and preserve it
-    const showRulesPref = localStorage.getItem('eatco_show_rules');
-    if (showRulesPref === '0') {
-      showRulesCheckbox.checked = false;
-      // hide rules overlay and show a compact small "start" button instead (but we kept logic simple)
-      // We'll simply hide the overlay and show start automatically
-      rulesOverlay.style.display = 'none';
-      running = false;
-      // show a tiny start hint
-      const hint = document.createElement('div');
-      hint.style.position = 'absolute';
-      hint.style.left = '50%';
-      hint.style.top = '50%';
-      hint.style.transform = 'translate(-50%,-50%)';
-      hint.style.zIndex = '11';
-      hint.innerHTML = '<button id="quickStart" class="btn">Quick Start</button>';
-      container.appendChild(hint);
-      document.getElementById('quickStart').addEventListener('click', () => {
-        // create audio context and start
-        ensureAudio(); audioCtx.resume?.();
-        running = true;
-        resizeCanvas();
-        groundY = container.clientHeight - 110;
-        player.y = groundY - player.r/2;
-        player.vy = 0;
-        hint.remove();
-        requestAnimationFrame(update);
-      });
-    } else {
-      // show rules normally
-      rulesOverlay.style.display = 'block';
-    }
-
-    // allow user to restart using Play Again button
-    playAgainBtn.addEventListener('click', ()=> location.reload());
-
-    // share button
-    shareBtn.addEventListener('click', ()=> {
-      const shareText = `I scored ${score} on EcoRun — playing on EatCo! 🌿 Try it: ${location.href}`;
-      if (navigator.share) navigator.share({title:'EcoRun score', text:shareText}).catch(()=>alert(shareText));
-      else navigator.clipboard.writeText(shareText).then(()=>alert('Score copied to clipboard — share it!'));
-    });
-
-    // initialization: make sure hud shows best and set mute label
-    hudBest.textContent = `Best: ${best}`;
-    muteBtn.textContent = muted ? '🔇 Muted' : '🔈 Mute';
-
-    // small accessibility: announce facts via aria-live (factBox already has role=status)
-
-  })();
-  </script>
+  // Quick start on tap or space
+  document.addEventListener('keydown',e=>{ if(e.code==='Space'||e.key===' ') startGame();});
+  container.addEventListener('touchstart',e=>{ startGame(); },{passive:false});
+})();
+</script>
 </body>
 </html>
