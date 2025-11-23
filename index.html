@@ -397,6 +397,55 @@
 
 </section>
 
+  <!-- GLOBAL ECO NEWS FEED -->
+<section id="eco-news" style="background:#c7f8ff; padding:20px; border-radius:10px; max-width:700px; margin:30px auto; box-shadow:0 4px 8px rgba(0,0,0,0.1);">
+  <h2 style="text-align:center; color:#2e7d32; font-family:Arial, sans-serif;">🌍 Sustainability News</h2>
+  <div id="news-container" style="font-family:Arial, sans-serif; margin-top:15px; color:#333;">
+    Loading latest eco news...
+  </div>
+</section>
+
+<script>
+  const rssUrl = "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml"; // RSS feed URL
+  const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
+  const newsContainer = document.getElementById("news-container");
+
+  fetch(proxyUrl)
+    .then(response => response.json())
+    .then(data => {
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(data.contents, "text/xml");
+      const items = xml.querySelectorAll("item");
+
+      let html = "<ul style='list-style:none; padding:0;'>";
+      items.forEach((item, index) => {
+        if (index >= 5) return; // show only first 5 news items
+        const title = item.querySelector("title")?.textContent || "No title";
+        const link = item.querySelector("link")?.textContent || "#";
+        const description = item.querySelector("description")?.textContent || "";
+        const pubDate = item.querySelector("pubDate")?.textContent;
+
+        html += `
+          <li style="margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #b2dfdb;">
+            <a href="${link}" target="_blank" style="font-weight:bold; color:#1b5e20; text-decoration:none; font-size:1.1em;">
+              ${title}
+            </a>
+            <br/>
+            <small style="color:#555;">${pubDate ? new Date(pubDate).toLocaleDateString() : ""}</small>
+            <p style="margin:5px 0; font-size:0.95em;">${description.substring(0, 120)}…</p>
+          </li>
+        `;
+      });
+      html += "</ul>";
+
+      newsContainer.innerHTML = html;
+    })
+    .catch(err => {
+      console.error("Could not load RSS feed:", err);
+      newsContainer.innerHTML = "<p style='color:red;'>Could not load news right now.</p>";
+    });
+</script>
+
 <!-- 🎙️ ECO PODCAST SECTION -->
 <section class="eco-playlist fade-in">
   <h2>🎧 Eco Podcasts — Real Conversations, Real Change</h2>
