@@ -400,8 +400,8 @@
 
 </section>
 
-<!-- Sustainability News Section -->
-<div id="eco-news" style="background-color:#d0f0c0; padding:10px; overflow:hidden; white-space:nowrap; border-radius:8px; margin:20px 0;">
+<!-- Fancy Sustainability News Section -->
+<div id="eco-news" style="background-color:#d0f0c0; padding:10px; overflow:hidden; white-space:nowrap; border-radius:10px; margin:20px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
   <div id="news-items" style="display:inline-block; padding-left:100%; animation:scrollNews 15s linear infinite;">
     <span style="margin-right:50px;">🌿 Global Summit on Renewable Energy: Nations commit to zero-emission targets</span>
     <span style="margin-right:50px;">🌱 Innovative Plant-Based Foods Reduce Carbon Footprint</span>
@@ -416,8 +416,14 @@
   0% { transform: translateX(0%); }
   100% { transform: translateX(-100%); }
 }
+
 #news-items span, #news-items a {
   display: inline-block;
+}
+
+/* Pause on hover */
+#eco-news:hover #news-items {
+  animation-play-state: paused;
 }
 </style>
 
