@@ -400,174 +400,27 @@
 
 </section>
 
-<!-- GLOBAL ECO NEWS TICKER -->
-<section id="eco-news" style="background:#d0f0c0; padding:20px; border-radius:10px; max-width:95%; margin:20px auto; box-shadow:0 4px 8px rgba(0,0,0,0.1); overflow:hidden;">
-  <h2 style="text-align:center; color:#2e7d32; font-family:Arial, sans-serif; margin-bottom:15px; font-size:1.5em;">🌍 Sustainability News</h2>
-
-  <!-- Horizontal ticker -->
-  <div id="news-container" style="white-space: nowrap; overflow: hidden; font-family:Arial, sans-serif; color:#333; font-size:1em; position:relative;">
-    Loading latest eco news...
+<!-- Sustainability News Section -->
+<div id="eco-news" style="background-color:#d0f0c0; padding:10px; overflow:hidden; white-space:nowrap; border-radius:8px; margin:20px 0;">
+  <div id="news-items" style="display:inline-block; padding-left:100%; animation:scrollNews 15s linear infinite;">
+    <span style="margin-right:50px;">🌿 Global Summit on Renewable Energy: Nations commit to zero-emission targets</span>
+    <span style="margin-right:50px;">🌱 Innovative Plant-Based Foods Reduce Carbon Footprint</span>
+    <span style="margin-right:50px;">♻️ Plastic Waste Recycling Hits Record Levels in Europe</span>
+    <span style="margin-right:50px;">🌍 Cities Implement Green Urban Spaces to Combat Pollution</span>
+    <a href="https://www.google.com/search?q=sustainability+news" target="_blank" style="margin-left:50px; text-decoration:none; color:green; font-weight:bold;">See More News →</a>
   </div>
-
-  <!-- See More button -->
-  <div style="text-align:center; margin-top:15px;">
-    <button id="see-more-btn" style="background:#2e7d32; color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-size:0.95em; transition: background 0.3s;">See More News</button>
-  </div>
-
-  <!-- Expanded vertical news list -->
-  <div id="expanded-news" style="display:none; margin-top:20px; max-height:300px; overflow-y:auto; border-top:1px solid #b2dfdb; padding-top:10px; transition: max-height 0.5s ease, opacity 0.5s ease; opacity:0;"></div>
-</section>
+</div>
 
 <style>
-  #news-container a {
-    margin-right:40px;
-    font-weight:bold;
-    color:#1b5e20;
-    text-decoration:none;
-    display:inline-block;
-    font-size:1em;
-  }
-
-  #news-container a .preview {
-    visibility: hidden;
-    opacity: 0;
-    width: 220px;
-    background-color: #e0f8d8;
-    color: #1b5e20;
-    text-align: left;
-    border-radius: 8px;
-    padding: 8px;
-    position: absolute;
-    bottom: -70px;
-    left: 0;
-    z-index: 10;
-    font-size: 0.85em;
-    transition: opacity 0.3s;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-  }
-
-  #news-container a:hover .preview {
-    visibility: visible;
-    opacity: 1;
-  }
-
-  /* Expanded news items */
-  #expanded-news li {
-    background: #f0fff0;
-    border-radius: 8px;
-    padding: 8px 12px;
-    margin-bottom: 12px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-
-  #expanded-news li a {
-    color: #1b5e20;
-    text-decoration:none;
-    font-weight:bold;
-  }
-
-  #expanded-news li a:hover { text-decoration:underline; }
-
-  #expanded-news li p { margin:5px 0; font-size:0.9em; color:#333; }
-
-  #see-more-btn:hover { background:#3ca63c; }
-
-  @media (max-width:600px){
-    #eco-news h2{ font-size:1.2em; }
-    #news-container a{ font-size:0.9em; margin-right:30px; }
-    #news-container a .preview{ width:180px; font-size:0.8em; bottom:-60px; }
-  }
+@keyframes scrollNews {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+#news-items span, #news-items a {
+  display: inline-block;
+}
 </style>
 
-<script>
-  const rssUrl = "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml";
-  const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
-  const newsContainer = document.getElementById("news-container");
-  const expandedNews = document.getElementById("expanded-news");
-  const seeMoreBtn = document.getElementById("see-more-btn");
-  let tickerActive = true;
-  let allNewsItems = [];
-
-  function fetchNews(){
-    fetch(proxyUrl)
-      .then(res=>res.json())
-      .then(data=>{
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(data.contents,"text/xml");
-        const items = Array.from(xml.querySelectorAll("item"));
-        
-        allNewsItems = [];
-        let tickerHtml = "";
-
-        // Skip first unwanted item & remove incomplete ones
-        items.forEach(item=>{
-          const title = item.querySelector("title")?.textContent || "No title";
-          const link = item.querySelector("link")?.textContent || "#";
-          const description = item.querySelector("description")?.textContent || "";
-
-          // Skip the first item (unwanted Kiss news)
-          if(allNewsItems.length === 0) return allNewsItems.push({title,link,description}); 
-
-          // Only add complete news (ignore empty titles)
-          if(title && description){
-            tickerHtml += `<a href="${link}" target="_blank" 
-              onmouseenter="tickerActive=false;" 
-              onmouseleave="tickerActive=true;" 
-              ontouchstart="tickerActive=false;" 
-              ontouchend="tickerActive=true;">
-                ${title}
-                <div class="preview">${description.substring(0,150)}…</div>
-            </a>`;
-            allNewsItems.push({title,link,description});
-          }
-        });
-
-        newsContainer.innerHTML = tickerHtml;
-
-        // Scroll ticker (faster)
-        let scrollPos = newsContainer.offsetWidth;
-        function scrollTicker(){
-          if(tickerActive) scrollPos -= 2;
-          if(scrollPos < -newsContainer.scrollWidth) scrollPos = newsContainer.offsetWidth;
-          newsContainer.style.transform = `translateX(${scrollPos}px)`;
-          requestAnimationFrame(scrollTicker);
-        }
-        scrollTicker();
-      })
-      .catch(err=>{
-        console.error(err);
-        newsContainer.innerHTML="<p style='color:red;'>Could not load news.</p>";
-      });
-  }
-
-  fetchNews();
-  setInterval(fetchNews,600000); // refresh 10 mins
-
-  // Expandable "See More"
-  seeMoreBtn.addEventListener("click",()=>{
-    if(expandedNews.style.display==="none"){
-      let html="<ul style='list-style:none;padding:0;'>";
-      allNewsItems.forEach(item=>{
-        html+=`<li>
-          <a href="${item.link}" target="_blank">${item.title}</a>
-          <p>${item.description.substring(0,200)}… 
-          <a href="${item.link}" target="_blank" style="color:#2e7d32; font-weight:bold; text-decoration:underline;">Read More</a></p>
-        </li>`;
-      });
-      html+="</ul>";
-      expandedNews.innerHTML=html;
-      expandedNews.style.display="block";
-      expandedNews.style.opacity=1;
-      expandedNews.style.maxHeight="300px";
-      seeMoreBtn.textContent="Hide News";
-    }else{
-      expandedNews.style.opacity=0;
-      expandedNews.style.maxHeight="0";
-      setTimeout(()=>{expandedNews.style.display="none";},500);
-      seeMoreBtn.textContent="See More News";
-    }
-  });
-</script>
 
 
 <!-- 🎙️ ECO PODCAST SECTION -->
