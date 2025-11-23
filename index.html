@@ -398,8 +398,8 @@
 </section>
 
 <!-- GLOBAL ECO NEWS TICKER -->
-<section id="eco-news" style="background:#c7f8ff; padding:20px; border-radius:10px; max-width:700px; margin:30px auto; box-shadow:0 4px 8px rgba(0,0,0,0.1); overflow:hidden;">
-  <h2 style="text-align:center; color:#2e7d32; font-family:Arial, sans-serif; margin-bottom:15px;">🌍 Sustainability News</h2>
+<section id="eco-news" style="background:#c7f8ff; padding:20px; border-radius:10px; max-width:95%; margin:20px auto; box-shadow:0 4px 8px rgba(0,0,0,0.1); overflow:hidden;">
+  <h2 style="text-align:center; color:#2e7d32; font-family:Arial, sans-serif; margin-bottom:15px; font-size:1.5em;">🌍 Sustainability News</h2>
   <div id="news-container" style="white-space: nowrap; overflow: hidden; font-family:Arial, sans-serif; color:#333; font-size:1em; position:relative;">
     Loading latest eco news...
   </div>
@@ -407,30 +407,31 @@
 
 <style>
   #news-container a {
-    margin-right:50px;
+    margin-right:40px;
     font-weight:bold;
     color:#1b5e20;
     text-decoration:none;
     position: relative;
     display: inline-block;
     cursor: pointer;
+    font-size:1em;
   }
 
   /* Styled hover preview */
   #news-container a .preview {
     visibility: hidden;
     opacity: 0;
-    width: 250px;
+    width: 220px;
     background-color: #d0f0e0;
     color: #1b5e20;
     text-align: left;
     border-radius: 8px;
     padding: 8px;
     position: absolute;
-    bottom: -60px;
+    bottom: -70px;
     left: 0;
     z-index: 10;
-    font-size: 0.9em;
+    font-size: 0.85em;
     transition: opacity 0.3s;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
@@ -439,12 +440,29 @@
     visibility: visible;
     opacity: 1;
   }
+
+  /* Responsive for mobile */
+  @media (max-width: 600px) {
+    #eco-news h2 {
+      font-size: 1.2em;
+    }
+    #news-container a {
+      font-size: 0.9em;
+      margin-right: 30px;
+    }
+    #news-container a .preview {
+      width: 180px;
+      font-size: 0.8em;
+      bottom: -60px;
+    }
+  }
 </style>
 
 <script>
   const rssUrl = "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml";
   const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
   const newsContainer = document.getElementById("news-container");
+  let tickerActive = true;
 
   function fetchNews() {
     fetch(proxyUrl)
@@ -457,15 +475,15 @@
         let html = "";
         items.forEach((item, index) => {
           if (index === 0) return; // skip first unwanted item
-          if (index > 10) return; // show first 10 items
+          if (index > 10) return;
           const title = item.querySelector("title")?.textContent || "No title";
           const link = item.querySelector("link")?.textContent || "#";
           const description = item.querySelector("description")?.textContent || "";
 
           html += `
-            <a href="${link}" target="_blank">
+            <a href="${link}" target="_blank" onmouseenter="tickerActive=false;" onmouseleave="tickerActive=true;">
               ${title}
-              <div class="preview">${description.substring(0,200)}…</div>
+              <div class="preview">${description.substring(0,150)}…</div>
             </a>
           `;
         });
@@ -475,7 +493,9 @@
         // Horizontal scroll ticker
         let scrollPos = newsContainer.offsetWidth;
         function scrollTicker() {
-          scrollPos -= 1; // speed
+          if (tickerActive) {
+            scrollPos -= 1; // speed
+          }
           if (scrollPos < -newsContainer.scrollWidth) scrollPos = newsContainer.offsetWidth;
           newsContainer.style.transform = `translateX(${scrollPos}px)`;
           requestAnimationFrame(scrollTicker);
@@ -488,7 +508,7 @@
       });
   }
 
-  fetchNews(); // initial fetch
+  fetchNews();
   setInterval(fetchNews, 600000); // refresh every 10 minutes
 </script>
 
