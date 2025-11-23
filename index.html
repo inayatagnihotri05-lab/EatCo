@@ -398,7 +398,7 @@
 </section>
 
 <!-- GLOBAL ECO NEWS TICKER -->
-<section id="eco-news" style="background:#c7f8ff; padding:20px; border-radius:10px; max-width:95%; margin:20px auto; box-shadow:0 4px 8px rgba(0,0,0,0.1); overflow:hidden;">
+<section id="eco-news" style="background:#d0f0c0; padding:20px; border-radius:10px; max-width:95%; margin:20px auto; box-shadow:0 4px 8px rgba(0,0,0,0.1); overflow:hidden;">
   <h2 style="text-align:center; color:#2e7d32; font-family:Arial, sans-serif; margin-bottom:15px; font-size:1.5em;">🌍 Sustainability News</h2>
 
   <!-- Horizontal ticker -->
@@ -419,7 +419,7 @@
   #news-container a {
     margin-right:40px;
     font-weight:bold;
-    color:#1b5e20;
+    color:#1b5e20; /* dark green links */
     text-decoration:none;
     position: relative;
     display: inline-block;
@@ -431,7 +431,7 @@
     visibility: hidden;
     opacity: 0;
     width: 220px;
-    background-color: #d0f0e0;
+    background-color: #e0f8d8; /* light hover green */
     color: #1b5e20;
     text-align: left;
     border-radius: 8px;
@@ -452,9 +452,9 @@
 
   /* Responsive */
   @media (max-width: 600px) {
-    #eco-news h2 { font-size:1.2em; }
-    #news-container a { font-size:0.9em; margin-right:30px; }
-    #news-container a .preview { width:180px; font-size:0.8em; bottom:-60px; }
+    #eco-news h2 { font-size: 1.2em; }
+    #news-container a { font-size: 0.9em; margin-right: 30px; }
+    #news-container a .preview { width: 180px; font-size: 0.8em; bottom: -60px; }
   }
 </style>
 
@@ -479,7 +479,7 @@
         let tickerHtml = "";
 
         items.forEach((item, index) => {
-          if (index === 0) return; // skip first unwanted
+          if (index === 0) return; // skip first unwanted item
           const title = item.querySelector("title")?.textContent || "No title";
           const link = item.querySelector("link")?.textContent || "#";
           const description = item.querySelector("description")?.textContent || "";
@@ -553,6 +553,7 @@
     }
   });
 </script>
+
 
 
 <!-- 🎙️ ECO PODCAST SECTION -->
