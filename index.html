@@ -405,8 +405,44 @@
   </div>
 </section>
 
+<style>
+  #news-container a {
+    margin-right:50px;
+    font-weight:bold;
+    color:#1b5e20;
+    text-decoration:none;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  /* Styled hover preview */
+  #news-container a .preview {
+    visibility: hidden;
+    opacity: 0;
+    width: 250px;
+    background-color: #d0f0e0;
+    color: #1b5e20;
+    text-align: left;
+    border-radius: 8px;
+    padding: 8px;
+    position: absolute;
+    bottom: -60px;
+    left: 0;
+    z-index: 10;
+    font-size: 0.9em;
+    transition: opacity 0.3s;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+
+  #news-container a:hover .preview {
+    visibility: visible;
+    opacity: 1;
+  }
+</style>
+
 <script>
-  const rssUrl = "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml"; // RSS feed URL
+  const rssUrl = "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml";
   const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
   const newsContainer = document.getElementById("news-container");
 
@@ -420,18 +456,23 @@
 
         let html = "";
         items.forEach((item, index) => {
-          if (index === 0) return; // skip the first unwanted item
-          if (index > 10) return; // show up to 10 items
+          if (index === 0) return; // skip first unwanted item
+          if (index > 10) return; // show first 10 items
           const title = item.querySelector("title")?.textContent || "No title";
           const link = item.querySelector("link")?.textContent || "#";
           const description = item.querySelector("description")?.textContent || "";
 
-          html += `<a href="${link}" target="_blank" style="margin-right:50px; font-weight:bold; color:#1b5e20; text-decoration:none;" title="${description.substring(0,150)}">${title}</a>`;
+          html += `
+            <a href="${link}" target="_blank">
+              ${title}
+              <div class="preview">${description.substring(0,200)}…</div>
+            </a>
+          `;
         });
 
         newsContainer.innerHTML = html;
 
-        // Horizontal scroll
+        // Horizontal scroll ticker
         let scrollPos = newsContainer.offsetWidth;
         function scrollTicker() {
           scrollPos -= 1; // speed
