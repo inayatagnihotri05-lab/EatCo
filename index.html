@@ -408,7 +408,7 @@
 
   <!-- See More button -->
   <div style="text-align:center; margin-top:15px;">
-    <button id="see-more-btn" style="background:#2e7d32; color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-size:0.95em;">See More News</button>
+    <button id="see-more-btn" style="background:#2e7d32; color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-size:0.95em; transition: background 0.3s;">See More News</button>
   </div>
 
   <!-- Expanded vertical news list -->
@@ -419,7 +419,7 @@
   #news-container a {
     margin-right:40px;
     font-weight:bold;
-    color:#1b5e20; /* dark green links */
+    color:#1b5e20;
     text-decoration:none;
     position: relative;
     display: inline-block;
@@ -431,7 +431,7 @@
     visibility: hidden;
     opacity: 0;
     width: 220px;
-    background-color: #e0f8d8; /* light hover green */
+    background-color: #e0f8d8;
     color: #1b5e20;
     text-align: left;
     border-radius: 8px;
@@ -450,11 +450,41 @@
     opacity: 1;
   }
 
+  /* Expanded news item styling */
+  #expanded-news li {
+    background: #f0fff0;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  #expanded-news li a {
+    color: #1b5e20;
+    text-decoration:none;
+    font-weight:bold;
+  }
+
+  #expanded-news li a:hover {
+    text-decoration:underline;
+  }
+
+  #expanded-news li p {
+    margin:5px 0;
+    font-size:0.9em;
+    color:#333;
+  }
+
+  /* Button hover effect */
+  #see-more-btn:hover {
+    background:#3ca63c; /* lighter green on hover */
+  }
+
   /* Responsive */
   @media (max-width: 600px) {
-    #eco-news h2 { font-size: 1.2em; }
-    #news-container a { font-size: 0.9em; margin-right: 30px; }
-    #news-container a .preview { width: 180px; font-size: 0.8em; bottom: -60px; }
+    #eco-news h2 { font-size:1.2em; }
+    #news-container a { font-size:0.9em; margin-right:30px; }
+    #news-container a .preview { width:180px; font-size:0.8em; bottom:-60px; }
   }
 </style>
 
@@ -527,10 +557,9 @@
       let expandedHtml = "<ul style='list-style:none; padding:0;'>";
       allNewsItems.forEach(item => {
         expandedHtml += `
-          <li style="margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #b2dfdb;">
-            <a href="${item.link}" target="_blank" style="font-weight:bold; color:#1b5e20; text-decoration:none;">${item.title}</a>
-            <p style="margin:5px 0; font-size:0.9em; color:#333;">
-              ${item.description.substring(0,200)}… 
+          <li>
+            <a href="${item.link}" target="_blank">${item.title}</a>
+            <p>${item.description.substring(0,200)}… 
               <a href="${item.link}" target="_blank" style="color:#2e7d32; font-weight:bold; text-decoration:underline;">Read More</a>
             </p>
           </li>
