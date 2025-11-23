@@ -400,9 +400,19 @@
 <!-- GLOBAL ECO NEWS TICKER -->
 <section id="eco-news" style="background:#c7f8ff; padding:20px; border-radius:10px; max-width:95%; margin:20px auto; box-shadow:0 4px 8px rgba(0,0,0,0.1); overflow:hidden;">
   <h2 style="text-align:center; color:#2e7d32; font-family:Arial, sans-serif; margin-bottom:15px; font-size:1.5em;">🌍 Sustainability News</h2>
+
+  <!-- Horizontal ticker -->
   <div id="news-container" style="white-space: nowrap; overflow: hidden; font-family:Arial, sans-serif; color:#333; font-size:1em; position:relative;">
     Loading latest eco news...
   </div>
+
+  <!-- See More button -->
+  <div style="text-align:center; margin-top:15px;">
+    <button id="see-more-btn" style="background:#2e7d32; color:#fff; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; font-size:0.95em;">See More News</button>
+  </div>
+
+  <!-- Expanded vertical news list (hidden by default) -->
+  <div id="expanded-news" style="display:none; margin-top:20px; max-height:300px; overflow-y:auto; border-top:1px solid #b2dfdb; padding-top:10px;"></div>
 </section>
 
 <style>
@@ -417,7 +427,6 @@
     font-size:1em;
   }
 
-  /* Styled hover preview */
   #news-container a .preview {
     visibility: hidden;
     opacity: 0;
@@ -441,20 +450,11 @@
     opacity: 1;
   }
 
-  /* Responsive for mobile */
+  /* Responsive */
   @media (max-width: 600px) {
-    #eco-news h2 {
-      font-size: 1.2em;
-    }
-    #news-container a {
-      font-size: 0.9em;
-      margin-right: 30px;
-    }
-    #news-container a .preview {
-      width: 180px;
-      font-size: 0.8em;
-      bottom: -60px;
-    }
+    #eco-news h2 { font-size:1.2em; }
+    #news-container a { font-size:0.9em; margin-right:30px; }
+    #news-container a .preview { width:180px; font-size:0.8em; bottom:-60px; }
   }
 </style>
 
@@ -462,7 +462,10 @@
   const rssUrl = "https://feeds.bbci.co.uk/news/science_and_environment/rss.xml";
   const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
   const newsContainer = document.getElementById("news-container");
+  const expandedNews = document.getElementById("expanded-news");
+  const seeMoreBtn = document.getElementById("see-more-btn");
   let tickerActive = true;
+  let allNewsItems = [];
 
   function fetchNews() {
     fetch(proxyUrl)
@@ -472,30 +475,38 @@
         const xml = parser.parseFromString(data.contents, "text/xml");
         const items = xml.querySelectorAll("item");
 
-        let html = "";
+        allNewsItems = [];
+        let tickerHtml = "";
+
         items.forEach((item, index) => {
-          if (index === 0) return; // skip first unwanted item
-          if (index > 10) return;
+          if (index === 0) return; // skip first unwanted
           const title = item.querySelector("title")?.textContent || "No title";
           const link = item.querySelector("link")?.textContent || "#";
           const description = item.querySelector("description")?.textContent || "";
 
-          html += `
-            <a href="${link}" target="_blank" onmouseenter="tickerActive=false;" onmouseleave="tickerActive=true;">
-              ${title}
-              <div class="preview">${description.substring(0,150)}…</div>
-            </a>
-          `;
+          // Horizontal ticker (first 10)
+          if (allNewsItems.length < 10) {
+            tickerHtml += `
+              <a href="${link}" target="_blank"
+                 onmouseenter="tickerActive=false;"
+                 onmouseleave="tickerActive=true;"
+                 ontouchstart="tickerActive=false;"
+                 ontouchend="tickerActive=true;">
+                ${title}
+                <div class="preview">${description.substring(0,150)}…</div>
+              </a>
+            `;
+          }
+
+          allNewsItems.push({title, link, description});
         });
 
-        newsContainer.innerHTML = html;
+        newsContainer.innerHTML = tickerHtml;
 
         // Horizontal scroll ticker
         let scrollPos = newsContainer.offsetWidth;
         function scrollTicker() {
-          if (tickerActive) {
-            scrollPos -= 1; // speed
-          }
+          if (tickerActive) scrollPos -= 1;
           if (scrollPos < -newsContainer.scrollWidth) scrollPos = newsContainer.offsetWidth;
           newsContainer.style.transform = `translateX(${scrollPos}px)`;
           requestAnimationFrame(scrollTicker);
@@ -509,7 +520,29 @@
   }
 
   fetchNews();
-  setInterval(fetchNews, 600000); // refresh every 10 minutes
+  setInterval(fetchNews, 600000);
+
+  // See More News button functionality
+  seeMoreBtn.addEventListener("click", () => {
+    if (expandedNews.style.display === "none") {
+      let expandedHtml = "<ul style='list-style:none; padding:0;'>";
+      allNewsItems.forEach(item => {
+        expandedHtml += `
+          <li style="margin-bottom:15px; padding-bottom:10px; border-bottom:1px solid #b2dfdb;">
+            <a href="${item.link}" target="_blank" style="font-weight:bold; color:#1b5e20; text-decoration:none;">${item.title}</a>
+            <p style="margin:5px 0; font-size:0.9em; color:#333;">${item.description.substring(0,200)}…</p>
+          </li>
+        `;
+      });
+      expandedHtml += "</ul>";
+      expandedNews.innerHTML = expandedHtml;
+      expandedNews.style.display = "block";
+      seeMoreBtn.textContent = "Hide News";
+    } else {
+      expandedNews.style.display = "none";
+      seeMoreBtn.textContent = "See More News";
+    }
+  });
 </script>
 
 <!-- 🎙️ ECO PODCAST SECTION -->
