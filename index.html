@@ -504,7 +504,57 @@
   </div>
 </section>
 
+  <script>
+const foodData = {
+  "apple": {
+    carbon: 0.2,
+    water: 70,
+    land: 0.3,
+    health: 5,
+    ecoscore: "A"
+  },
+  "banana": {
+    carbon: 0.8,
+    water: 160,
+    land: 0.5,
+    health: 4,
+    ecoscore: "B"
+  },
+  "beef": {
+    carbon: 27,
+    water: 15000,
+    land: 22,
+    health: 2,
+    ecoscore: "D"
+  }
+};
 
+function scanFood() {
+  let input = document.getElementById("foodInput").value.toLowerCase().trim();
+  let box = document.getElementById("scannerResult");
+
+  if (!foodData[input]) {
+    box.style.display = "block";
+    box.innerHTML = `
+      <h3 style="margin: 0 0 10px;">Food Not Found</h3>
+      <p>Try Apple, Banana, Beef… or tell me to add more foods.</p>
+    `;
+    return;
+  }
+
+  let f = foodData[input];
+
+  box.style.display = "block";
+  box.innerHTML = `
+    <h3 style="margin-bottom: 10px; text-transform: capitalize;">${input}</h3>
+    <p><strong>Carbon Footprint:</strong> ${f.carbon} kg CO₂-e</p>
+    <p><strong>Water Usage:</strong> ${f.water} L</p>
+    <p><strong>Land Use:</strong> ${f.land} m²</p>
+    <p><strong>Health Rating:</strong> ⭐ ${"★".repeat(f.health)}</p>
+    <p><strong>EcoScore:</strong> ${f.ecoscore}</p>
+  `;
+}
+</script>
 
 
   <!-- Footer -->
