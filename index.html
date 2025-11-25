@@ -626,12 +626,33 @@ function scanFood(){
     <p>${f.alt}</p>
   `;
 
-  setTimeout(()=>{
-    document.querySelector('.bar-carbon').style.width=(f.carbon*3)+"%";
-    document.querySelector('.bar-water').style.width=Math.min(f.water/200,"100")+"%";
-    document.querySelector('.bar-land').style.width=(f.land*4)+"%";
-  },100);
-}
+ setTimeout(() => {
+  const carbonBar = document.querySelector('.bar-carbon');
+  const waterBar = document.querySelector('.bar-water');
+  const landBar = document.querySelector('.bar-land');
+
+  // Animate with smooth increment
+  let carbonWidth = 0, waterWidth = 0, landWidth = 0;
+  const carbonTarget = f.carbon * 3;
+  const waterTarget = Math.min(f.water / 200, 100);
+  const landTarget = f.land * 4;
+
+  const animate = () => {
+    if (carbonWidth < carbonTarget) carbonWidth += 0.5;
+    if (waterWidth < waterTarget) waterWidth += 0.5;
+    if (landWidth < landTarget) landWidth += 0.5;
+
+    carbonBar.style.width = carbonWidth + "%";
+    waterBar.style.width = waterWidth + "%";
+    landBar.style.width = landWidth + "%";
+
+    if (carbonWidth < carbonTarget || waterWidth < waterTarget || landWidth < landTarget) {
+      requestAnimationFrame(animate);
+    }
+  };
+  animate();
+}, 100);
+
 
 // ************************************
 // CAMERA BARCODE SCANNING (MOBILE SAFE WITH QUAGGA)
