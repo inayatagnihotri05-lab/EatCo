@@ -468,4 +468,31 @@ footer {
 }
 
 /* OPTIONAL: Smooth fade-in on scroll */
+/* ==========================
+   YouTube Video Glow & Shimmer
+   ========================== */
+.story-card iframe {
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover / tap effect */
+.story-card iframe:hover,
+.story-card iframe:focus {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(0, 200, 83, 0.4); /* greenish glow */
+}
+
+/* Optional shimmer animation */
+@keyframes shimmer {
+  0% { box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+  50% { box-shadow: 0 8px 25px rgba(0, 200, 83, 0.5); }
+  100% { box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+}
+
+.story-card iframe {
+  animation: shimmer 4s infinite ease-in-out;
+}
+
 
