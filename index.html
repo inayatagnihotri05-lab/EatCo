@@ -504,7 +504,88 @@
   </div>
 </section>
 
-  <script>
+<!-- =======================
+     FOOD IMPACT SCANNER
+======================== -->
+<section id="food-scanner" style="margin-top: 50px; padding: 20px;">
+  <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 15px;">
+    🧪 Food Impact Scanner
+  </h2>
+
+  <p style="color:#555; max-width:600px; margin-bottom: 20px;">
+    Search any food to see its carbon footprint, water usage, land use,
+    health rating, and EcoScore. Science made simple.
+  </p>
+
+  <input 
+    id="foodInput" 
+    type="text" 
+    placeholder="Type a food... like Apple, Banana, Beef"
+    style="
+      padding: 12px; 
+      width: 100%; 
+      max-width: 400px; 
+      border-radius: 10px; 
+      border: 1px solid #ccc;
+      font-size: 16px;
+    "
+  />
+
+  <button 
+    onclick="scanFood()" 
+    style="
+      padding: 12px 20px;
+      margin-left: 10px;
+      border-radius: 10px;
+      background: black; 
+      color: white; 
+      border: none;
+      cursor: pointer;
+    "
+  >
+    Scan
+  </button>
+
+  <div 
+    id="scannerResult" 
+    style="
+      margin-top: 25px; 
+      padding: 20px; 
+      border-radius: 15px; 
+      background:#f4f4f4;
+      display:none;
+    "
+  ></div>
+</section>
+
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 EatCo | Made with 💚 by Inayat Agnihotri</p>
+  </footer>
+
+<script>
+/* Share Recipe */
+function shareRecipe(name) {
+  if (navigator.share) {
+    navigator.share({
+      title: name,
+      text: "Check out this eco-friendly recipe from EatCo!",
+      url: window.location.href
+    });
+  } else {
+    alert("Sharing not supported on this device.");
+  }
+}
+
+/* Recipe Toggle */
+document.querySelectorAll(".recipe-card").forEach(card => {
+  card.addEventListener("click", () => {
+    card.classList.toggle("active");
+  });
+});
+</script>
+<script>
 const foodData = {
   "apple": {
     carbon: 0.2,
@@ -554,34 +635,6 @@ function scanFood() {
     <p><strong>EcoScore:</strong> ${f.ecoscore}</p>
   `;
 }
-</script>
-
-
-  <!-- Footer -->
-  <footer>
-    <p>© 2025 EatCo | Made with 💚 by Inayat Agnihotri</p>
-  </footer>
-
-<script>
-/* Share Recipe */
-function shareRecipe(name) {
-  if (navigator.share) {
-    navigator.share({
-      title: name,
-      text: "Check out this eco-friendly recipe from EatCo!",
-      url: window.location.href
-    });
-  } else {
-    alert("Sharing not supported on this device.");
-  }
-}
-
-/* Recipe Toggle */
-document.querySelectorAll(".recipe-card").forEach(card => {
-  card.addEventListener("click", () => {
-    card.classList.toggle("active");
-  });
-});
 </script>
 
 </body>
