@@ -449,67 +449,22 @@
 
 </section>
 
-  <!-- ============================= -->
-<!-- ECO BUSINESS GENERATOR SECTION -->
-<!-- ============================= -->
+<!-- BUSINESS IDEA GENERATOR (FULL AESTHETIC UPGRADE) -->
+<section id="business-generator" style="margin-top:60px;padding:20px;">
+  <h2 class="gen-title">💡 Eco Business Idea Generator</h2>
+  <p class="gen-sub">Instant AI-powered ideas based on your interests, budget & goals.</p>
 
-<section id="business-generator" style="padding: 30px; background: #f7f7f7; margin-top: 40px;">
-  <h2 style="text-align: center; font-size: 28px; margin-bottom: 20px;">🌱 Eco Business Generator</h2>
-  <p style="text-align: center; max-width: 700px; margin: 0 auto 25px;">
-    Create your own eco–friendly business idea based on your budget, skills, time, and impact goals!
-  </p>
+  <div class="gen-box">
+    <input type="text" id="interestInput" placeholder="Your interests (Tech, Cooking, Fashion…)" class="gen-input">
+    <input type="text" id="budgetInput" placeholder="Budget (0–10,000+)" class="gen-input">
+    <input type="text" id="skillInput" placeholder="Skills (Beginner, Creative, Coding, Social…)" class="gen-input">
 
-  <div class="generator-box" style="max-width: 700px; margin: auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.08);">
-
-    <label>💸 Budget</label>
-    <select id="gen-budget" class="gen-input">
-      <option>₹0</option>
-      <option>₹0–500</option>
-      <option>₹500–2000</option>
-      <option>₹2000–5000</option>
-    </select>
-
-    <label>🧠 Skill</label>
-    <select id="gen-skill" class="gen-input">
-      <option>Creativity</option>
-      <option>Tech</option>
-      <option>Farming / Nature</option>
-      <option>Business</option>
-      <option>Social / Community</option>
-    </select>
-
-    <label>📍 Location</label>
-    <select id="gen-location" class="gen-input">
-      <option>Home</option>
-      <option>School</option>
-      <option>Online</option>
-      <option>Neighborhood</option>
-    </select>
-
-    <label>💚 Eco Goal</label>
-    <select id="gen-impact" class="gen-input">
-      <option>Reduce Waste</option>
-      <option>Reduce Carbon Footprint</option>
-      <option>Help Farmers</option>
-      <option>Clean Environment</option>
-      <option>Healthy Eating</option>
-    </select>
-
-    <label>⏱ Time Available</label>
-    <select id="gen-time" class="gen-input">
-      <option>&lt; 1 hour/day</option>
-      <option>1–2 hours/day</option>
-      <option>Weekends only</option>
-    </select>
-
-    <button onclick="generateBusiness()" style="margin-top: 20px; width: 100%; padding: 12px; border-radius: 8px; border: none; background: #4CAF50; color: #fff; font-size: 18px; cursor: pointer;">
-      Generate ⚡
-    </button>
-
-    <div id="gen-result" style="margin-top: 25px; padding: 20px; background: #eef6ee; border-radius: 10px; display: none;"></div>
-
+    <button class="gen-btn" onclick="generateBusinessIdea()">✨ Generate Idea</button>
   </div>
+
+  <div id="ideaResult" class="idea-card" style="display:none;"></div>
 </section>
+
 
 <!-- JS LOGIC -->
 <script>
@@ -574,6 +529,62 @@ function generateBusiness() {
     <p><strong>✨ Slogan:</strong> ${match.slogan}</p>
   `;
 }
+  // BUSINESS IDEA GENERATOR (Upgraded)
+function generateBusinessIdea() {
+  const interest = document.getElementById("interestInput").value.trim();
+  const budget = document.getElementById("budgetInput").value.trim();
+  const skill = document.getElementById("skillInput").value.trim();
+  const result = document.getElementById("ideaResult");
+
+  if (!interest || !budget || !skill) {
+    result.style.display = "block";
+    result.innerHTML = `<p class="idea-text">⚠️ Please fill all fields to generate your idea.</p>`;
+    return;
+  }
+
+  const ideas = [
+    {
+      title: "Eco Subscription Box",
+      desc: "Curate monthly boxes with sustainable products, handmade goods, or recycled crafts. Works great with low budgets & creativity."
+    },
+    {
+      title: "Zero-Waste Pop-Up Store",
+      desc: "Sell eco-friendly essentials in local housing societies. Perfect for social skills + low investment."
+    },
+    {
+      title: "AI-Powered Carbon Tracker",
+      desc: "Create a simple app or Instagram tool that helps people track daily carbon impact."
+    },
+    {
+      title: "Digital Recipe E-Book",
+      desc: "Sell eco-friendly, healthy recipes using local foods. Works with cooking interest & no cost."
+    },
+    {
+      title: "Sustainable Fashion Resale",
+      desc: "Buy thrift clothing and resell using Instagram or WhatsApp Shop."
+    },
+    {
+      title: "Local Compost Pickup Service",
+      desc: "Pick up food waste from homes and supply to farmers/gardeners. High impact, low cost."
+    }
+  ];
+
+  const random = ideas[Math.floor(Math.random() * ideas.length)];
+
+  result.style.display = "block";
+  result.innerHTML = `
+    <h3 class="idea-title">🚀 ${random.title}</h3>
+    <p class="idea-text">${random.desc}</p>
+
+    <p class="idea-text" style="margin-top:10px;"><strong>Based on your inputs:</strong></p>
+    <ul class="idea-text">
+      <li>Interest: ${interest}</li>
+      <li>Budget: ${budget}</li>
+      <li>Skill: ${skill}</li>
+    </ul>
+  `;
+}
+
 </script>
 
 <style>
