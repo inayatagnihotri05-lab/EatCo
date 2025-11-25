@@ -602,8 +602,8 @@ const tones = {
   ]
 };
 
-// FINAL WORKING GENERATOR
-function generateBusiness() {
+// ✅ FINAL WORKING GENERATOR (GLOBAL FUNCTION)
+window.generateBusiness = function () {
   const cat = document.getElementById("bizCategory").value;
   const aud = document.getElementById("bizAudience").value;
   const tone = document.getElementById("bizTone").value;
@@ -621,8 +621,9 @@ function generateBusiness() {
     <p><strong>Target:</strong> ${audience}</p>
     <p><strong>Style:</strong> ${style}</p>
   `;
-}
+};
 </script>
+
 
 
 <style>
