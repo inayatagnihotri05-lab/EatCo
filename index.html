@@ -450,45 +450,36 @@
 </section>
 
 <section id="business-generator">
-  <h2>🌱 Eco Business Generator</h2>
+  <h2>💡 Green Business Idea Generator</h2>
 
-  <label>Budget</label>
-  <select id="budget">
-    <option value="low">₹0 – ₹5,000</option>
-    <option value="medium">₹5,000 – ₹50,000</option>
-    <option value="high">₹50,000+</option>
+  <label>Choose a Category</label>
+  <select id="bizCategory">
+    <option value="food">Sustainable Food</option>
+    <option value="waste">Zero Waste</option>
+    <option value="fashion">Eco Fashion</option>
+    <option value="energy">Clean Energy</option>
+    <option value="tech">Green Tech</option>
   </select>
 
-  <label>Your Skills</label>
-  <select id="skills">
-    <option value="beginner">Beginner</option>
-    <option value="intermediate">Intermediate</option>
-    <option value="advanced">Advanced</option>
+  <label>Target Audience</label>
+  <select id="bizAudience">
+    <option value="kids">Kids & Teens</option>
+    <option value="genz">Gen Z</option>
+    <option value="families">Families</option>
+    <option value="corporates">Corporate Offices</option>
+    <option value="villages">Rural Villages</option>
   </select>
 
-  <label>Location</label>
-  <select id="location">
-    <option value="urban">Urban City</option>
-    <option value="suburban">Suburban</option>
-    <option value="rural">Rural</option>
+  <label>Business Tone</label>
+  <select id="bizTone">
+    <option value="fun">Fun & Creative</option>
+    <option value="serious">Serious & Scientific</option>
+    <option value="premium">Premium / Luxury</option>
+    <option value="budget">Budget Friendly</option>
+    <option value="techy">Tech + AI Focused</option>
   </select>
 
-  <label>Eco Goal</label>
-  <select id="goal">
-    <option value="food">Reduce Food Waste</option>
-    <option value="plastic">Reduce Plastic</option>
-    <option value="energy">Save Energy</option>
-    <option value="water">Save Water</option>
-  </select>
-
-  <label>Time you can give</label>
-  <select id="time">
-    <option value="low">1–2 hours/day</option>
-    <option value="medium">2–4 hours/day</option>
-    <option value="high">Full-time</option>
-  </select>
-
-  <button onclick="generateBusiness()">Generate ⚡</button>
+  <button onclick="generateBusiness()">Generate Idea</button>
 
   <div id="businessOutput" style="display:none;"></div>
 </section>
@@ -613,6 +604,142 @@ function generateBusinessIdea() {
     </ul>
   `;
 }
+  // BUSINESS GENERATOR DATA
+const ideas = {
+  food: [
+    "AI-powered food waste tracking app",
+    "Urban community hydroponic farming kit",
+    "Plant-based snack subscription box",
+    "Upcycled fruit-to-jam brand",
+    "Smart fridge app that suggests zero-waste recipes"
+  ],
+  waste: [
+    "Plastic-free starter kit shop",
+    "College campus waste analytics app",
+    "Metal scrap-to-art marketplace",
+    "AI-powered e-waste sorter",
+    "Home compost accelerator device"
+  ],
+  fashion: [
+    "Upcycled denim redesign studio",
+    "Eco sneaker brand using algae foam",
+    "Digital wardrobe + swap system",
+    "Biodegradable streetwear line",
+    "Repair café for clothes & shoes"
+  ],
+  energy: [
+    "Mini solar powerbank vending kiosk",
+    "Rooftop solar monitoring app",
+    "Rental solar lamps for villages",
+    "AI-driven home energy optimizer",
+    "Portable wind–solar hybrid charger"
+  ],
+  tech: [
+    "Carbon footprint tracker for teens",
+    "Smart bins with AI waste sorting",
+    "IoT home garden automation",
+    "Eco-impact scanner for groceries",
+    "Green startup idea generator (like this!)"
+  ]
+};
+
+const audiences = {
+  kids: [
+    "gamified to keep young users excited",
+    "with colorful UI and badges",
+    "with cartoon-style storytelling",
+    "designed for school projects",
+    "built as a fun interactive challenge"
+  ],
+  genz: [
+    "with a TikTok-style reel system",
+    "with social sharing challenges",
+    "with AI-powered personalization",
+    "with instant streak rewards",
+    "designed to go viral on Instagram"
+  ],
+  families: [
+    "with family progress dashboards",
+    "with household reward points",
+    "with weekly sustainability missions",
+    "with shared savings goals",
+    "safe and simple for all ages"
+  ],
+  corporates: [
+    "with analytics dashboards",
+    "tailored for HR sustainability programs",
+    "for annual ESG reporting",
+    "with team-based competitions",
+    "ideal for offices wanting low-cost green boosts"
+  ],
+  villages: [
+    "built for rural low-tech environments",
+    "with offline-first support",
+    "using affordable local materials",
+    "for community-led sustainability",
+    "designed for training and awareness camps"
+  ]
+};
+
+const tones = {
+  fun: [
+    "with bright colors and playful UI",
+    "using emojis everywhere",
+    "with fun achievement badges",
+    "super engaging for beginners",
+    "designed like a mini-game"
+  ],
+  serious: [
+    "based on scientific reports",
+    "with expert-level analytics",
+    "using verified environmental data",
+    "recommended by researchers",
+    "with professional documentation"
+  ],
+  premium: [
+    "with a luxury eco-friendly aesthetic",
+    "using gold/emerald brand styling",
+    "for high-income sustainability consumers",
+    "with exclusive membership perks",
+    "designed for premium packaging"
+  ],
+  budget: [
+    "using ultra low-cost materials",
+    "ideal for small entrepreneurs",
+    "easy to implement anywhere",
+    "requires very low investment",
+    "focused on affordability"
+  ],
+  techy: [
+    "powered by AI recommendations",
+    "with machine-learning optimization",
+    "using IoT sensors",
+    "with futuristic UI design",
+    "perfect for a startup prototype"
+  ]
+};
+
+// MAIN GENERATOR FUNCTION
+function generateBusiness() {
+  const cat = document.getElementById("bizCategory").value;
+  const aud = document.getElementById("bizAudience").value;
+  const tone = document.getElementById("bizTone").value;
+
+  const idea = ideas[cat][Math.floor(Math.random() * ideas[cat].length)];
+  const audience = audiences[aud][Math.floor(Math.random() * audiences[aud].length)];
+  const style = tones[tone][Math.floor(Math.random() * tones[tone].length)];
+
+  const output = document.getElementById("businessOutput");
+  output.style.display = "block";
+
+  output.innerHTML = `
+    <h3>🚀 Your Custom Green Startup Idea</h3>
+    <p><strong>Concept:</strong> ${idea}</p>
+    <p><strong>Target:</strong> ${audience}</p>
+    <p><strong>Style:</strong> ${style}</p>
+  `;
+}
+
 
 </script>
 
