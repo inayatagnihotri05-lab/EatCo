@@ -459,10 +459,17 @@
     <input type="text" id="budgetInput" placeholder="Budget (0–10,000+)" class="gen-input">
     <input type="text" id="skillInput" placeholder="Skills (Beginner, Creative, Coding, Social…)" class="gen-input">
 
-    <button class="gen-btn" onclick="generateBusinessIdea()">✨ Generate Idea</button>
-  </div>
+  <div style="display:flex; gap:10px; margin-top:10px;">
+  <button class="gen-btn" onclick="generateBusinessIdea()">✨ Generate Idea</button>
+  <button class="gen-btn" style="background:#4c4c4c;" onclick="generateThreeIdeas()">⚡ 3 Ideas</button>
+</div>
+
 
   <div id="ideaResult" class="idea-card" style="display:none;"></div>
+    <button id="shareBtn" class="gen-btn" style="margin-top:15px; display:none; background:#5865F2;">
+  📤 Share to Instagram
+</button>
+
 </section>
 
 
@@ -610,6 +617,71 @@ function generateBusinessIdea() {
     font-size: 24px !important;
   }
 }
+  // SHARE TO INSTAGRAM (Image Generator)
+document.getElementById("shareBtn").addEventListener("click", function () {
+  html2canvas(document.getElementById("ideaResult")).then(canvas => {
+    const img = canvas.toDataURL("image/png");
+
+    const tempLink = document.createElement("a");
+    tempLink.href = img;
+    tempLink.download = "EatCo_Business_Idea.png";
+    tempLink.click();
+
+    alert("Image saved! Upload it manually to Instagram.");
+  });
+});
+
+// GENERATE 3 IDEAS
+function generateThreeIdeas() {
+  const interest = document.getElementById("interestInput").value.trim();
+  const budget = document.getElementById("budgetInput").value.trim();
+  const skill = document.getElementById("skillInput").value.trim();
+  
+  const result = document.getElementById("ideaResult");
+  const share = document.getElementById("shareBtn");
+
+  if (!interest || !budget || !skill) {
+    result.style.display = "block";
+    result.innerHTML = `<p class="idea-text">⚠️ Fill all fields before generating ideas.</p>`;
+    share.style.display = "none";
+    return;
+  }
+
+  const ideas = [
+    { title: "Eco Subscription Box", desc: "Curate monthly sustainable product boxes." },
+    { title: "Zero-Waste Pop-Up Store", desc: "Eco essentials for local communities." },
+    { title: "AI Carbon Tracker Tool", desc: "Help people monitor carbon footprint daily." },
+    { title: "Digital Eco Recipe Book", desc: "Healthy ebooks using local ingredients." },
+    { title: "Thrift Fashion Resale", desc: "Buy thrift and resell online." },
+    { title: "Home Compost Pickup", desc: "Collect food waste and supply to farmers." },
+    { title: "Green App UI Design", desc: "Create sustainable-themed app designs." }
+  ];
+
+  // Pick 3 Random Ideas
+  const picks = [];
+  while (picks.length < 3) {
+    const random = ideas[Math.floor(Math.random() * ideas.length)];
+    if (!picks.includes(random)) picks.push(random);
+  }
+
+  // DISPLAY
+  result.style.display = "block";
+  result.innerHTML = `
+    <h3 class="idea-title">🚀 Your 3 Eco Business Ideas</h3>
+    <div style="display:grid; gap:12px; margin-top:15px;">
+      ${picks.map(p => `
+        <div class="idea-card" style="animation:fadeIn 0.7s;">
+          <h4 class="idea-title">${p.title}</h4>
+          <p class="idea-text">${p.desc}</p>
+        </div>
+      `).join('')}
+    </div>
+    <p class="idea-text" style="margin-top:10px;"><strong>Based on:</strong> ${interest}, ${budget}, ${skill}</p>
+  `;
+
+  share.style.display = "block";
+}
+
 </style>
 
 
@@ -984,6 +1056,7 @@ window.addEventListener('scroll', fadeInOnScroll);
 </script>
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 
 </body>
