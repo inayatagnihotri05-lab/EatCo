@@ -586,5 +586,96 @@ footer {
     height: 180px;
   }
 }
+/* BUSINESS GENERATOR STYLING */
+.gen-title {
+  font-size: 30px;
+  font-weight: 900;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.gen-sub {
+  text-align: center;
+  color: #555;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.gen-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 600px;
+  margin: auto;
+}
+
+.gen-input {
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 14px;
+  border: 2px solid rgba(0,0,0,0.1);
+  transition: 0.2s;
+}
+
+.gen-input:focus {
+  border-color: #00c67a;
+  box-shadow: 0 0 10px rgba(0, 198, 122, 0.3);
+  outline: none;
+}
+
+.gen-btn {
+  padding: 15px;
+  background: linear-gradient(135deg, #00c67a, #00e6a8);
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.gen-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 198, 122, 0.4);
+}
+
+.idea-card {
+  margin-top: 25px;
+  padding: 22px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.4);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  animation: fadeIn 0.5s ease-out;
+}
+
+.idea-title {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.idea-text {
+  font-size: 16px;
+  color: #444;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* MOBILE FRIENDLY */
+@media (max-width: 600px) {
+  .gen-input, .gen-btn {
+    font-size: 15px;
+  }
+  .idea-card {
+    padding: 18px;
+  }
+}
+
 
 
