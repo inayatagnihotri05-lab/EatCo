@@ -507,56 +507,89 @@
 <!-- =======================
      FOOD IMPACT SCANNER
 ======================== -->
-<section id="food-scanner" style="margin-top: 50px; padding: 20px;">
-  <h2 style="font-size: 28px; font-weight: 700; margin-bottom: 15px;">
+<section id="food-scanner" style="margin-top: 40px; padding: 20px;">
+
+  <h2 style="font-size: 26px; font-weight: 700; margin-bottom: 15px;">
     🧪 Food Impact Scanner
   </h2>
 
-  <p style="color:#555; max-width:600px; margin-bottom: 20px;">
-    Search any food to see its carbon footprint, water usage, land use,
-    health rating, and EcoScore. Science made simple.
+  <p style="color:#555; font-size: 15px; margin-bottom: 20px;">
+    Search or scan foods to see carbon footprint, water usage, land use,
+    health rating, and EcoScore.
   </p>
 
-  <input 
-    id="foodInput" 
-    type="text" 
-    placeholder="Type a food... like Apple, Banana, Beef"
-    style="
-      padding: 12px; 
-      width: 100%; 
-      max-width: 400px; 
-      border-radius: 10px; 
-      border: 1px solid #ccc;
-      font-size: 16px;
-    "
-  />
+  <!-- Search Bar -->
+  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <input 
+      id="foodInput" 
+      type="text" 
+      placeholder="Type a food (Apple, Banana, etc)"
+      style="
+        padding: 14px; 
+        flex:1;
+        border-radius: 12px; 
+        border: 1px solid #ccc;
+        font-size: 16px;
+        min-width:200px;
+      "
+    />
 
+    <button 
+      onclick="scanFood()" 
+      style="
+        padding: 14px 20px;
+        border-radius: 12px;
+        background: black; 
+        color: white; 
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+      "
+    >
+      Search
+    </button>
+  </div>
+
+  <!-- Camera Scanner Button -->
   <button 
-    onclick="scanFood()" 
+    onclick="startCameraScan()"
     style="
-      padding: 12px 20px;
-      margin-left: 10px;
-      border-radius: 10px;
-      background: black; 
-      color: white; 
-      border: none;
-      cursor: pointer;
-    "
-  >
-    Scan
+      margin-top:15px;
+      width:100%;
+      padding:14px;
+      border-radius:12px;
+      border:none;
+      background:#0077ff;
+      color:white;
+      font-size:16px;
+      cursor:pointer;
+    ">
+    📷 Scan With Camera
   </button>
 
+  <!-- Camera View -->
+  <video id="cameraView" playsinline style="
+    width:100%; 
+    margin-top:15px; 
+    border-radius:15px; 
+    display:none;">
+  </video>
+
+  <!-- Results Box -->
   <div 
     id="scannerResult" 
     style="
       margin-top: 25px; 
       padding: 20px; 
-      border-radius: 15px; 
-      background:#f4f4f4;
+      border-radius: 18px; 
+      background: rgba(255,255,255,0.6);
+      backdrop-filter: blur(12px);
       display:none;
     "
   ></div>
+
 </section>
+
 
 
   <!-- Footer -->
@@ -565,61 +598,22 @@
   </footer>
 
 <script>
-/* Share Recipe */
-function shareRecipe(name) {
-  if (navigator.share) {
-    navigator.share({
-      title: name,
-      text: "Check out this eco-friendly recipe from EatCo!",
-      url: window.location.href
-    });
-  } else {
-    alert("Sharing not supported on this device.");
-  }
-}
 
-/* Recipe Toggle */
-document.querySelectorAll(".recipe-card").forEach(card => {
-  card.addEventListener("click", () => {
-    card.classList.toggle("active");
-  });
-});
-</script>
-<script>
+// Small food dataset (want 100 items? I’ll add!)
 const foodData = {
-  "apple": {
-    carbon: 0.2,
-    water: 70,
-    land: 0.3,
-    health: 5,
-    ecoscore: "A"
-  },
-  "banana": {
-    carbon: 0.8,
-    water: 160,
-    land: 0.5,
-    health: 4,
-    ecoscore: "B"
-  },
-  "beef": {
-    carbon: 27,
-    water: 15000,
-    land: 22,
-    health: 2,
-    ecoscore: "D"
-  }
+  "apple": { carbon: 0.2, water: 70, land: 0.3, health: 5, ecoscore: "A" },
+  "banana": { carbon: 0.8, water: 160, land: 0.5, health: 4, ecoscore: "B" },
+  "beef": { carbon: 27, water: 15000, land: 22, health: 2, ecoscore: "D" }
 };
 
+// SIMPLE SEARCH FUNCTION
 function scanFood() {
   let input = document.getElementById("foodInput").value.toLowerCase().trim();
   let box = document.getElementById("scannerResult");
 
   if (!foodData[input]) {
     box.style.display = "block";
-    box.innerHTML = `
-      <h3 style="margin: 0 0 10px;">Food Not Found</h3>
-      <p>Try Apple, Banana, Beef… or tell me to add more foods.</p>
-    `;
+    box.innerHTML = `<h3>Not Found</h3><p>Try Apple, Banana, Beef.</p>`;
     return;
   }
 
@@ -627,15 +621,72 @@ function scanFood() {
 
   box.style.display = "block";
   box.innerHTML = `
-    <h3 style="margin-bottom: 10px; text-transform: capitalize;">${input}</h3>
-    <p><strong>Carbon Footprint:</strong> ${f.carbon} kg CO₂-e</p>
-    <p><strong>Water Usage:</strong> ${f.water} L</p>
+    <h3 style="font-size:20px; margin-bottom:10px; text-transform:capitalize;">
+      ${input}
+    </h3>
+
+    <p><strong>Carbon:</strong> ${f.carbon} kg CO₂-e</p>
+    <p><strong>Water:</strong> ${f.water} L</p>
     <p><strong>Land Use:</strong> ${f.land} m²</p>
     <p><strong>Health Rating:</strong> ⭐ ${"★".repeat(f.health)}</p>
     <p><strong>EcoScore:</strong> ${f.ecoscore}</p>
   `;
 }
+
+// CAMERA BARCODE SCANNING
+async function startCameraScan() {
+  const video = document.getElementById("cameraView");
+  video.style.display = "block";
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+    video.srcObject = stream;
+    video.play();
+
+    const barcodeDetector = new BarcodeDetector({ formats: ["ean_13", "upc_a", "code_128"] });
+
+    const detectLoop = () => {
+      barcodeDetector.detect(video).then(codes => {
+        if (codes.length > 0) {
+          let code = codes[0].rawValue;
+          showBarcodeResult(code);
+          stream.getTracks().forEach(t => t.stop());
+          video.style.display = "none";
+        }
+      }).catch(console.error);
+
+      requestAnimationFrame(detectLoop);
+    };
+
+    detectLoop();
+
+  } catch(err) {
+    alert("Camera access blocked or not supported.");
+  }
+}
+
+// Dummy barcode mapping (add real ones!)
+const barcodeMap = {
+  "890111": "banana",
+  "890222": "apple",
+  "890333": "beef"
+};
+
+function showBarcodeResult(code) {
+  const food = barcodeMap[code];
+  if (!food) {
+    document.getElementById("scannerResult").innerHTML = 
+      `<h3>Unknown Barcode</h3><p>Code: ${code}</p>`;
+    document.getElementById("scannerResult").style.display = "block";
+    return;
+  }
+
+  document.getElementById("foodInput").value = food;
+  scanFood();
+}
+
 </script>
+
 
 </body>
 </html>
