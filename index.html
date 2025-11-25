@@ -375,8 +375,7 @@
 </section>
 
 
-  <!-- 🌱 Eco Recipes Section -->
- <!-- 🌱 Eco Recipes Section -->
+<!-- 🌱 Eco Recipes Section -->
 <section id="recipes" class="recipes-section fade-in">
 
   <!-- 👉 CLICK BUBBLE (Added cleanly) -->
@@ -396,58 +395,67 @@
   <h2>🌿 Quick & Eco-Friendly Recipes</h2>
 
   <!-- Recipe 1 -->
-  <div class="recipe-card">
+  <div class="recipe-card" onclick="toggleRecipe(this)">
     <div class="recipe-title">Vegan Chocolate Mug Cake 🍫</div>
-    <div class="recipe-details">
+    <div class="recipe-details" style="display:none;">
       <p><b>Ingredients:</b> 4 tbsp flour, 2 tbsp cocoa, 1 tbsp sugar, 3 tbsp almond milk, 1 tsp oil</p>
       <p><b>Instructions:</b> Mix all ingredients in a mug. Microwave for 90 seconds.</p>
       <p><b>Eco Tip:</b> Choose fair-trade cocoa to lower carbon cost.</p>
 
       <p class="recipe-tags">🔥 320 Calories • 🌍 0.4 kg CO₂</p>
-      <button class="share-btn" onclick="shareRecipe('Vegan Chocolate Mug Cake 🍫')">📤 Share</button>
+      <button class="share-btn" onclick="shareRecipe('Vegan Chocolate Mug Cake 🍫'); event.stopPropagation();">📤 Share</button>
     </div>
   </div>
 
   <!-- Recipe 2 -->
-  <div class="recipe-card">
+  <div class="recipe-card" onclick="toggleRecipe(this)">
     <div class="recipe-title">Chickpea & Veggie Stir Fry 🥕</div>
-    <div class="recipe-details">
+    <div class="recipe-details" style="display:none;">
       <p><b>Ingredients:</b> 1 cup chickpeas, veggies, olive oil, herbs</p>
       <p><b>Instructions:</b> Cook chickpeas + veggies together on high heat.</p>
       <p><b>Eco Tip:</b> Seasonal veggies = fewer food miles.</p>
 
       <p class="recipe-tags">🔥 280 Calories • 🌍 0.25 kg CO₂</p>
-      <button class="share-btn" onclick="shareRecipe('Chickpea & Veggie Stir Fry 🥕')">📤 Share</button>
+      <button class="share-btn" onclick="shareRecipe('Chickpea & Veggie Stir Fry 🥕'); event.stopPropagation();">📤 Share</button>
     </div>
   </div>
 
   <!-- Recipe 3 -->
-  <div class="recipe-card">
+  <div class="recipe-card" onclick="toggleRecipe(this)">
     <div class="recipe-title">Overnight Oats with Fruits 🍓</div>
-    <div class="recipe-details">
+    <div class="recipe-details" style="display:none;">
       <p><b>Ingredients:</b> Oats, chia seeds, plant milk, fruits</p>
       <p><b>Instructions:</b> Mix & refrigerate overnight. Add fruit next morning.</p>
       <p><b>Eco Tip:</b> Use local fruits to reduce transport carbon.</p>
 
       <p class="recipe-tags">🔥 240 Calories • 🌍 0.18 kg CO₂</p>
-      <button class="share-btn" onclick="shareRecipe('Overnight Oats with Fruits 🍓')">📤 Share</button>
+      <button class="share-btn" onclick="shareRecipe('Overnight Oats with Fruits 🍓'); event.stopPropagation();">📤 Share</button>
     </div>
   </div>
 
   <!-- Recipe 4 -->
-  <div class="recipe-card">
+  <div class="recipe-card" onclick="toggleRecipe(this)">
     <div class="recipe-title">Banana & Almond Energy Bites 🍌</div>
-    <div class="recipe-details">
+    <div class="recipe-details" style="display:none;">
       <p><b>Ingredients:</b> Banana, oats, almond butter</p>
       <p><b>Instructions:</b> Mash → roll → refrigerate.</p>
       <p><b>Eco Tip:</b> Bananas = low-waste, low-carbon energy boost.</p>
 
       <p class="recipe-tags">🔥 150 Calories • 🌍 0.12 kg CO₂</p>
-      <button class="share-btn" onclick="shareRecipe('Banana & Almond Energy Bites 🍌')">📤 Share</button>
+      <button class="share-btn" onclick="shareRecipe('Banana & Almond Energy Bites 🍌'); event.stopPropagation();">📤 Share</button>
     </div>
   </div>
 
 </section>
+
+<!-- Add this JS (NO CHANGES ELSEWHERE) -->
+<script>
+function toggleRecipe(card) {
+  const details = card.querySelector('.recipe-details');
+  details.style.display = details.style.display === 'none' ? 'block' : 'none';
+}
+</script>
+
 
 <section id="business-generator">
   <h2>💡 Green Business Idea Generator</h2>
