@@ -449,6 +449,159 @@
 
 </section>
 
+  <!-- ============================= -->
+<!-- ECO BUSINESS GENERATOR SECTION -->
+<!-- ============================= -->
+
+<section id="business-generator" style="padding: 30px; background: #f7f7f7; margin-top: 40px;">
+  <h2 style="text-align: center; font-size: 28px; margin-bottom: 20px;">🌱 Eco Business Generator</h2>
+  <p style="text-align: center; max-width: 700px; margin: 0 auto 25px;">
+    Create your own eco–friendly business idea based on your budget, skills, time, and impact goals!
+  </p>
+
+  <div class="generator-box" style="max-width: 700px; margin: auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: 0 0 10px rgba(0,0,0,0.08);">
+
+    <label>💸 Budget</label>
+    <select id="gen-budget" class="gen-input">
+      <option>₹0</option>
+      <option>₹0–500</option>
+      <option>₹500–2000</option>
+      <option>₹2000–5000</option>
+    </select>
+
+    <label>🧠 Skill</label>
+    <select id="gen-skill" class="gen-input">
+      <option>Creativity</option>
+      <option>Tech</option>
+      <option>Farming / Nature</option>
+      <option>Business</option>
+      <option>Social / Community</option>
+    </select>
+
+    <label>📍 Location</label>
+    <select id="gen-location" class="gen-input">
+      <option>Home</option>
+      <option>School</option>
+      <option>Online</option>
+      <option>Neighborhood</option>
+    </select>
+
+    <label>💚 Eco Goal</label>
+    <select id="gen-impact" class="gen-input">
+      <option>Reduce Waste</option>
+      <option>Reduce Carbon Footprint</option>
+      <option>Help Farmers</option>
+      <option>Clean Environment</option>
+      <option>Healthy Eating</option>
+    </select>
+
+    <label>⏱ Time Available</label>
+    <select id="gen-time" class="gen-input">
+      <option>&lt; 1 hour/day</option>
+      <option>1–2 hours/day</option>
+      <option>Weekends only</option>
+    </select>
+
+    <button onclick="generateBusiness()" style="margin-top: 20px; width: 100%; padding: 12px; border-radius: 8px; border: none; background: #4CAF50; color: #fff; font-size: 18px; cursor: pointer;">
+      Generate ⚡
+    </button>
+
+    <div id="gen-result" style="margin-top: 25px; padding: 20px; background: #eef6ee; border-radius: 10px; display: none;"></div>
+
+  </div>
+</section>
+
+<!-- JS LOGIC -->
+<script>
+function generateBusiness() {
+  const budget = document.getElementById("gen-budget").value;
+  const skill = document.getElementById("gen-skill").value;
+  const location = document.getElementById("gen-location").value;
+  const impact = document.getElementById("gen-impact").value;
+  const time = document.getElementById("gen-time").value;
+
+  const ideas = [
+    {
+      name: "Paper2Purpose Club",
+      fits: (skill === "Creativity" && impact === "Reduce Waste"),
+      desc: "Collect waste paper and turn it into handmade notebooks.",
+      earn: "Sell notebooks for ₹40–₹60.",
+      need: "Glue, thread, paper cutter.",
+      slogan: "Trash → Talent → Treasure."
+    },
+    {
+      name: "Microgreen Starter Hub",
+      fits: (skill === "Farming / Nature" && impact === "Healthy Eating"),
+      desc: "Grow microgreens at home and sell to neighbours.",
+      earn: "₹80–₹120 per box.",
+      need: "Seeds, trays, light.",
+      slogan: "Fresh starts on your windowsill."
+    },
+    {
+      name: "Farmer Story Reels",
+      fits: (skill === "Tech" && impact === "Help Farmers"),
+      desc: "Create Instagram reels that share real farmer struggles.",
+      earn: "Brand collabs + sponsorships.",
+      need: "Phone + editing app.",
+      slogan: "Their voices reach the world."
+    },
+    {
+      name: "Neighborhood Clean Squad",
+      fits: (skill === "Social / Community" && impact === "Clean Environment"),
+      desc: "Weekend cleanups + awareness posters.",
+      earn: "Donations + school support.",
+      need: "Posters + gloves.",
+      slogan: "Clean streets, clean future."
+    },
+    {
+      name: "Carbon Saver Kits",
+      fits: (skill === "Business" && impact === "Reduce Carbon Footprint"),
+      desc: "Sell starter kits with bamboo brushes, steel straws, and tips.",
+      earn: "₹120–₹200 profit per kit.",
+      need: "Eco items from wholesale.",
+      slogan: "Small swaps, big impact."
+    }
+  ];
+
+  const match = ideas.find(i => i.fits) || ideas[Math.floor(Math.random()*ideas.length)];
+
+  document.getElementById("gen-result").style.display = "block";
+  document.getElementById("gen-result").innerHTML = `
+    <h3>${match.name}</h3>
+    <p><strong>💡 What it does:</strong> ${match.desc}</p>
+    <p><strong>💰 How it earns:</strong> ${match.earn}</p>
+    <p><strong>🛠 Needs:</strong> ${match.need}</p>
+    <p><strong>✨ Slogan:</strong> ${match.slogan}</p>
+  `;
+}
+</script>
+
+<style>
+.gen-input {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Mobile-friendly */
+@media (max-width: 600px) {
+  #business-generator {
+    padding: 20px;
+  }
+
+  .generator-box {
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 24px !important;
+  }
+}
+</style>
+
+
 <!-- Fancy Sustainability News Section -->
 <div id="eco-news" style="background-color:#d0f0c0; padding:10px; overflow:hidden; white-space:nowrap; border-radius:10px; margin:20px 0; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
   <div id="news-items" style="display:inline-block; padding-left:100%; animation:scrollNews 15s linear infinite;">
