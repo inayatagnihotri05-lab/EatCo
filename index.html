@@ -486,125 +486,8 @@
 
 
 
-<!-- JS LOGIC -->
 <script>
-function generateBusiness() {
-  const budget = document.getElementById("gen-budget").value;
-  const skill = document.getElementById("gen-skill").value;
-  const location = document.getElementById("gen-location").value;
-  const impact = document.getElementById("gen-impact").value;
-  const time = document.getElementById("gen-time").value;
-
-  const ideas = [
-    {
-      name: "Paper2Purpose Club",
-      fits: (skill === "Creativity" && impact === "Reduce Waste"),
-      desc: "Collect waste paper and turn it into handmade notebooks.",
-      earn: "Sell notebooks for ₹40–₹60.",
-      need: "Glue, thread, paper cutter.",
-      slogan: "Trash → Talent → Treasure."
-    },
-    {
-      name: "Microgreen Starter Hub",
-      fits: (skill === "Farming / Nature" && impact === "Healthy Eating"),
-      desc: "Grow microgreens at home and sell to neighbours.",
-      earn: "₹80–₹120 per box.",
-      need: "Seeds, trays, light.",
-      slogan: "Fresh starts on your windowsill."
-    },
-    {
-      name: "Farmer Story Reels",
-      fits: (skill === "Tech" && impact === "Help Farmers"),
-      desc: "Create Instagram reels that share real farmer struggles.",
-      earn: "Brand collabs + sponsorships.",
-      need: "Phone + editing app.",
-      slogan: "Their voices reach the world."
-    },
-    {
-      name: "Neighborhood Clean Squad",
-      fits: (skill === "Social / Community" && impact === "Clean Environment"),
-      desc: "Weekend cleanups + awareness posters.",
-      earn: "Donations + school support.",
-      need: "Posters + gloves.",
-      slogan: "Clean streets, clean future."
-    },
-    {
-      name: "Carbon Saver Kits",
-      fits: (skill === "Business" && impact === "Reduce Carbon Footprint"),
-      desc: "Sell starter kits with bamboo brushes, steel straws, and tips.",
-      earn: "₹120–₹200 profit per kit.",
-      need: "Eco items from wholesale.",
-      slogan: "Small swaps, big impact."
-    }
-  ];
-
-  const match = ideas.find(i => i.fits) || ideas[Math.floor(Math.random()*ideas.length)];
-
-  document.getElementById("gen-result").style.display = "block";
-  document.getElementById("gen-result").innerHTML = `
-    <h3>${match.name}</h3>
-    <p><strong>💡 What it does:</strong> ${match.desc}</p>
-    <p><strong>💰 How it earns:</strong> ${match.earn}</p>
-    <p><strong>🛠 Needs:</strong> ${match.need}</p>
-    <p><strong>✨ Slogan:</strong> ${match.slogan}</p>
-  `;
-}
-  // BUSINESS IDEA GENERATOR (Upgraded)
-function generateBusinessIdea() {
-  const interest = document.getElementById("interestInput").value.trim();
-  const budget = document.getElementById("budgetInput").value.trim();
-  const skill = document.getElementById("skillInput").value.trim();
-  const result = document.getElementById("ideaResult");
-
-  if (!interest || !budget || !skill) {
-    result.style.display = "block";
-    result.innerHTML = `<p class="idea-text">⚠️ Please fill all fields to generate your idea.</p>`;
-    return;
-  }
-
-  const ideas = [
-    {
-      title: "Eco Subscription Box",
-      desc: "Curate monthly boxes with sustainable products, handmade goods, or recycled crafts. Works great with low budgets & creativity."
-    },
-    {
-      title: "Zero-Waste Pop-Up Store",
-      desc: "Sell eco-friendly essentials in local housing societies. Perfect for social skills + low investment."
-    },
-    {
-      title: "AI-Powered Carbon Tracker",
-      desc: "Create a simple app or Instagram tool that helps people track daily carbon impact."
-    },
-    {
-      title: "Digital Recipe E-Book",
-      desc: "Sell eco-friendly, healthy recipes using local foods. Works with cooking interest & no cost."
-    },
-    {
-      title: "Sustainable Fashion Resale",
-      desc: "Buy thrift clothing and resell using Instagram or WhatsApp Shop."
-    },
-    {
-      title: "Local Compost Pickup Service",
-      desc: "Pick up food waste from homes and supply to farmers/gardeners. High impact, low cost."
-    }
-  ];
-
-  const random = ideas[Math.floor(Math.random() * ideas.length)];
-
-  result.style.display = "block";
-  result.innerHTML = `
-    <h3 class="idea-title">🚀 ${random.title}</h3>
-    <p class="idea-text">${random.desc}</p>
-
-    <p class="idea-text" style="margin-top:10px;"><strong>Based on your inputs:</strong></p>
-    <ul class="idea-text">
-      <li>Interest: ${interest}</li>
-      <li>Budget: ${budget}</li>
-      <li>Skill: ${skill}</li>
-    </ul>
-  `;
-}
-  // BUSINESS GENERATOR DATA
+// BUSINESS GENERATOR DATA
 const ideas = {
   food: [
     "AI-powered food waste tracking app",
@@ -719,7 +602,7 @@ const tones = {
   ]
 };
 
-// MAIN GENERATOR FUNCTION
+// FINAL WORKING GENERATOR
 function generateBusiness() {
   const cat = document.getElementById("bizCategory").value;
   const aud = document.getElementById("bizAudience").value;
@@ -739,9 +622,8 @@ function generateBusiness() {
     <p><strong>Style:</strong> ${style}</p>
   `;
 }
-
-
 </script>
+
 
 <style>
 .gen-input {
