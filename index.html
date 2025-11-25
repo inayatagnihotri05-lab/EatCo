@@ -648,6 +648,70 @@ function showBarcodeResult(code){
   scanFood();
 }
 </script>
+  <!-- LOAD QUAGGAJS FOR MOBILE-FRIENDLY SCANNING -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+<script>
+async function startCameraScan() {
+  const video = document.getElementById("cameraView");
+  video.style.display = "block";
+
+  // Stop any existing streams
+  if (video.srcObject) {
+    video.srcObject.getTracks().forEach(t => t.stop());
+  }
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+    video.srcObject = stream;
+    video.play();
+
+    // Use BarcodeDetector if supported
+    if ("BarcodeDetector" in window) {
+      const barcodeDetector = new BarcodeDetector({ formats: ["ean_13", "upc_a", "code_128"] });
+
+      const loop = () => {
+        barcodeDetector.detect(video).then(codes => {
+          if (codes.length > 0) {
+            showBarcodeResult(codes[0].rawValue);
+            stream.getTracks().forEach(t => t.stop());
+            video.style.display = "none";
+          } else {
+            requestAnimationFrame(loop);
+          }
+        }).catch(() => requestAnimationFrame(loop));
+      };
+      loop();
+    } else {
+      // Fallback to QuaggaJS
+      Quagga.init({
+        inputStream: {
+          name: "Live",
+          type: "LiveStream",
+          target: video,
+          constraints: { facingMode: "environment" }
+        },
+        decoder: { readers: ["ean_reader","upc_reader","code_128_reader"] }
+      }, function(err) {
+        if (err) {
+          alert("Camera blocked or unsupported.");
+          return;
+        }
+        Quagga.start();
+      });
+
+      Quagga.onDetected(data => {
+        showBarcodeResult(data.codeResult.code);
+        Quagga.stop();
+        stream.getTracks().forEach(t => t.stop());
+        video.style.display = "none";
+      });
+    }
+  } catch (err) {
+    alert("Camera blocked or unsupported.");
+  }
+}
+</script>
+
 
 
 
