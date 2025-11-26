@@ -676,6 +676,44 @@ footer {
     padding: 18px;
   }
 }
+.recipe-card {
+  background: #ffffff;
+  color: #000;
+  border-radius: 14px;
+  padding: 15px;
+  margin-top: 15px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.recipe-title {
+  font-weight: 700;
+  font-size: 18px;
+  color: #000;
+}
+
+.recipe-details {
+  margin-top: 12px;
+  color: #000 !important;
+  display: none;
+}
+
+.recipe-tags {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.share-btn {
+  margin-top: 10px;
+  padding: 8px 14px;
+  background: #2ecc71;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+
 
 
 
