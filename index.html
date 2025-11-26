@@ -855,93 +855,52 @@ function generateThreeIdeas() {
   </div>
 </section>
 
-<!-- Keep your existing HTML exactly as is -->
 
+<!-- 🌱 Food Impact Scanner -->
+<section id="food-scanner" style="margin-top:40px;padding:20px;color:black;">
+
+  <h2 style="font-size:28px;font-weight:800;margin-bottom:10px;">🧪 Food Impact Scanner</h2>
+  <p style="color:#444;font-size:16px;margin-bottom:20px;">Scan or search foods to see carbon, water, land impact, EcoScore, health stars & greener swaps.</p>
+
+  <!-- Search Row -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+    <input id="foodInput" type="text" placeholder="Search food (Apple, Rice, etc)" style="padding:14px;flex:1;border-radius:12px;border:1px solid #ccc;font-size:16px;min-width:220px;">
+    <button onclick="scanFood()" style="padding:14px 20px;border-radius:12px;background:black;color:white;border:none;font-size:16px;cursor:pointer;">Search</button>
+  </div>
+
+  <!-- Camera Button -->
+  <button onclick="startCameraScan()" style="margin-top:15px;width:100%;padding:14px;border-radius:12px;border:none;background:#007bff;color:white;font-size:16px;cursor:pointer;">📷 Scan With Camera</button>
+
+  <!-- Camera View -->
+  <video id="cameraView" playsinline style="width:100%;margin-top:15px;border-radius:15px;display:none;"></video>
+
+  <!-- Results -->
+  <div id="scannerResult" style="margin-top:25px;padding:20px;border-radius:18px;background:rgba(255,255,255,0.7);backdrop-filter:blur(12px);display:none;"></div>
+</section>
+
+<!-- Scanner JS -->
 <script>
-<!-- --- REAL FOOD IMPACT DATABASE --- -->
-<script>
+// --- REAL FOOD IMPACT DATABASE ---
 const foodDB = {
-  "apple": {
-    carbon: "0.3 kg CO₂",
-    water: "70 L",
-    land: "0.15 m²",
-    eco: "A",
-    health: "⭐⭐⭐⭐⭐",
-    swap: "Local apples have even lower emissions."
-  },
-  "rice": {
-    carbon: "2.7 kg CO₂",
-    water: "2,500 L",
-    land: "1.6 m²",
-    eco: "C",
-    health: "⭐⭐⭐☆☆",
-    swap: "Try millets or quinoa for lower CO₂."
-  },
-  "milk": {
-    carbon: "1.3 kg CO₂",
-    water: "620 L",
-    land: "1.0 m²",
-    eco: "C",
-    health: "⭐⭐⭐⭐☆",
-    swap: "Oat milk has 80% lower emissions."
-  },
-  "banana": {
-    carbon: "0.8 kg CO₂",
-    water: "160 L",
-    land: "0.25 m²",
-    eco: "A",
-    health: "⭐⭐⭐⭐⭐",
-    swap: "Perfect low-carbon snack already!"
-  },
-  "chicken": {
-    carbon: "6.0 kg CO₂",
-    water: "4,300 L",
-    land: "7.0 m²",
-    eco: "D",
-    health: "⭐⭐⭐⭐☆",
-    swap: "Try lentils once a week."
-  },
-  "beef": {
-    carbon: "27 kg CO₂",
-    water: "15,000 L",
-    land: "27 m²",
-    eco: "F",
-    health: "⭐⭐☆☆☆",
-    swap: "Try chicken, tofu, or beans for 90% lower impact."
-  },
-  "tomato": {
-    carbon: "0.4 kg CO₂",
-    water: "80 L",
-    land: "0.2 m²",
-    eco: "A",
-    health: "⭐⭐⭐⭐⭐",
-    swap: "Local tomatoes are best."
-  }
+  "apple": { carbon:"0.3 kg CO₂", water:"70 L", land:"0.15 m²", eco:"A", health:"⭐⭐⭐⭐⭐", swap:"Local apples have even lower emissions." },
+  "rice": { carbon:"2.7 kg CO₂", water:"2,500 L", land:"1.6 m²", eco:"C", health:"⭐⭐⭐☆☆", swap:"Try millets or quinoa for lower CO₂." },
+  "milk": { carbon:"1.3 kg CO₂", water:"620 L", land:"1.0 m²", eco:"C", health:"⭐⭐⭐⭐☆", swap:"Oat milk has 80% lower emissions." },
+  "banana": { carbon:"0.8 kg CO₂", water:"160 L", land:"0.25 m²", eco:"A", health:"⭐⭐⭐⭐⭐", swap:"Perfect low-carbon snack already!" },
+  "chicken": { carbon:"6.0 kg CO₂", water:"4,300 L", land:"7.0 m²", eco:"D", health:"⭐⭐⭐⭐☆", swap:"Try lentils once a week." },
+  "beef": { carbon:"27 kg CO₂", water:"15,000 L", land:"27 m²", eco:"F", health:"⭐⭐☆☆☆", swap:"Try chicken, tofu, or beans for 90% lower impact." },
+  "tomato": { carbon:"0.4 kg CO₂", water:"80 L", land:"0.2 m²", eco:"A", health:"⭐⭐⭐⭐⭐", swap:"Local tomatoes are best." }
 };
 
-
-// --- SEARCH SCANNER FUNCTION ---
-function scanFood() {
+function scanFood(){
   const input = document.getElementById("foodInput").value.trim().toLowerCase();
-  const resultBox = document.getElementById("scannerResult");
-
-  if (input === "") {
-    resultBox.style.display = "block";
-    resultBox.innerHTML = "<p>Please enter a food name.</p>";
-    return;
-  }
-
-  if (!foodDB[input]) {
-    resultBox.style.display = "block";
-    resultBox.innerHTML = `<p>No data found for <b>${input}</b>. Try Apple, Rice, Milk, Banana, Chicken, Beef...</p>`;
-    return;
-  }
+  const box = document.getElementById("scannerResult");
+  if(!input){ box.style.display="block"; box.innerHTML="<p>Please enter a food name.</p>"; return; }
+  if(!foodDB[input]){ box.style.display="block"; box.innerHTML=`<p>No data found for <b>${input}</b>. Try Apple, Rice, Milk, Banana, Chicken, Beef...</p>`; return; }
 
   const f = foodDB[input];
-
-  resultBox.style.display = "block";
-  resultBox.innerHTML = `
-    <h3>Impact for: <b>${input.charAt(0).toUpperCase() + input.slice(1)}</b></h3>
+  box.style.display="block";
+  box.innerHTML = `
+    <h3>Impact for: <b>${input.charAt(0).toUpperCase()+input.slice(1)}</b></h3>
     <p><b>Carbon Impact:</b> ${f.carbon}</p>
     <p><b>Water Use:</b> ${f.water}</p>
     <p><b>Land Use:</b> ${f.land}</p>
@@ -951,20 +910,17 @@ function scanFood() {
   `;
 }
 
-
-// --- CAMERA FUNCTION ---
-function startCameraScan() {
+// Camera scan function
+async function startCameraScan(){
   const video = document.getElementById("cameraView");
   video.style.display = "block";
-
-  navigator.mediaDevices.getUserMedia({ video: true })
-    .then(stream => {
-      video.srcObject = stream;
-      video.play();
-    })
-    .catch(() => {
-      alert("Camera access blocked or not available.");
-    });
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:"environment" } });
+    video.srcObject = stream;
+    video.play();
+  } catch {
+    alert("Camera blocked or unsupported.");
+  }
 }
 </script>
 
