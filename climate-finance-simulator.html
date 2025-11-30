@@ -1,22 +1,6 @@
 <!--
-The Climate Finance Simulator — FULL REBUILD (Dystopian Neon Green)
+Climate Finance Simulator — FULL FIXED
 Save as: climate-finance-simulator.html
-
-Features included in this full rebuild:
-- Neon animated background with green cyber glow
-- Mobile-first responsive layout and swipe/tap interactions
-- Expanded investment universe (solar, EV, organic, water, plant-based, carbon credits, algae farms, vertical farms, lab meat, green bonds)
-- Story Mode (3 missions, narrative choices, progression, XP and ranks)
-- Disaster engine (drought, heatwave, crop disease, market crash, policy ban, tech breakthrough)
-- Glossary / Real-life finance term explanations (ROI, diversification, ETFs, green bonds, carbon markets, risk tolerance)
-- Animated score bars, animated neon counters
-- Dark-mode toggle preserved (will follow neon theme)
-- Save / view past portfolios via localStorage (history viewer)
-- Share image generator for social
-- Analytics-ready (simple console hooks to integrate external analytics)
-- All code uses plain HTML/CSS/JS — no external libraries
-
-Customize values in the INVESTMENTS, EVENTS, MISSIONS arrays at the top of the script.
 -->
 
 <!doctype html>
@@ -26,7 +10,6 @@ Customize values in the INVESTMENTS, EVENTS, MISSIONS arrays at the top of the s
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>The Climate Finance Simulator | EatCo</title>
   <style>
-    /* ------------------ THEME & NEON BG ------------------ */
     :root{
       --bg:#050608; --panel:#0b0d0f; --neon:#00ff88; --neon-2:#19e6a3; --muted:#9fb3ad; --glass:rgba(255,255,255,0.03);
       --danger:#ff6b6b; --glass-2:rgba(0,255,136,0.04);
@@ -35,14 +18,27 @@ Customize values in the INVESTMENTS, EVENTS, MISSIONS arrays at the top of the s
     *{box-sizing:border-box}
     html,body{height:100%; margin:0; background:#040506; color:#d8efe6;}
 
-    /* animated neon grid background */
+    /* neon fog & grid background */
     body::before{
-      content:''; position:fixed; inset:0; background:radial-gradient(circle at 10% 20%, rgba(0,255,136,0.03), transparent 10%),
-        radial-gradient(circle at 90% 80%, rgba(0,255,120,0.02), transparent 10%), linear-gradient(180deg,#00120b, #021212 40%);
+      content:''; position:fixed; inset:0;
+      background:radial-gradient(circle at 10% 20%, rgba(0,255,136,0.03), transparent 10%),
+                 radial-gradient(circle at 90% 80%, rgba(0,255,120,0.02), transparent 10%),
+                 linear-gradient(180deg,#00120b, #021212 40%);
       z-index:-4; opacity:1;
     }
-    .neon-grid{position:fixed; inset:0; background-image:linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,136,0.02) 1px, transparent 1px); background-size:120px 120px; z-index:-3; animation:glow 6s infinite alternate;}
+    .neon-grid{position:fixed; inset:0;
+      background-image:
+        linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,136,0.02) 1px, transparent 1px);
+      background-size:120px 120px;
+      z-index:-3;
+      animation:glow 6s infinite alternate;
+    }
     @keyframes glow{from{opacity:0.25; filter:brightness(0.9)} to{opacity:0.6; filter:brightness(1.05) saturate(1.2)}}
+
+    /* fog overlay */
+    .fog{position:fixed; inset:0; background:url('https://i.ibb.co/6N4GnF1/fog.png') repeat; opacity:0.06; z-index:-2; pointer-events:none; animation:drift 80s linear infinite;}
+    @keyframes drift{from{background-position:0 0;} to{background-position:1000px 0;}}
 
     /* container */
     .container{max-width:1200px; margin:36px auto; padding:18px; display:grid; grid-template-columns:360px 1fr; gap:20px}
@@ -91,49 +87,19 @@ Customize values in the INVESTMENTS, EVENTS, MISSIONS arrays at the top of the s
     .popup p{color:var(--muted); margin-top:8px; white-space:pre-wrap}
     .close-row{display:flex; justify-content:flex-end; margin-top:12px}
 
-    /* mobile */
-    @media(max-width:880px){
-      .container{grid-template-columns:1fr; padding:12px}
-      .brand .subtitle{display:none}
-      .stats{grid-template-columns:repeat(3,1fr)}
-      .spark{height:120px}
-      header{flex-direction:column; align-items:flex-start; gap:6px}
-    }
+    @media(max-width:880px){ .container{grid-template-columns:1fr; padding:12px} .brand .subtitle{display:none} .stats{grid-template-columns:repeat(3,1fr)} .spark{height:120px} header{flex-direction:column; align-items:flex-start; gap:6px} }
+    @media(max-width:480px){ .stats{grid-template-columns:repeat(2,1fr)} .choice-actions{flex-direction:column; width:140px} .choice-left h3{font-size:14px} }
 
-    @media(max-width:480px){
-      .stats{grid-template-columns:repeat(2,1fr)}
-      .choice-actions{flex-direction:column; width:140px}
-      .choice-left h3{font-size:14px}
-    }
-
-    /* dark-mode class tweaks */
     body.dark-mode{background:#030405}
 
-    /* swipe animation hint */
     .swipe-left{transform:translateX(-120%); opacity:0; transition:transform .5s ease, opacity .5s}
     .swipe-right{transform:translateX(120%); opacity:0; transition:transform .5s ease, opacity .5s}
-
-    /* --- FOG BACKGROUND --- */
-  .fog {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    background: url('https://i.imgur.com/8Iltu8m.png');
-    opacity: 0.12;
-    animation: fogMove 40s linear infinite;
-    z-index: -1;
-  }
-  @keyframes fogMove {
-    0% { transform: translateX(-10%) translateY(0); }
-    50% { transform: translateX(10%) translateY(3%); }
-    100% { transform: translateX(-10%) translateY(0); }
-  }
-</style>
+  </style>
 </head>
 <body>
-<div class="fog"></div>>
   <div class="neon-grid"></div>
+  <div class="fog"></div>
+
   <div class="container">
     <header>
       <div class="brand">
@@ -173,9 +139,7 @@ Customize values in the INVESTMENTS, EVENTS, MISSIONS arrays at the top of the s
         <button class="btn" id="saveBtn">Save Portfolio</button>
       </div>
 
-      <div class="invest-grid" id="investGrid" style="margin-top:12px">
-        <!-- choices injected here -->
-      </div>
+      <div class="invest-grid" id="investGrid" style="margin-top:12px"></div>
 
       <div class="log" id="logArea"><div style="opacity:0.7">Welcome agent — allocate wisely.</div></div>
     </aside>
@@ -212,10 +176,9 @@ Customize values in the INVESTMENTS, EVENTS, MISSIONS arrays at the top of the s
   </div>
 
   <script>
-    // ---------- CONFIG ----------
+    /* ------------------ FULL JS GAME LOGIC ------------------ */
     const STARTING_CASH = 1000; const TOTAL_ROUNDS = 3;
 
-    // Investments extended
     const INVESTMENTS = [
       {id:'solar', name:'Solar Energy', tag:'🌞', baseCost:300, profit:{mean:180,var:40}, emissions:-28, food:+6, sustain:+18, risk:'Low', teach:'Solar: long-term infrastructure investment — steady ROI.'},
       {id:'ev', name:'Electric Vehicles', tag:'🚗', baseCost:250, profit:{mean:120,var:70}, emissions:-25, food:0, sustain:+14, risk:'Medium', teach:'EVs: tech adoption; short-term swings, long-term growth.'},
@@ -229,7 +192,6 @@ Customize values in the INVESTMENTS, EVENTS, MISSIONS arrays at the top of the s
       {id:'greenbond', name:'Green Bonds', tag:'📈', baseCost:200, profit:{mean:60,var:12}, emissions:-5, food:0, sustain:+9, risk:'Low', teach:'Green bonds: debt instruments funding sustainable projects.'}
     ];
 
-    // EVENTS / disasters
     const EVENTS = [
       {id:'drought', title:'Drought', text:'Severe drought hits crops — food security falls.', profitAdj:-60, emissionAdj:+6, foodAdj:-22, sustainAdj:-12},
       {id:'heat', title:'Heatwave', text:'A heatwave reduces yields and causes blackouts; tech supply chains hurt.', profitAdj:-40, emissionAdj:+8, foodAdj:-12, sustainAdj:-8},
@@ -239,142 +201,105 @@ Customize values in the INVESTMENTS, EVENTS, MISSIONS arrays at the top of the s
       {id:'tech', title:'Tech Breakthrough', text:'A breakthrough lowers production costs in a sector.', profitAdj:+90, emissionAdj:-6, foodAdj:+4, sustainAdj:+8, fav:['labmeat','ev']}
     ];
 
-    // Story missions
     const MISSIONS = [
-      {id:'m1', title:'Ration & Rebuild', text:'A heatwave hit rural belts. Help stabilise food markets. Goal: raise Food Security by 20.', reward:{cash:180, xp:30}},
-      {id:'m2', title:'Grid Recovery', text:'Power shortfalls cripple cities. Support energy projects. Goal: reduce Emissions by 12.', reward:{cash:220, xp:40}},
-      {id:'m3', title:'Market Stabiliser', text:'Global crash threatens farmers. Rebalance portfolios. Goal: Profit score +35.', reward:{cash:300, xp:60}}
+      {id:'m1', title:'Ration & Rebuild', text:'A heatwave hit rural belts. Help stabilise food markets. Goal: raise Food Security to 70.', check:()=>foodScore>=70},
+      {id:'m2', title:'Green Growth', text:'Invest in sustainable tech to reduce emissions. Goal: Emissions < 60.', check:()=>emissionScore<60},
+      {id:'m3', title:'Profit Boost', text:'Make max profit without hurting sustainability. Goal: Profit >= 400', check:()=>profitScore>=400}
     ];
 
-    // ---------- STATE ----------
-    let state = { cash: STARTING_CASH, round:1, profitScore:0, emissionScore:100, foodScore:50, sustainScore:0, history:[], sparkline:[], xp:0, rank:'Novice' };
+    let cash=STARTING_CASH, profitScore=0, emissionScore=100, foodScore=50;
+    let round=1, log=[];
+    let storyMission=null;
 
-    // ---------- UTILS ----------
-    const $ = id => document.getElementById(id);
-    function randNormal(mean, variance){ const u1=Math.random(), u2=Math.random(); const z0=Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2); return Math.max(Math.round(mean + z0*Math.sqrt(variance)), -9999);} 
-    function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
-    function fmt(v){return '₹'+Math.round(v);} 
+    const cashEl=document.getElementById('cash');
+    const profitEl=document.getElementById('profitScore');
+    const emissionEl=document.getElementById('emissionScore');
+    const foodEl=document.getElementById('foodScore');
+    const investGrid=document.getElementById('investGrid');
+    const logArea=document.getElementById('logArea');
+    const profitBar=document.getElementById('profitBar');
+    const emissionBar=document.getElementById('emissionBar');
+    const foodBar=document.getElementById('foodBar');
+    const badgeTitle=document.getElementById('badgeTitle');
+    const badgeDesc=document.getElementById('badgeDesc');
+    const roundTop=document.getElementById('roundTop');
+    const spark=document.getElementById('spark');
+    const missionText=document.getElementById('missionText');
 
-    // ---------- RENDER OPTIONS ----------
-    function renderOptions(){ const container = $('investGrid'); container.innerHTML=''; INVESTMENTS.forEach(inv=>{
-      const card = document.createElement('div'); card.className='choice-card choice-card-'+inv.id; card.setAttribute('data-id',inv.id);
-      card.innerHTML = `<div class="choice-left"><div class="tag">${inv.tag}</div><div><h3>${inv.name}</h3><p>${inv.baseCost ? 'Suggested: ₹'+inv.baseCost+' • Risk: '+inv.risk : ''}</p></div></div><div class="choice-actions"><button class="btn" data-id="${inv.id}">Invest</button><button class="btn" data-info="${inv.id}">Info</button></div>`;
-      container.appendChild(card);
-    });
+    function updateUI(){
+      cashEl.textContent='₹'+cash;
+      profitEl.textContent=profitScore;
+      emissionEl.textContent=emissionScore;
+      foodEl.textContent=foodScore;
+      roundTop.textContent=round+'/'+TOTAL_ROUNDS;
+      profitBar.style.width=Math.min(100,(profitScore/500*100))+'%';
+      emissionBar.style.width=Math.min(100,(100-emissionScore))+'%';
+      foodBar.style.width=Math.min(100,(foodScore))+'%';
 
-      // listeners
-      document.querySelectorAll('.choice-card .btn[data-id]').forEach(b=>b.addEventListener('click', e=>invest(e.currentTarget.getAttribute('data-id'))));
-      document.querySelectorAll('.choice-card .btn[data-info]').forEach(b=>b.addEventListener('click', e=>{ const id=e.currentTarget.getAttribute('data-info'); const inv=INVESTMENTS.find(x=>x.id===id); showPopup(inv.name, inv.teach); }));
+      // badges
+      if(profitScore>300 && emissionScore<60 && foodScore>70){badgeTitle.textContent='Eco Master'; badgeDesc.textContent='High returns, low emissions, high food security.'}
+      else if(profitScore>200){badgeTitle.textContent='Profit Hunter'; badgeDesc.textContent='Strong returns but moderate sustainability.'}
+      else badgeTitle.textContent='Badge: —';
+    }
 
-      // mobile swipe gestures
-      document.querySelectorAll('.choice-card').forEach(card=>{
-        let sX=0,eX=0; card.addEventListener('touchstart',ev=>sX=ev.changedTouches[0].screenX);
-        card.addEventListener('touchend',ev=>{ eX=ev.changedTouches[0].screenX; if(eX < sX-70){ card.classList.add('swipe-left'); setTimeout(()=>card.remove(),500); invest(card.getAttribute('data-id')); } if(eX > sX+70){ card.classList.add('swipe-right'); setTimeout(()=>card.remove(),500); showPopup('Quick Invest','Invested via swipe in '+card.querySelector('h3').innerText); invest(card.getAttribute('data-id')); }});
+    function logMsg(txt){log.unshift(txt); logArea.innerHTML=''; log.slice(0,10).forEach(l=>{const div=document.createElement('div');div.textContent=l;logArea.appendChild(div)})}
+
+    function makeInvestmentCards(){
+      investGrid.innerHTML='';
+      INVESTMENTS.forEach(inv=>{
+        const card=document.createElement('div'); card.className='choice-card';
+        card.innerHTML=`<div class="choice-left"><div class="tag">${inv.tag}</div>
+        <div><h3>${inv.name}</h3><p>${inv.teach}</p></div></div>
+        <div class="choice-actions">
+        <button class="btn primary">Invest ₹${inv.baseCost}</button>
+        </div>`;
+        card.querySelector('button').addEventListener('click',()=>{
+          if(cash<inv.baseCost){logMsg('Not enough cash to invest in '+inv.name); return;}
+          cash-=inv.baseCost;
+          const p=Math.round(inv.profit.mean + (Math.random()*inv.profit.var*2 - inv.profit.var));
+          profitScore+=p; emissionScore+=inv.emissions; foodScore+=inv.food;
+          logMsg('Invested in '+inv.name+' — Profit: '+p);
+          updateUI();
+        });
+        investGrid.appendChild(card);
       });
     }
 
-    function log(text){ const area=$('logArea'); const d=document.createElement('div'); d.style.padding='6px 0'; d.innerText=text; area.prepend(d); }
+    document.getElementById('eventBtn').addEventListener('click',()=>{
+      const ev=EVENTS[Math.floor(Math.random()*EVENTS.length)];
+      profitScore+=ev.profitAdj; emissionScore+=ev.emissionAdj; foodScore+=ev.foodAdj;
+      logMsg('Event: '+ev.title+' — '+ev.text);
+      updateUI();
+    });
 
-    function updateUI(animate=true){ $('cash').innerText = fmt(state.cash); $('cashTop').innerText = fmt(state.cash); $('roundTop').innerText = state.round+'/'+TOTAL_ROUNDS; $('profitScore').innerText = Math.round(state.profitScore); $('emissionScore').innerText = Math.round(state.emissionScore); $('foodScore').innerText = Math.round(state.foodScore);
-      const profitPct = clamp(Math.round((state.profitScore + 200)/4),0,100); const emissionPct = clamp(100 - Math.round(state.emissionScore/1.5),0,100); const foodPct = clamp(Math.round(state.foodScore),0,100);
-      if(animate){ animateBar('profitBar', profitPct); animateBar('emissionBar', emissionPct); animateBar('foodBar', foodPct); }
-      renderSpark(); updateBadge(); }
+    document.getElementById('storyBtn').addEventListener('click',()=>{
+      storyMission=MISSIONS[round-1]; missionText.textContent=storyMission.text;
+      logMsg('Story mission started: '+storyMission.title);
+    });
 
-    function renderSpark(){ const el=$('spark'); const arr=state.sparkline.slice(-8).map(v=>Math.round(v)); el.innerHTML = arr.length? '• '+arr.join(' • '): 'No history yet'; }
+    document.getElementById('saveBtn').addEventListener('click',()=>{
+      localStorage.setItem('portfolio',JSON.stringify({cash,profitScore,emissionScore,foodScore}));
+      logMsg('Portfolio saved!');
+    });
 
-    function updateBadge(){ let badge='Novice'; if(state.xp>50) badge='Adept'; if(state.xp>120) badge='Veteran'; if(state.xp>250) badge='EcoLord'; $('badgeTitle').innerText = 'Rank: '+badge; $('badgeDesc').innerText = 'XP: '+state.xp+' • Cash: '+fmt(state.cash); }
+    document.getElementById('historyBtn').addEventListener('click',()=>{
+      alert('History:\n'+log.join('\n'));
+    });
 
-    function showPopup(title, body){ $('popTitle').innerText=title; $('popBody').innerText=body; $('popup').style.display='block'; }
-    $('popClose').addEventListener('click', ()=>{$('popup').style.display='none';});
+    document.getElementById('glossaryBtn').addEventListener('click',()=>{
+      const popup=document.getElementById('popup'); popup.style.display='block';
+      document.getElementById('popTitle').textContent='Glossary';
+      document.getElementById('popBody').textContent='💧 Water Recycling: Reduces emissions.\n🌞 Solar Energy: Long-term green infrastructure.\n🪙 Carbon Credits: Offset emissions.\n🥗 Plant-Based: Scalable sustainable diet.\n🚗 EVs: Electric mobility.';
+    });
 
-    // ---------- CORE INVEST ----------
-    function invest(invId){ if(state.round > TOTAL_ROUNDS){ log('No rounds left — finish to see results.'); return; } const inv = INVESTMENTS.find(i=>i.id===invId); if(!inv) return; const cost = inv.baseCost || 180; // suggested commit
-      // simulate return
-      const ret = randNormal(inv.profit.mean, inv.profit.var);
-      state.cash += ret - cost; state.profitScore += Math.round(ret/10); state.emissionScore += inv.emissions; state.foodScore += inv.food; state.sustainScore += inv.sustain || 0; state.history.push({round:state.round, inv:inv.id, cost, ret}); state.sparkline.push(state.sustainScore);
-      log(`Round ${state.round}: Invested ₹${cost} in ${inv.name} → returned ₹${ret} (P/L: ₹${ret-cost})`);
-      // teach popup
-      setTimeout(()=> showPopup('Market Note', inv.teach + '
+    document.getElementById('popClose').addEventListener('click',()=>document.getElementById('popup').style.display='none');
 
-Return this round: ₹'+ret+' • You spent: ₹'+cost), 250);
-      // chance of event
-      if(Math.random() < 0.38) triggerRandomEvent(true);
-      // advance round
-      state.round++; updateUI(); if(state.round > TOTAL_ROUNDS) finishGame(); }
-
-    // ---------- RANDOM EVENTS ----------
-    function triggerRandomEvent(hidden=false){ const ev = EVENTS[Math.floor(Math.random()*EVENTS.length)]; state.cash += ev.profitAdj || 0; state.emissionScore += ev.emissionAdj || 0; state.foodScore += ev.foodAdj || 0; state.sustainScore += ev.sustainAdj || 0; if(ev.fav) { log(`Event favours: ${ev.fav.join(', ')}`); } state.sparkline.push(state.sustainScore); log(`EVENT: ${ev.title} — ${ev.text}`); if(!hidden) showPopup(ev.title, ev.text); updateUI(); }
-
-    // ---------- FINISH & LESSON ----------
-    function finishGame(){ // badge and lesson
-      const p=state.profitScore,e=state.emissionScore,s=state.sustainScore,f=state.foodScore; let badge='Bronze Investor'; let desc='Keep learning diversification.'; if(p>120 && e<60 && s>40) { badge='Gold Investor'; desc='High profit + climate impact — well balanced.'; } else if(p>60 && s>20 && e<80) { badge='Silver Investor'; desc='Good balance of return and impact.'; } else if(s>70 && e<55) { badge='Eco GOD'; desc='Max climate & food impact — legendary.'; }
-      $('badgeTitle').innerText = 'Badge: '+badge; $('badgeDesc').innerText = desc + ' • Final cash: '+fmt(Math.max(0,state.cash)); log('Game finished. '+badge+' — '+desc);
-      const lesson = generateLesson(); setTimeout(()=> showPopup('Final Lesson', lesson), 600);
-      // save auto-summary
-      savePortfolio({date:new Date().toISOString(), cash:state.cash, profit:state.profitScore, emissions:state.emissionScore, food:state.foodScore, xp:state.xp, badge});
+    function init(){
+      makeInvestmentCards();
+      updateUI();
     }
 
-    function generateLesson(){ const invested=state.history.map(h=>h.inv); const counts=INVESTMENTS.map(i=>({id:i.id,times:invested.filter(x=>x===i.id).length})); const top=counts.sort((a,b)=>b.times-a.times)[0]; const topInv=INVESTMENTS.find(x=>x.id===top.id) || INVESTMENTS[0]; let lesson = `You invested mostly in ${topInv.name}.
-Key finance takeaways:
-• ROI — Compare returns vs cost over time.
-• Diversification — Spread risk across sectors.
-• Externalities — Real costs include climate & food impacts.
-
-Your emissions score: ${Math.round(state.emissionScore)}. Try combining Mitigation (Solar/EV) with Adaptation (Water/Vertical/Organic) and Market plays (Plant/Green Bonds).`;
-      return lesson; }
-
-    // ---------- GLOSSARY ----------
-    const GLOSSARY = {
-      'ROI':'Return on Investment — money returned compared to the money invested, usually shown as a percentage.',
-      'Diversification':'Splitting investments across different assets to reduce risk of large losses.',
-      'Green Bonds':'Debt instruments issued to fund environmentally friendly projects; pay interest like normal bonds.',
-      'Carbon Markets':'Markets where companies buy/sell carbon credits to offset emissions.',
-      'ETF':'Exchange-Traded Fund — a basket of securities traded on exchanges; some ETFs track green indexes.',
-      'Risk Tolerance':'An investor\'s ability to endure losses or volatility in their portfolio.'
-    };
-
-    $('glossaryBtn').addEventListener('click', ()=>{ let body=''; for(const k in GLOSSARY) body+=k+': '+GLOSSARY[k]+'
-
-'; showPopup('Glossary — Finance Terms', body); });
-
-    // ---------- STORY MODE ----------
-    let currentMission = null; function startStory(){ currentMission = MISSIONS[0]; state.xp=0; state.rank='Novice'; $('missionText').innerText = currentMission.title + '
-
-'+currentMission.text + '
-
-Goal: '+ 'Complete objective to earn rewards.'; log('Story Mode started: '+currentMission.title); showPopup('Story Start', currentMission.text); }
-    $('storyBtn').addEventListener('click', ()=>{ startStory(); });
-
-    // Check mission progress (simple checks)
-    function checkMissions(){ if(!currentMission) return; if(currentMission.id==='m1' && state.foodScore >= 70){ completeMission(currentMission); } if(currentMission.id==='m2' && state.emissionScore <= 80){ completeMission(currentMission); } if(currentMission.id==='m3' && state.profitScore >= 35){ completeMission(currentMission); } }
-
-    function completeMission(m){ log('Mission Complete: '+m.title); state.cash += m.reward.cash; state.xp += m.reward.xp; state.sustainScore += 8; $('missionText').innerText = 'Completed: '+m.title + ' — Rewards received.'; currentMission = MISSIONS[(MISSIONS.indexOf(m)+1) % MISSIONS.length]; updateUI(); showPopup('Mission Complete', 'Rewards: ₹'+m.reward.cash+' • XP: '+m.reward.xp); }
-
-    // ---------- SHARE & SAVE ----------
-    function createShareImage(result){ const canvas=document.createElement('canvas'); canvas.width=1080; canvas.height=1080; const c=canvas.getContext('2d'); c.fillStyle='#04100b'; c.fillRect(0,0,1080,1080); c.fillStyle='#00ffb2'; c.font='48px sans-serif'; c.fillText('My Eco Portfolio', 80, 120); c.font='36px sans-serif'; c.fillText('Profit: '+result.profit, 80, 220); c.fillText('Emissions: '+result.emissions, 80, 300); c.fillText('Food: '+result.food, 80, 380); c.fillText('Badge: '+result.badge, 80, 460); const link=document.createElement('a'); link.download='EcoPortfolio.png'; link.href=canvas.toDataURL(); link.click(); }
-
-    function savePortfolio(data){ let history=JSON.parse(localStorage.getItem('ecoPortfolioHistory')||'[]'); history.unshift(data); localStorage.setItem('ecoPortfolioHistory', JSON.stringify(history)); }
-
-    $('saveBtn').addEventListener('click', ()=>{ savePortfolio({date:new Date().toISOString(), cash:state.cash, profit:state.profitScore, emissions:state.emissionScore, food:state.foodScore, xp:state.xp}); alert('Saved to browser history'); });
-    $('historyBtn').addEventListener('click', ()=>{ const h=JSON.parse(localStorage.getItem('ecoPortfolioHistory')||'[]'); if(!h.length) return showPopup('History','No saved portfolios yet.'); let out = h.slice(0,8).map(x=>`${new Date(x.date).toLocaleString()}: Cash ${Math.round(x.cash)} • Profit ${x.profit} • Emissions ${x.emissions}`).join('
-
-'); showPopup('Saved Portfolios', out); });
-    $('shareBtn').addEventListener('click', ()=>{ createShareImage({profit:state.profitScore, emissions:Math.round(state.emissionScore), food:Math.round(state.foodScore), badge:$('badgeTitle').innerText}); });
-
-    // ---------- EVENTS MANUAL BUTTON ----------
-    $('eventBtn').addEventListener('click', ()=>{ triggerRandomEvent(false); });
-
-    // ---------- ANIMATIONS & INIT ----------
-    function animateBar(id, value){ const bar = $(id); bar.style.width='0%'; setTimeout(()=>{ bar.style.transition='width 1s ease'; bar.style.width = value+'%'; }, 140); }
-    function init(){ renderOptions(); updateUI(false); log('Simulator ready — Neon mode active.'); }
     init();
-
-    // ---------- QUICK HELP ON LOAD ----------
-    window.addEventListener('load', ()=>{ setTimeout(()=> showPopup('Welcome — The Climate Finance Simulator','Tap investments to commit. Use Story Mode to play missions. Glossary explains finance terms. Good luck.'),800); });
-
-    // Expose for console / analytics integration
-    window.__EATCO_SIM = {state, INVESTMENTS, EVENTS, MISSIONS};
   </script>
 </body>
 </html>
-
