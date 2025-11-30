@@ -1,198 +1,524 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Climate Finance Simulator | EatCo</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Climate Finance Simulator — EatCo</title>
 <style>
-  /* ---------- THEME ---------- */
-  :root {
-    --bg: #f9f9f9;
-    --panel: #e8f5e9;
-    --accent: #2e7d32;
-    --muted: #555;
-    --border: #c8e6c9;
-    --danger: #c62828;
-    font-family: 'Inter', sans-serif;
+  :root{
+    --bg:#f7fbf7; --panel:#ffffff; --accent:#2e7d32; --accent-2:#66bb6a;
+    --muted:#556265; --border:#e0f0e6; --danger:#d32f2f;
+    --glass: rgba(46,125,50,0.06);
+    --max-profit:400;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
   }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:#111; }
-  h3 { margin:0; color:var(--accent); }
-  p { margin:0.25em 0; }
-  button { cursor:pointer; }
-
-  /* ---------- LAYOUT ---------- */
-  .container { max-width: 1000px; margin:20px auto; display:flex; gap:20px; flex-wrap:wrap; }
-  .panel { flex:1; min-width:280px; background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px; }
-  .panel h3 { margin-bottom:8px; }
-  .stats { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
-  .stat { flex:1; background:#fff; padding:10px; border-radius:8px; text-align:center; border:1px solid var(--border);}
-  .stat .value { font-weight:700; font-size:1.2em; color:var(--accent); }
-
-  /* ---------- INVESTMENTS ---------- */
-  .invest-grid { display:grid; gap:10px; }
-  .choice-card { background:#fff; border:1px solid var(--border); border-radius:10px; display:flex; justify-content:space-between; padding:12px; align-items:center; }
-  .choice-left { display:flex; flex-direction:column; }
-  .choice-left h4 { margin:0; font-size:15px; }
-  .choice-left p { font-size:13px; color:var(--muted); }
-  .btn { padding:6px 12px; border:none; border-radius:6px; background:var(--accent); color:#fff; font-weight:600; margin-left:4px; }
-  .btn.info { background:#81c784; }
-
-  /* ---------- METERS ---------- */
-  .meters { margin:12px 0; }
-  .meter { margin-bottom:10px; }
-  .bar-bg { height:16px; background:#c8e6c9; border-radius:8px; overflow:hidden; }
-  .bar-fill { height:100%; width:0%; background:var(--accent); transition: width 0.8s ease; }
-
-  /* ---------- LOG ---------- */
-  .log { max-height:120px; overflow:auto; font-size:13px; background:#fff; padding:8px; border-radius:8px; border:1px solid var(--border); margin-top:12px; }
-
-  /* ---------- MODAL ---------- */
-  .modal { display:none; position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:#fff; border:1px solid var(--border); border-radius:12px; padding:20px; max-width:90%; max-height:80%; overflow:auto; z-index:9999; }
-  .modal h3 { color:var(--accent); margin-bottom:10px; }
-  .modal p { color:#333; line-height:1.4em; }
-  .close-btn { margin-top:12px; background:var(--danger); color:#fff; padding:6px 12px; border:none; border-radius:6px; float:right; }
-
-  @media(max-width:700px){
-    .container { flex-direction:column; }
-  }
+  *{box-sizing:border-box}
+  body{margin:0; min-height:100vh; background:var(--bg); color:#16321f; -webkit-font-smoothing:antialiased; padding:18px;}
+  header{max-width:1100px;margin:8px auto 18px; display:flex; gap:12px; align-items:center; justify-content:space-between}
+  .brand{display:flex; gap:10px; align-items:center}
+  .logo{font-weight:800; color:var(--accent); font-size:20px}
+  .subtitle{color:var(--muted); font-size:13px}
+  .wrap{max-width:1100px;margin:0 auto; display:grid; grid-template-columns: 360px 1fr; gap:18px; align-items:start}
+  @media(max-width:880px){ .wrap{grid-template-columns:1fr; padding:0 12px} header{padding:0 12px} }
+  .panel{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:14px;}
+  .panel.h{display:flex; gap:12px; align-items:center; justify-content:space-between}
+  .stats{display:grid; gap:10px; grid-template-columns: repeat(2,1fr); margin-bottom:10px}
+  .stat{background:var(--glass); padding:10px; border-radius:8px; border:1px solid rgba(0,0,0,0.03)}
+  .stat .label{font-size:12px; color:var(--muted)}
+  .stat .value{font-weight:800; color:var(--accent); font-size:18px}
+  .invest-grid{display:flex; flex-direction:column; gap:10px; margin-top:8px}
+  .card{display:flex; justify-content:space-between; align-items:center; gap:12px; background:#fff; border-radius:10px; padding:10px; border:1px solid var(--border); position:relative}
+  .card .left{display:flex; gap:10px; align-items:center}
+  .icon{width:44px;height:44px;border-radius:8px;background:var(--glass); display:flex;align-items:center;justify-content:center;font-size:20px}
+  .meta h4{margin:0;font-size:15px; color:#16321f}
+  .meta p{margin:4px 0 0 0;font-size:12px;color:var(--muted)}
+  .card .actions{display:flex; gap:8px; align-items:center}
+  .btn{padding:8px 12px;border-radius:8px;border:none; cursor:pointer; font-weight:700}
+  .btn.ghost{background:transparent;border:1px solid var(--border); color:var(--accent)}
+  .btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#fff}
+  .meters{display:flex;flex-direction:column;gap:12px}
+  .meter-row{display:flex; justify-content:space-between; align-items:center; gap:8px}
+  .meter-label{font-size:13px;color:var(--muted); width:38%}
+  .meter-bar{flex:1; height:14px; background:#eaf6ea; border-radius:8px; overflow:hidden; border:1px solid var(--border)}
+  .bar-fill{height:100%; width:0%; background:var(--accent); transition:width 800ms ease, background 400ms}
+  .log{margin-top:10px; background:#fff; border:1px solid var(--border); border-radius:8px; padding:8px; max-height:160px; overflow:auto; font-size:13px; color:var(--muted)}
+  .side-row{display:flex; gap:8px; align-items:center; margin-top:10px; flex-wrap:wrap}
+  .chip{background:transparent;border:1px dashed var(--border);padding:8px 10px;border-radius:8px;color:var(--muted);font-size:13px}
+  .modal-back{position:fixed; inset:0; background:rgba(0,0,0,0.25); display:none; align-items:center; justify-content:center; z-index:1200}
+  .modal{background:#fff; padding:18px; border-radius:12px; width:92%; max-width:640px; border:1px solid var(--border); box-shadow:0 10px 30px rgba(0,0,0,0.08)}
+  .modal h3{margin-top:0; color:var(--accent)}
+  .modal .close{background:var(--accent); color:#fff; border:none; padding:8px 12px; border-radius:8px; float:right}
+  .rules-list{line-height:1.5; color:#264c36}
+  .badge{padding:8px 12px;border-radius:999px;background:linear-gradient(90deg,#eef8ef,#e6f8ee); border:1px solid var(--border); color:var(--accent); font-weight:800; display:inline-block}
+  /* slide-in glossary panel */
+  .glossary-panel{position:fixed; right:-420px; top:0; height:100%; width:420px; background:#fff; border-left:1px solid var(--border); z-index:1300; transition:right 350ms ease; box-shadow:-6px 0 30px rgba(0,0,0,0.08); padding:18px; overflow:auto}
+  .glossary-panel.open{right:0}
+  .glossary-header{display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:12px}
+  .term{margin-bottom:12px}
+  .term h4{margin:0 0 4px 0}
+  .search{width:100%; padding:8px; border:1px solid var(--border); border-radius:8px; margin-bottom:12px}
+  /* responsive */
+  @media(max-width:520px){ .glossary-panel{width:100%; right:-100%} .glossary-panel.open{right:0} }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <!-- LEFT PANEL -->
-  <div class="panel">
-    <h3>Portfolio</h3>
-    <div class="stats">
-      <div class="stat"><div>Cash</div><div class="value" id="cash">₹1000</div></div>
-      <div class="stat"><div>Profit</div><div class="value" id="profit">0</div></div>
-      <div class="stat"><div>Emissions</div><div class="value" id="emission">100</div></div>
-      <div class="stat"><div>Food Sec</div><div class="value" id="food">50</div></div>
-    </div>
-
-    <h3>Investments</h3>
-    <div class="invest-grid" id="investGrid"></div>
-
-    <div class="log" id="logArea">Welcome! Start investing to see results.</div>
-    <button class="btn" id="ruleBtn">View Rules</button>
+<header>
+  <div class="brand">
+    <div class="logo">⟡ EatCo</div>
+    <div class="subtitle">Climate Finance Simulator — Clean & Understandable</div>
   </div>
 
-  <!-- RIGHT PANEL -->
+  <div style="display:flex; align-items:center; gap:8px">
+    <button id="shareBtn" class="btn ghost" title="Share result">Share</button>
+    <button id="learnBtn" class="btn ghost" title="Learn">Learn</button>
+    <button id="rulesBtn" class="btn ghost" title="Rules">Rules</button>
+    <label style="display:flex;align-items:center;gap:6px" title="Toggle sound"><input id="soundToggle" type="checkbox" checked>Sound</label>
+    <label style="display:flex;align-items:center;gap:6px" title="Toggle haptics"><input id="vibrateToggle" type="checkbox" checked>Haptics</label>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- LEFT -->
   <div class="panel">
-    <h3>Meters</h3>
-    <div class="meters">
-      <div class="meter">
-        <div>Profit</div>
-        <div class="bar-bg"><div class="bar-fill" id="profitBar"></div></div>
+    <div class="panel h" style="align-items:flex-start">
+      <div>
+        <div class="muted">Cash</div>
+        <div style="font-weight:900; font-size:18px; color:var(--accent)" id="cashRp">₹1000</div>
       </div>
-      <div class="meter">
-        <div>Emissions (lower better)</div>
-        <div class="bar-bg"><div class="bar-fill" id="emissionBar"></div></div>
-      </div>
-      <div class="meter">
-        <div>Food Security</div>
-        <div class="bar-bg"><div class="bar-fill" id="foodBar"></div></div>
+      <div style="text-align:right">
+        <div class="muted">Round</div>
+        <div style="font-weight:700" id="roundRp">Mission 1 / 3</div>
       </div>
     </div>
-    <h3>Badge</h3>
-    <div id="badge">Novice</div>
+
+    <div style="margin-top:12px" class="muted">Portfolio snapshot</div>
+    <div class="stats" style="margin-top:10px">
+      <div class="stat"><div class="label">Profit</div><div class="value" id="profitRp">0</div></div>
+      <div class="stat"><div class="label">Emissions</div><div class="value" id="emissionRp">100</div></div>
+      <div class="stat"><div class="label">Food Security</div><div class="value" id="foodRp">50</div></div>
+      <div class="stat"><div class="label">Badge</div><div class="value" id="badgeRp">Novice</div></div>
+    </div>
+
+    <h4 style="margin-top:14px;margin-bottom:6px">Investments</h4>
+    <div class="invest-grid" id="investGrid" aria-live="polite"></div>
+
+    <div style="margin-top:12px" class="muted">Quick tips</div>
+    <div class="side-row">
+      <div class="chip">Balance profit & food for better badges</div>
+      <div class="chip">Diversify — don't put all cash in one option</div>
+    </div>
+
+    <div class="log" id="logArea" style="margin-top:12px">Welcome — choose an investment to start missions.</div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="panel">
+    <h3 style="margin-bottom:6px">Status Meters</h3>
+    <div class="meters">
+      <div class="meter-row">
+        <div class="meter-label">Profit</div>
+        <div class="meter-bar"><div class="bar-fill" id="profitBar" style="width:0%"></div></div>
+      </div>
+      <div class="meter-row">
+        <div class="meter-label">Emissions (lower is better)</div>
+        <div class="meter-bar"><div class="bar-fill" id="emissionBar" style="width:0%"></div></div>
+      </div>
+      <div class="meter-row">
+        <div class="meter-label">Food Security</div>
+        <div class="meter-bar"><div class="bar-fill" id="foodBar" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px; display:flex; justify-content:space-between; align-items:center">
+      <div>
+        <div class="muted">Top tip</div>
+        <div style="font-weight:700">Try mixing Solar + Organic for balance</div>
+      </div>
+      <div>
+        <div class="muted">Badge</div>
+        <div class="badge" id="badgeView">Novice</div>
+      </div>
+    </div>
+
+    <div style="margin-top:14px" class="muted">Controls</div>
+    <div class="side-row" style="margin-top:8px">
+      <button class="btn ghost" id="historyBtn">History</button>
+      <button class="btn ghost" id="saveBtn">Save</button>
+      <button class="btn primary" id="resetBtn">Restart</button>
+    </div>
   </div>
 </div>
 
-<!-- RULES MODAL -->
-<div class="modal" id="ruleModal">
-  <h3>Climate Finance Simulator - Rules</h3>
-  <p>1. You start with ₹1000 cash.</p>
-  <p>2. Invest in projects like Solar, EV, Organic, Water, Plant-based, and more.</p>
-  <p>3. Each investment affects Profit, Emissions, Food Security, and Sustainability.</p>
-  <p>4. You can trigger random events that impact your portfolio.</p>
-  <p>5. Complete missions and gain XP to earn badges.</p>
-  <p>6. Goal: maximize Profit, reduce Emissions, and improve Food Security.</p>
-  <p>7. Use diversification for best results. Watch your log for feedback!</p>
-  <button class="close-btn" id="closeRules">Close</button>
+<!-- Glossary slide panel (D) -->
+<div class="glossary-panel" id="glossaryPanel" aria-hidden="true">
+  <div class="glossary-header">
+    <div><strong style="color:var(--accent)">Learn — Climate Finance Glossary</strong></div>
+    <div>
+      <button class="btn ghost" id="closeLearn">Close</button>
+    </div>
+  </div>
+  <input id="glossSearch" class="search" placeholder="Search terms — ROI, Carbon, Green Bonds..." />
+  <div id="glossContent">
+    <!-- Terms inserted by JS -->
+  </div>
+</div>
+
+<!-- Rules modal (re-usable) -->
+<div class="modal-back" id="modalBack">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 id="modalTitle">Rules & Quick Guide</h3>
+    <div class="rules-list" id="rulesContent">
+      <p><strong>Goal:</strong> finish all missions with high profit, low emissions, and strong food security.</p>
+      <ol>
+        <li>You start with <strong>₹1000</strong>. Each investment has a cost.</li>
+        <li>Investing affects Profit (money), Emissions (lower is better) and Food Security.</li>
+        <li>Bars scale: <em>Profit</em> out of a max, <em>Emissions</em> is inverted (lower → better bar), <em>Food</em> is 0–100.</li>
+        <li>Random events sometimes trigger (good or bad) — check the log for details.</li>
+        <li>Your badge updates automatically: Novice → Intermediate → Eco Hero.</li>
+        <li>Use the Save / History buttons to keep results in your browser.</li>
+      </ol>
+      <p style="margin-top:8px"><strong>Tip:</strong> diversification reduces risk and increases chance of balanced badges.</p>
+    </div>
+
+    <div style="margin-top:12px; display:flex; gap:8px; justify-content:space-between; align-items:center">
+      <small class="muted">Made for EatCo — clean, educational, and teen-friendly.</small>
+      <div>
+        <button class="close" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-  // ---------- STATE ----------
-  let state = { cash:1000, profit:0, emission:100, food:50, sustain:0, xp:0, badge:'Novice' };
+/* ---------- DATA ---------- */
+const MISSIONS = [
+  {title:'Mission 1 — Solar Shift', desc:'Help a coastal city adopt renewables.', options:[
+    {id:'solar', icon:'☀️', name:'Community Solar', cost:220, profit:110, emission:-28, food:2, info:'Local solar arrays — steady returns.'},
+    {id:'ev', icon:'🚗', name:'EV Shuttle', cost:160, profit:80, emission:-18, food:0, info:'Cleaner transport for towns.'},
+    {id:'garden', icon:'🌱', name:'Community Garden', cost:90, profit:30, emission:-4, food:18, info:'Boosts local food security.'}
+  ]},
+  {title:'Mission 2 — Farm Revival', desc:'Support farmers switching to sustainable methods.', options:[
+    {id:'organic', icon:'🌾', name:'Regenerative Farming', cost:260, profit:140, emission:-12, food:30, info:'Higher food + better soil.'},
+    {id:'water', icon:'💧', name:'Water Recycling', cost:170, profit:70, emission:-8, food:20, info:'Protects crops & yields.'},
+    {id:'plant', icon:'🥗', name:'Plant-Based Factory', cost:180, profit:95, emission:-30, food:15, info:'Scalable low-emission food.'}
+  ]},
+  {title:'Mission 3 — City Green', desc:'Make the city resilient & green.', options:[
+    {id:'vertical', icon:'🏙️', name:'Vertical Farm', cost:210, profit:100, emission:-10, food:35, info:'High-yield urban farming.'},
+    {id:'bond', icon:'📈', name:'Green Bonds', cost:200, profit:60, emission:-5, food:0, info:'Low-risk financing for projects.'},
+    {id:'tech', icon:'🔬', name:'Climate Tech Fund', cost:240, profit:180, emission:-14, food:5, info:'High upside, higher variance.'}
+  ]}
+];
 
-  const INVESTMENTS = [
-    {id:'solar', name:'Solar Energy', cost:300, profit:180, emission:-28, food:6},
-    {id:'ev', name:'Electric Vehicles', cost:250, profit:120, emission:-25, food:0},
-    {id:'organic', name:'Organic Farming', cost:220, profit:110, emission:-12, food:22},
-    {id:'water', name:'Water Recycling', cost:150, profit:90, emission:-8, food:20},
-    {id:'plant', name:'Plant-Based Foods', cost:180, profit:95, emission:-30, food:18}
-  ];
+const EVENTS = [
+  {id:'drought', text:'Drought reduces crop yields', cash: -30, profit: -10, emission: +6, food: -12},
+  {id:'subsidy', text:'Government subsidy boosts renewables', cash: +40, profit:+20, emission:-10, food: +0},
+  {id:'market', text:'Market wobble — returns dip', cash:-20, profit:-25, emission:+4, food:-4},
+  {id:'boom', text:'Local boom: demand spike', cash:+30, profit:+30, emission:-2, food:+8}
+];
 
-  const EVENTS = [
-    {name:'Drought', cash:-60, emission:6, food:-22},
-    {name:'Heatwave', cash:-40, emission:8, food:-12},
-    {name:'Market Boom', cash:50, emission:-4, food:5}
-  ];
+/* glossary terms to show in slide panel */
+const GLOSSARY = [
+  {term:'ROI (Return on Investment)', def:'How much profit you earned relative to the money you spent. Example: invest ₹100 → get ₹120 → ROI = 20%.'},
+  {term:'CAPEX (Capital Expenditure)', def:'Big upfront cost to build or buy something (e.g., solar panels). High CAPEX can mean bigger future gains.'},
+  {term:'OPEX (Operating Expenses)', def:'Day-to-day running costs (paying staff, maintenance). Lower OPEX helps long-term profits.'},
+  {term:'Carbon Footprint / CO₂ Emissions', def:'How much pollution a project emits. Lower is better for the planet and your score.'},
+  {term:'Carbon Credits', def:'A credit companies can buy/sell for reducing emissions — 1 credit = 1 tonne CO₂ avoided.'},
+  {term:'Diversification', def:'Spreading investments across different sectors to reduce risk.'},
+  {term:'Volatility', def:'How much an investment’s returns jump up and down. Higher volatility = higher risk.'},
+  {term:'Green Bonds', def:'Debt used to fund environmental projects. Usually low-risk.'},
+  {term:'Subsidies', def:'Government money given to support certain green projects, boosting returns.'},
+  {term:'Externalities', def:'Side effects of a project (good or bad) not directly in the price, e.g., improved health or pollution.'},
+  {term:'Impact Score', def:'A combined measure of how good a project is for people and environment.'},
+  {term:'Food Security Index', def:'How much an investment helps stable food supply in a region.'},
+  {term:'ESG Rating', def:'Environment, Social, Governance — a framework for judging companies’ sustainability.'},
+  {term:'Liquidity', def:'How quickly you can get cash back from an investment. High liquidity = easier to sell.'}
+];
 
-  const log = msg => {
-    const area = document.getElementById('logArea');
-    const div = document.createElement('div'); div.innerText=msg;
-    area.prepend(div);
+/* ---------- STATE ---------- */
+let state = {
+  cash:1000, profit:0, emission:100, food:50, roundIndex:0,
+  history: [], sound:true, vibrate:true
+};
+
+/* ---------- DOM refs ---------- */
+const el = id => document.getElementById(id);
+const investGrid = el('investGrid');
+const logArea = el('logArea');
+const modalBack = el('modalBack');
+const rulesBtn = el('rulesBtn');
+const closeModal = el('closeModal');
+const soundToggle = el('soundToggle');
+const vibrateToggle = el('vibrateToggle');
+const saveBtn = el('saveBtn');
+const historyBtn = el('historyBtn');
+const resetBtn = el('resetBtn');
+const shareBtn = el('shareBtn');
+const learnBtn = el('learnBtn');
+const glossPanel = el('glossaryPanel');
+const glossContent = el('glossContent');
+const glossSearch = el('glossSearch');
+const closeLearn = el('closeLearn');
+
+/* ---------- Audio helper ---------- */
+function playBeep(type='click'){
+  if(!state.sound) return;
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = (type==='good')? 'sine':'triangle';
+    o.frequency.value = (type==='good')? 700: 400;
+    g.gain.value = 0.05;
+    o.connect(g); g.connect(ctx.destination);
+    o.start();
+    setTimeout(()=>{ o.stop(); ctx.close(); }, 120);
+  }catch(e){}
+}
+
+/* ---------- helpers ---------- */
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function log(msg){
+  const d = document.createElement('div');
+  d.textContent = `${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})} — ${msg}`;
+  logArea.prepend(d);
+}
+
+/* ---------- render mission cards ---------- */
+function renderMission(){
+  const m = MISSIONS[state.roundIndex];
+  if(!m){ endGame(); return; }
+  el('roundRp').textContent = `${m.title}`;
+  investGrid.innerHTML = '';
+  m.options.forEach(opt=>{
+    const card = document.createElement('div'); card.className='card';
+    card.innerHTML = `
+      <div class="left">
+        <div class="icon">${opt.icon}</div>
+        <div class="meta">
+          <h4>${opt.name}</h4>
+          <p class="muted">${opt.info}</p>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="muted" style="text-align:right">Cost: ₹${opt.cost}</div>
+        <div style="display:flex; gap:8px; margin-top:8px; justify-content:flex-end">
+          <button class="btn ghost" data-id="${opt.id}" data-info>Info</button>
+          <button class="btn primary" data-id="${opt.id}" data-invest>Invest</button>
+        </div>
+      </div>`;
+    investGrid.appendChild(card);
+    card.querySelector('[data-info]').addEventListener('click', ()=> showInfo(opt));
+    card.querySelector('[data-invest]').addEventListener('click', ()=> doInvest(opt, card));
+  });
+  log(`Started: ${m.title} — ${m.desc}`);
+  updateUI();
+}
+
+/* ---------- info modal (re-uses rules modal) ---------- */
+function showInfo(opt){
+  modalBack.style.display = 'flex';
+  el('modalTitle').textContent = opt.name;
+  el('rulesContent').innerHTML = `<p style="font-weight:700">${opt.info}</p>
+    <p>Cost: ₹${opt.cost} • Profit impact: +${opt.profit} • Emission impact: ${opt.emission >=0 ? '+'+opt.emission : opt.emission} • Food: +${opt.food}</p>
+    <p class="muted" style="margin-top:6px">Tip: consider balance between profit, emissions and food security.</p>`;
+}
+
+/* ---------- invest logic ---------- */
+function doInvest(opt, cardEl){
+  if(state.cash < opt.cost){
+    log(`Not enough cash for ${opt.name}`);
+    playBeep('bad');
+    if(state.vibrate) navigator.vibrate?.(120);
+    return;
+  }
+  state.cash -= opt.cost;
+  state.profit += opt.profit;
+  state.emission += opt.emission;
+  state.food += opt.food;
+  const entry = {when:Date.now(), mission: MISSIONS[state.roundIndex].title, invest:opt.name, cost:opt.cost, profit:opt.profit, emission:opt.emission, food:opt.food};
+  state.history.unshift(entry);
+  playBeep('good');
+  if(state.vibrate) navigator.vibrate?.(35);
+
+  const fly = document.createElement('div'); fly.textContent = opt.icon; fly.style.position='absolute';
+  fly.style.left='14px'; fly.style.top='14px'; fly.style.fontSize='20px'; fly.style.transition='transform 700ms ease, opacity 700ms';
+  cardEl.appendChild(fly);
+  setTimeout(()=>{ fly.style.transform='translateY(-40px)'; fly.style.opacity='0'; }, 40);
+  setTimeout(()=>fly.remove(), 800);
+
+  log(`Invested in ${opt.name} — Cost ₹${opt.cost} • Profit +${opt.profit} • Food +${opt.food}`);
+  if(Math.random() < 0.35) triggerEvent();
+
+  setTimeout(()=>{
+    state.roundIndex++;
+    if(state.roundIndex < MISSIONS.length) renderMission(); else endGame();
+  }, 650);
+
+  updateUI();
+}
+
+/* ---------- events ---------- */
+function triggerEvent(){
+  const ev = EVENTS[Math.floor(Math.random()*EVENTS.length)];
+  state.cash += ev.cash;
+  state.profit += ev.profit;
+  state.emission += ev.emission;
+  state.food += ev.food;
+  log(`Event: ${ev.text} (Cash ${ev.cash>0?'+':''}${ev.cash}, Profit ${ev.profit>0?'+':''}${ev.profit})`);
+  playBeep(ev.cash >=0 ? 'good' : 'bad');
+  if(state.vibrate) navigator.vibrate?.(60);
+  updateUI();
+}
+
+/* ---------- UI updates ---------- */
+function updateUI(){
+  el('cashRp').textContent = `₹${Math.round(state.cash)}`;
+  el('profitRp').textContent = Math.round(state.profit);
+  el('emissionRp').textContent = Math.round(state.emission);
+  el('foodRp').textContent = Math.round(state.food);
+
+  const maxProfit = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--max-profit')) || 400;
+  const profitPct = clamp(state.profit / maxProfit * 100, 0, 100);
+  const emissionPct = clamp(100 - state.emission, 0, 100);
+  const foodPct = clamp(state.food, 0, 100);
+
+  const pf = el('profitBar'), ef = el('emissionBar'), ff = el('foodBar');
+  pf.style.width = profitPct + '%';
+  ef.style.width = emissionPct + '%';
+  ff.style.width = foodPct + '%';
+
+  pf.style.background = profitPct > 70 ? 'linear-gradient(90deg,#2e7d32,#66bb6a)' : (profitPct > 40 ? '#66bb6a' : '#f0a500');
+  ef.style.background = emissionPct > 70 ? 'linear-gradient(90deg,#2e7d32,#66bb6a)' : (emissionPct > 40 ? '#66bb6a' : '#f39c12');
+  ff.style.background = foodPct > 70 ? 'linear-gradient(90deg,#2e7d32,#66bb6a)' : (foodPct > 40 ? '#66bb6a' : '#f39c12');
+
+  let badge = 'Novice';
+  if(state.profit >= 200 && state.food >= 70 && state.emission <= 65) badge = 'Eco Hero';
+  else if(state.profit >= 100 || state.food >= 65) badge = 'Intermediate';
+  el('badgeRp').innerText = badge;
+  el('badgeView').innerText = badge;
+}
+
+/* ---------- history, save, reset ---------- */
+function saveHistory(){
+  const prev = JSON.parse(localStorage.getItem('eatco_sim_history')||'[]');
+  const combined = [...state.history, ...prev].slice(0,200);
+  localStorage.setItem('eatco_sim_history', JSON.stringify(combined));
+  alert('Saved current run to browser storage.');
+}
+function loadHistory(){ try{return JSON.parse(localStorage.getItem('eatco_sim_history')||'[]')}catch(e){return []} }
+
+saveBtn.addEventListener('click', saveHistory);
+historyBtn.addEventListener('click', ()=>{
+  const h = loadHistory();
+  if(!h.length) alert('No saved history.');
+  else {
+    let s = h.slice(0,8).map(it => `${new Date(it.when).toLocaleString()}: ${it.mission} — ${it.invest} (Cost ₹${it.cost})`).join('\n\n');
+    alert('Saved entries (latest 8):\n\n' + s);
+  }
+});
+resetBtn.addEventListener('click', ()=> {
+  if(!confirm('Restart the simulator?')) return;
+  state = {cash:1000, profit:0, emission:100, food:50, roundIndex:0, history:[], sound:state.sound, vibrate:state.vibrate};
+  investGrid.innerHTML = '';
+  logArea.innerHTML = '';
+  renderMission();
+  updateUI();
+});
+
+/* ---------- modal & glossary controls ---------- */
+rulesBtn.addEventListener('click', ()=> modalBack.style.display = 'flex');
+el('closeModal').addEventListener('click', ()=> modalBack.style.display = 'none');
+modalBack.addEventListener('click', (e)=>{ if(e.target === modalBack) modalBack.style.display='none' });
+
+learnBtn.addEventListener('click', ()=> { glossPanel.classList.add('open'); glossPanel.setAttribute('aria-hidden','false'); });
+closeLearn.addEventListener('click', ()=> { glossPanel.classList.remove('open'); glossPanel.setAttribute('aria-hidden','true'); });
+
+glossSearch.addEventListener('input', ()=>{
+  renderGlossary(glossSearch.value.trim().toLowerCase());
+});
+
+/* ---------- render glossary content ---------- */
+function renderGlossary(filter=''){
+  glossContent.innerHTML = '';
+  const list = GLOSSARY.filter(g => !filter || (g.term + ' ' + g.def).toLowerCase().includes(filter));
+  if(!list.length){ glossContent.innerHTML = '<div class="muted">No matches</div>'; return; }
+  list.forEach(g=>{
+    const d = document.createElement('div'); d.className='term';
+    d.innerHTML = `<h4>${g.term}</h4><div class="muted">${g.def}</div>`;
+    glossContent.appendChild(d);
+  });
+}
+renderGlossary();
+
+/* ---------- toggles ---------- */
+el('soundToggle').addEventListener('change', e => state.sound = e.target.checked);
+el('vibrateToggle').addEventListener('change', e => state.vibrate = e.target.checked);
+
+/* ---------- shareable image (green gradient modern) ---------- */
+shareBtn.addEventListener('click', ()=> {
+  // prepare result snapshot
+  const badge = el('badgeView').innerText;
+  const result = {
+    profit: Math.round(state.profit),
+    emissions: Math.round(state.emission),
+    food: Math.round(state.food),
+    cash: Math.round(state.cash),
+    badge
   };
+  createShareImage(result);
+});
+function createShareImage(result){
+  const w = 1080, h = 1080;
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  const c = canvas.getContext('2d');
 
-  function renderInvestments(){
-    const grid = document.getElementById('investGrid');
-    grid.innerHTML='';
-    INVESTMENTS.forEach(inv=>{
-      const card = document.createElement('div'); card.className='choice-card';
-      card.innerHTML = `<div class="choice-left"><h4>${inv.name}</h4><p>Cost: ₹${inv.cost}</p></div>
-        <div>
-          <button class="btn" onclick="invest('${inv.id}')">Invest</button>
-        </div>`;
-      grid.appendChild(card);
-    });
-  }
+  // gradient background (green modern)
+  const g = c.createLinearGradient(0,0,w, h);
+  g.addColorStop(0, '#e8fdf3'); g.addColorStop(1, '#d6fff0');
+  c.fillStyle = g; c.fillRect(0,0,w,h);
 
-  function updateBars(){
-    document.getElementById('cash').innerText='₹'+state.cash;
-    document.getElementById('profit').innerText=state.profit;
-    document.getElementById('emission').innerText=state.emission;
-    document.getElementById('food').innerText=state.food;
+  // title
+  c.fillStyle = '#0f5132'; c.font = 'bold 48px Inter, sans-serif';
+  c.fillText('My Climate Finance Scorecard', 64, 120);
 
-    document.getElementById('profitBar').style.width = Math.min(state.profit/300*100,100)+'%';
-    document.getElementById('emissionBar').style.width = Math.min(100 - state.emission,100)+'%';
-    document.getElementById('foodBar').style.width = Math.min(state.food,100)+'%';
+  // badge
+  c.font = '700 32px Inter, sans-serif';
+  c.fillStyle = '#144420';
+  c.fillText('Badge: ' + result.badge, 64, 190);
 
-    // Badge logic
-    if(state.profit>=150 && state.food>=70) state.badge='Eco Hero';
-    else if(state.profit>=80) state.badge='Intermediate';
-    else state.badge='Novice';
-    document.getElementById('badge').innerText=state.badge;
-  }
+  // metrics block
+  c.font = '600 36px Inter, sans-serif';
+  c.fillStyle = '#0b3b26';
+  c.fillText('Profit: ₹' + result.profit, 64, 280);
+  c.fillText('Final Cash: ₹' + result.cash, 64, 340);
+  c.fillText('Emissions: ' + result.emissions, 64, 400);
+  c.fillText('Food Impact: ' + result.food, 64, 460);
 
-  function invest(id){
-    const inv = INVESTMENTS.find(i=>i.id===id);
-    if(state.cash<inv.cost){ log('Not enough cash for '+inv.name); return; }
-    state.cash -= inv.cost;
-    state.profit += inv.profit;
-    state.emission += inv.emission;
-    state.food += inv.food;
-    log(`Invested in ${inv.name}. Profit +${inv.profit}, Emission ${inv.emission}, Food +${inv.food}`);
-    // 30% chance for random event
-    if(Math.random()<0.3){
-      const ev = EVENTS[Math.floor(Math.random()*EVENTS.length)];
-      state.cash += ev.cash;
-      state.emission += ev.emission;
-      state.food += ev.food;
-      log(`Event: ${ev.name} — Cash ${ev.cash}, Emission ${ev.emission}, Food ${ev.food}`);
-    }
-    updateBars();
-  }
+  // small icons (emoji)
+  c.font = '40px serif';
+  c.fillText('💰', 980-680, 274);
+  c.fillText('🏷️', 980-680, 336);
+  c.fillText('🌫️', 980-680, 392);
+  c.fillText('🍎', 980-680, 452);
 
-  document.getElementById('ruleBtn').addEventListener('click', ()=>document.getElementById('ruleModal').style.display='block');
-  document.getElementById('closeRules').addEventListener('click', ()=>document.getElementById('ruleModal').style.display='none');
+  // footer
+  c.font = 'bold 20px Inter, sans-serif';
+  c.fillStyle = '#16532a';
+  c.fillText('Play at EatCo • Climate Finance Simulator', 64, h-80);
 
-  // INIT
-  renderInvestments();
-  updateBars();
+  // download
+  const link = document.createElement('a');
+  link.download = `EatCo_Score_${new Date().toISOString().slice(0,10)}.png`;
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+/* ---------- initial boot ---------- */
+renderMission();
+updateUI();
+log('Simulator ready. Use Learn to open glossary; Share to download your result card.');
 </script>
-
 </body>
 </html>
