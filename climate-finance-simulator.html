@@ -1,305 +1,255 @@
-<!--
-Climate Finance Simulator — FULL FIXED
-Save as: climate-finance-simulator.html
--->
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The Climate Finance Simulator | EatCo</title>
-  <style>
-    :root{
-      --bg:#050608; --panel:#0b0d0f; --neon:#00ff88; --neon-2:#19e6a3; --muted:#9fb3ad; --glass:rgba(255,255,255,0.03);
-      --danger:#ff6b6b; --glass-2:rgba(0,255,136,0.04);
-      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%; margin:0; background:#040506; color:#d8efe6;}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Climate Finance Simulator | EatCo</title>
+<style>
+  /* -------------------- THEME -------------------- */
+  :root {
+    --bg: #f9f9f9;
+    --panel: #ffffff;
+    --green: #2e7d32;
+    --green-light: #66bb6a;
+    --text-dark: #333;
+    --text-muted: #666;
+    --border: #ddd;
+    font-family: 'Inter', sans-serif;
+  }
+  * {box-sizing:border-box; margin:0; padding:0;}
+  body {
+    background: var(--bg);
+    color: var(--text-dark);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+  }
 
-    /* neon fog & grid background */
-    body::before{
-      content:''; position:fixed; inset:0;
-      background:radial-gradient(circle at 10% 20%, rgba(0,255,136,0.03), transparent 10%),
-                 radial-gradient(circle at 90% 80%, rgba(0,255,120,0.02), transparent 10%),
-                 linear-gradient(180deg,#00120b, #021212 40%);
-      z-index:-4; opacity:1;
-    }
-    .neon-grid{position:fixed; inset:0;
-      background-image:
-        linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,255,136,0.02) 1px, transparent 1px);
-      background-size:120px 120px;
-      z-index:-3;
-      animation:glow 6s infinite alternate;
-    }
-    @keyframes glow{from{opacity:0.25; filter:brightness(0.9)} to{opacity:0.6; filter:brightness(1.05) saturate(1.2)}}
+  header {
+    margin: 24px 0;
+    text-align: center;
+  }
+  .logo {
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--green);
+  }
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-top: 4px;
+  }
 
-    /* fog overlay */
-    .fog{position:fixed; inset:0; background:url('https://i.ibb.co/6N4GnF1/fog.png') repeat; opacity:0.06; z-index:-2; pointer-events:none; animation:drift 80s linear infinite;}
-    @keyframes drift{from{background-position:0 0;} to{background-position:1000px 0;}}
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
+    max-width: 900px;
+  }
 
-    /* container */
-    .container{max-width:1200px; margin:36px auto; padding:18px; display:grid; grid-template-columns:360px 1fr; gap:20px}
-    header{grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; gap:12px}
-    .brand{display:flex; align-items:center; gap:12px}
-    .logo{font-weight:800; color:var(--neon); letter-spacing:1px}
-    .subtitle{color:var(--muted); font-size:13px}
+  /* -------------------- CARDS -------------------- */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(240px,1fr));
+    gap: 16px;
+  }
+  .card {
+    background: var(--panel);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  .card h3 {
+    color: var(--green);
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .card p {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  .card .btn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .btn.primary { background: var(--green); color: #fff; }
+  .btn.secondary { background: #f0f0f0; color: var(--green); border: 1px solid var(--green); }
 
-    /* left panel */
-    .panel{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.2)); border-radius:14px; padding:16px; border:1px solid rgba(0,255,136,0.05); box-shadow:0 8px 40px rgba(0,0,0,0.6)}
-    .stats{display:grid; grid-template-columns:repeat(2,1fr); gap:10px}
-    .stat{padding:12px; background:rgba(0,0,0,0.25); border-radius:10px}
-    .stat h4{margin:0; color:var(--muted); font-size:12px}
-    .stat .value{font-size:18px; font-weight:700; color:var(--neon)}
+  /* -------------------- METERS -------------------- */
+  .meters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .meter {
+    flex: 1;
+    min-width: 120px;
+  }
+  .meter h4 {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .bar {
+    height: 14px;
+    background: #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .bar i {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: var(--green);
+    transition: width 1s ease;
+  }
 
-    .invest-grid{display:grid; grid-template-columns:1fr; gap:10px; margin-top:12px}
-    .choice-card{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.06)); padding:12px; border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(0,255,136,0.03)}
-    .choice-left{display:flex; gap:10px; align-items:center}
-    .choice-left .tag{font-size:20px}
-    .choice-left h3{margin:0; font-size:15px}
-    .choice-left p{margin:0; color:var(--muted); font-size:12px}
-    .choice-actions{display:flex; gap:8px; align-items:center}
-    .btn{background:transparent; border:1px solid rgba(0,255,136,0.12); padding:8px 10px; border-radius:8px; color:var(--neon); font-weight:700; cursor:pointer}
-    .btn.ghost{background:transparent}
-    .btn.primary{background:linear-gradient(90deg, rgba(0,255,136,0.14), rgba(25,230,163,0.06)); border:1px solid rgba(0,255,136,0.12)}
+  /* -------------------- LOG -------------------- */
+  .log {
+    margin-top: 16px;
+    background: #f0f0f0;
+    border-radius: 12px;
+    max-height: 200px;
+    overflow:auto;
+    padding: 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
 
-    .log{margin-top:12px; max-height:180px; overflow:auto; font-size:13px; color:var(--muted)}
+  /* -------------------- POPUP -------------------- */
+  .popup {
+    position: fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    background: var(--panel);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    display: none;
+    z-index: 999;
+    width: 90%;
+    max-width: 450px;
+  }
+  .popup h3 { color: var(--green); }
+  .popup p { color: var(--text-muted); margin-top: 10px; }
+  .close-row { display:flex; justify-content:flex-end; margin-top:12px; }
 
-    /* right panel */
-    .play-panel{display:flex; flex-direction:column; gap:12px}
-    .panel-large{padding:16px; border-radius:14px; background:linear-gradient(90deg, rgba(0,0,0,0.15), rgba(0,0,0,0.05)); border:1px solid rgba(0,255,136,0.03)}
-    .meters{display:flex; gap:10px}
-    .meter{flex:1}
-    .meter h4{margin:0; color:var(--muted); font-size:12px}
-    .bar{height:14px; background:rgba(255,255,255,0.04); border-radius:8px; margin-top:8px; overflow:hidden}
-    .bar > i{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--neon), var(--neon-2)); transition:width 1s ease}
-
-    .spark{height:160px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,0.06); font-size:14px}
-
-    .badge{margin-top:8px; padding:12px; border-radius:10px; text-align:center}
-    .badge .title{font-weight:900; color:var(--neon)}
-
-    /* popup & glossary */
-    .popup{position:fixed; left:50%; top:10%; transform:translateX(-50%); width:640px; max-width:96%; background:linear-gradient(180deg,#071018,#0a0d0f); padding:18px; border-radius:12px; box-shadow:0 30px 80px rgba(0,0,0,0.7); display:none; z-index:9999; border:1px solid rgba(0,255,136,0.06)}
-    .popup h3{margin:0; color:var(--neon)}
-    .popup p{color:var(--muted); margin-top:8px; white-space:pre-wrap}
-    .close-row{display:flex; justify-content:flex-end; margin-top:12px}
-
-    @media(max-width:880px){ .container{grid-template-columns:1fr; padding:12px} .brand .subtitle{display:none} .stats{grid-template-columns:repeat(3,1fr)} .spark{height:120px} header{flex-direction:column; align-items:flex-start; gap:6px} }
-    @media(max-width:480px){ .stats{grid-template-columns:repeat(2,1fr)} .choice-actions{flex-direction:column; width:140px} .choice-left h3{font-size:14px} }
-
-    body.dark-mode{background:#030405}
-
-    .swipe-left{transform:translateX(-120%); opacity:0; transition:transform .5s ease, opacity .5s}
-    .swipe-right{transform:translateX(120%); opacity:0; transition:transform .5s ease, opacity .5s}
-  </style>
+  @media(max-width:600px){
+    .cards{grid-template-columns:1fr;}
+    .meters{flex-direction:column;}
+  }
+</style>
 </head>
 <body>
-  <div class="neon-grid"></div>
-  <div class="fog"></div>
 
-  <div class="container">
-    <header>
-      <div class="brand">
-        <div class="logo">⟡ EatCo</div>
-        <div class="subtitle">— The Climate Finance Simulator</div>
-      </div>
-      <div style="display:flex; gap:8px; align-items:center">
-        <div style="color:var(--muted); font-size:13px">Start with:</div>
-        <div class="stat" style="padding:6px 10px; border-radius:8px; background:transparent; border:1px solid rgba(255,255,255,0.02)"><strong id="cashTop">₹1,000</strong></div>
-        <button class="btn" id="glossaryBtn">Glossary</button>
-        <button class="btn primary" id="storyBtn">Story Mode</button>
-      </div>
-    </header>
+<header>
+  <div class="logo">EatCo</div>
+  <div class="subtitle">Climate Finance Simulator</div>
+</header>
 
-    <!-- LEFT -->
-    <aside class="panel">
-      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px">
-        <div>
-          <h3 style="margin:0; font-size:16px; color:var(--neon)">Portfolio Controls</h3>
-          <div style="color:var(--muted); font-size:12px">Tap an investment to commit funds. Swipe on mobile.</div>
-        </div>
-        <div style="text-align:right">
-          <div style="color:var(--muted); font-size:12px">Round</div>
-          <div style="font-weight:800; color:var(--neon)" id="roundTop">1/3</div>
-        </div>
-      </div>
+<div class="container">
+  <div class="cards" id="investGrid"></div>
 
-      <div class="stats" style="margin-top:12px">
-        <div class="stat"><h4>Cash</h4><div class="value" id="cash">₹1,000</div></div>
-        <div class="stat"><h4>Profit</h4><div class="value" id="profitScore">0</div></div>
-        <div class="stat"><h4>Emissions</h4><div class="value" id="emissionScore">100</div></div>
-        <div class="stat"><h4>Food Sec</h4><div class="value" id="foodScore">50</div></div>
-      </div>
-
-      <div style="margin-top:12px; display:flex; gap:8px">
-        <button class="btn" id="eventBtn">Trigger Event</button>
-        <button class="btn" id="saveBtn">Save Portfolio</button>
-      </div>
-
-      <div class="invest-grid" id="investGrid" style="margin-top:12px"></div>
-
-      <div class="log" id="logArea"><div style="opacity:0.7">Welcome agent — allocate wisely.</div></div>
-    </aside>
-
-    <!-- RIGHT -->
-    <main class="play-panel">
-      <div class="panel-large">
-        <div class="meters">
-          <div class="meter"><h4>Profit</h4><div class="bar"><i id="profitBar"></i></div></div>
-          <div class="meter"><h4>Emissions (lower better)</h4><div class="bar"><i id="emissionBar"></i></div></div>
-          <div class="meter"><h4>Food Security</h4><div class="bar"><i id="foodBar"></i></div></div>
-        </div>
-
-        <div class="spark" id="spark">Portfolio history will appear here.</div>
-        <div style="display:flex; gap:8px; margin-top:8px; align-items:center">
-          <div class="badge"><div class="title" id="badgeTitle">Badge: —</div><div style="color:var(--muted); font-size:13px" id="badgeDesc">Play to earn ranks & missions.</div></div>
-          <div style="margin-left:auto; display:flex; gap:8px"><button class="btn" id="shareBtn">Share</button><button class="btn" id="historyBtn">History</button></div>
-        </div>
-      </div>
-
-      <div class="panel-large" id="missionPanel">
-        <h3 style="margin:0; color:var(--neon)">Mission Log</h3>
-        <div id="missionText" style="color:var(--muted); margin-top:8px">No mission active. Enter Story Mode to begin.</div>
-      </div>
-
-    </main>
+  <div class="meters">
+    <div class="meter">
+      <h4>Profit</h4><div class="bar"><i id="profitBar"></i></div>
+    </div>
+    <div class="meter">
+      <h4>Emissions</h4><div class="bar"><i id="emissionBar"></i></div>
+    </div>
+    <div class="meter">
+      <h4>Food Security</h4><div class="bar"><i id="foodBar"></i></div>
+    </div>
   </div>
 
-  <!-- Glossary / popup -->
-  <div class="popup" id="popup">
-    <h3 id="popTitle">Title</h3>
-    <p id="popBody">Body</p>
-    <div class="close-row"><button class="btn" id="popClose">Close</button></div>
-  </div>
+  <div class="log" id="logArea">Welcome agent — allocate wisely.</div>
+</div>
 
-  <script>
-    /* ------------------ FULL JS GAME LOGIC ------------------ */
-    const STARTING_CASH = 1000; const TOTAL_ROUNDS = 3;
+<div class="popup" id="popup">
+  <h3 id="popTitle">Title</h3>
+  <p id="popBody">Body</p>
+  <div class="close-row"><button class="btn secondary" id="popClose">Close</button></div>
+</div>
 
-    const INVESTMENTS = [
-      {id:'solar', name:'Solar Energy', tag:'🌞', baseCost:300, profit:{mean:180,var:40}, emissions:-28, food:+6, sustain:+18, risk:'Low', teach:'Solar: long-term infrastructure investment — steady ROI.'},
-      {id:'ev', name:'Electric Vehicles', tag:'🚗', baseCost:250, profit:{mean:120,var:70}, emissions:-25, food:0, sustain:+14, risk:'Medium', teach:'EVs: tech adoption; short-term swings, long-term growth.'},
-      {id:'organic', name:'Organic Farming', tag:'🌾', baseCost:220, profit:{mean:110,var:30}, emissions:-12, food:+22, sustain:+16, risk:'Low', teach:'Organic: improves soil & yields; boosts food security.'},
-      {id:'water', name:'Water Recycling', tag:'💧', baseCost:150, profit:{mean:90,var:10}, emissions:-8, food:+20, sustain:+12, risk:'Very Low', teach:'Water infra: adaptation, steady returns.'},
-      {id:'plant', name:'Plant-Based Foods', tag:'🥗', baseCost:180, profit:{mean:95,var:15}, emissions:-30, food:+18, sustain:+15, risk:'Very Low', teach:'Plant-based: consumer trend; scalable with demand.'},
-      {id:'carbon', name:'Carbon Credits', tag:'🪙', baseCost:200, profit:{mean:70,var:60}, emissions:-50, food:0, sustain:+8, risk:'High', teach:'Carbon credits: pay to cancel emissions — volatile market.'},
-      {id:'algae', name:'Algae Farms', tag:'🟢', baseCost:160, profit:{mean:80,var:35}, emissions:-20, food:+10, sustain:+12, risk:'Medium', teach:'Algae: biotech food + carbon sequestration potential.'},
-      {id:'vertical', name:'Vertical Farming', tag:'🏙️', baseCost:210, profit:{mean:100,var:40}, emissions:-10, food:+25, sustain:+14, risk:'Medium', teach:'Vertical farms: high yields, urban food security.'},
-      {id:'labmeat', name:'Lab-Grown Meat', tag:'🧪', baseCost:230, profit:{mean:140,var:80}, emissions:-18, food:+12, sustain:+10, risk:'High', teach:'Lab meat: emerging tech — high upside, high risk.'},
-      {id:'greenbond', name:'Green Bonds', tag:'📈', baseCost:200, profit:{mean:60,var:12}, emissions:-5, food:0, sustain:+9, risk:'Low', teach:'Green bonds: debt instruments funding sustainable projects.'}
-    ];
+<script>
+const INVESTMENTS = [
+  {id:'solar', name:'Solar Energy', baseCost:300, profit:180, emissions:-28, food:6, info:'Steady ROI from solar projects.'},
+  {id:'ev', name:'Electric Vehicles', baseCost:250, profit:120, emissions:-25, food:0, info:'Medium-term growth potential.'},
+  {id:'organic', name:'Organic Farming', baseCost:220, profit:110, emissions:-12, food:22, info:'Supports soil & yield.'},
+  {id:'plant', name:'Plant-Based Foods', baseCost:180, profit:95, emissions:-30, food:18, info:'Growing demand & sustainability.'}
+];
 
-    const EVENTS = [
-      {id:'drought', title:'Drought', text:'Severe drought hits crops — food security falls.', profitAdj:-60, emissionAdj:+6, foodAdj:-22, sustainAdj:-12},
-      {id:'heat', title:'Heatwave', text:'A heatwave reduces yields and causes blackouts; tech supply chains hurt.', profitAdj:-40, emissionAdj:+8, foodAdj:-12, sustainAdj:-8},
-      {id:'disease', title:'Crop Disease', text:'A fungal outbreak reduces yields of certain crops.', profitAdj:-50, emissionAdj:+4, foodAdj:-18, sustainAdj:-10},
-      {id:'crash', title:'Market Crash', text:'A global market crash reduces returns across sectors.', profitAdj:-120, emissionAdj:+10, foodAdj:-6, sustainAdj:-14},
-      {id:'policy', title:'Green Subsidy', text:'Government announces a subsidy favouring clean energy and EVs!', profitAdj:+120, emissionAdj:-10, foodAdj:+2, sustainAdj:+10, fav:['solar','ev']},
-      {id:'tech', title:'Tech Breakthrough', text:'A breakthrough lowers production costs in a sector.', profitAdj:+90, emissionAdj:-6, foodAdj:+4, sustainAdj:+8, fav:['labmeat','ev']}
-    ];
+let state = {profit:0, emission:100, food:50};
 
-    const MISSIONS = [
-      {id:'m1', title:'Ration & Rebuild', text:'A heatwave hit rural belts. Help stabilise food markets. Goal: raise Food Security to 70.', check:()=>foodScore>=70},
-      {id:'m2', title:'Green Growth', text:'Invest in sustainable tech to reduce emissions. Goal: Emissions < 60.', check:()=>emissionScore<60},
-      {id:'m3', title:'Profit Boost', text:'Make max profit without hurting sustainability. Goal: Profit >= 400', check:()=>profitScore>=400}
-    ];
+function $(id){return document.getElementById(id);}
 
-    let cash=STARTING_CASH, profitScore=0, emissionScore=100, foodScore=50;
-    let round=1, log=[];
-    let storyMission=null;
+function renderCards(){
+  const container = $('investGrid');
+  container.innerHTML = '';
+  INVESTMENTS.forEach(inv=>{
+    const card = document.createElement('div');
+    card.className='card';
+    card.innerHTML = `<h3>${inv.name}</h3>
+      <p>Cost: ₹${inv.baseCost}</p>
+      <button class="btn primary" data-id="${inv.id}">Invest</button>
+      <button class="btn secondary" data-info="${inv.id}">Info</button>`;
+    container.appendChild(card);
+  });
 
-    const cashEl=document.getElementById('cash');
-    const profitEl=document.getElementById('profitScore');
-    const emissionEl=document.getElementById('emissionScore');
-    const foodEl=document.getElementById('foodScore');
-    const investGrid=document.getElementById('investGrid');
-    const logArea=document.getElementById('logArea');
-    const profitBar=document.getElementById('profitBar');
-    const emissionBar=document.getElementById('emissionBar');
-    const foodBar=document.getElementById('foodBar');
-    const badgeTitle=document.getElementById('badgeTitle');
-    const badgeDesc=document.getElementById('badgeDesc');
-    const roundTop=document.getElementById('roundTop');
-    const spark=document.getElementById('spark');
-    const missionText=document.getElementById('missionText');
+  document.querySelectorAll('.card .btn[data-id]').forEach(b=>b.addEventListener('click', e=>{
+    invest(e.currentTarget.dataset.id);
+  }));
+  document.querySelectorAll('.card .btn[data-info]').forEach(b=>b.addEventListener('click', e=>{
+    const inv = INVESTMENTS.find(x=>x.id===e.currentTarget.dataset.info);
+    showPopup(inv.name, inv.info);
+  }));
+}
 
-    function updateUI(){
-      cashEl.textContent='₹'+cash;
-      profitEl.textContent=profitScore;
-      emissionEl.textContent=emissionScore;
-      foodEl.textContent=foodScore;
-      roundTop.textContent=round+'/'+TOTAL_ROUNDS;
-      profitBar.style.width=Math.min(100,(profitScore/500*100))+'%';
-      emissionBar.style.width=Math.min(100,(100-emissionScore))+'%';
-      foodBar.style.width=Math.min(100,(foodScore))+'%';
+function updateUI(){
+  $('profitBar').style.width = Math.min(state.profit,100)+'%';
+  $('emissionBar').style.width = Math.min(100-state.emission,100)+'%';
+  $('foodBar').style.width = Math.min(state.food,100)+'%';
+}
 
-      // badges
-      if(profitScore>300 && emissionScore<60 && foodScore>70){badgeTitle.textContent='Eco Master'; badgeDesc.textContent='High returns, low emissions, high food security.'}
-      else if(profitScore>200){badgeTitle.textContent='Profit Hunter'; badgeDesc.textContent='Strong returns but moderate sustainability.'}
-      else badgeTitle.textContent='Badge: —';
-    }
+function log(text){
+  const area = $('logArea');
+  const div = document.createElement('div');
+  div.style.padding='4px 0';
+  div.innerText=text;
+  area.prepend(div);
+}
 
-    function logMsg(txt){log.unshift(txt); logArea.innerHTML=''; log.slice(0,10).forEach(l=>{const div=document.createElement('div');div.textContent=l;logArea.appendChild(div)})}
+function showPopup(title,body){
+  $('popTitle').innerText=title;
+  $('popBody').innerText=body;
+  $('popup').style.display='block';
+}
+$('popClose').addEventListener('click',()=>{$('popup').style.display='none';});
 
-    function makeInvestmentCards(){
-      investGrid.innerHTML='';
-      INVESTMENTS.forEach(inv=>{
-        const card=document.createElement('div'); card.className='choice-card';
-        card.innerHTML=`<div class="choice-left"><div class="tag">${inv.tag}</div>
-        <div><h3>${inv.name}</h3><p>${inv.teach}</p></div></div>
-        <div class="choice-actions">
-        <button class="btn primary">Invest ₹${inv.baseCost}</button>
-        </div>`;
-        card.querySelector('button').addEventListener('click',()=>{
-          if(cash<inv.baseCost){logMsg('Not enough cash to invest in '+inv.name); return;}
-          cash-=inv.baseCost;
-          const p=Math.round(inv.profit.mean + (Math.random()*inv.profit.var*2 - inv.profit.var));
-          profitScore+=p; emissionScore+=inv.emissions; foodScore+=inv.food;
-          logMsg('Invested in '+inv.name+' — Profit: '+p);
-          updateUI();
-        });
-        investGrid.appendChild(card);
-      });
-    }
+function invest(id){
+  const inv = INVESTMENTS.find(x=>x.id===id);
+  state.profit += inv.profit/10;
+  state.emission += inv.emissions/10;
+  state.food += inv.food/10;
+  log(`Invested ₹${inv.baseCost} in ${inv.name} → Profit +${inv.profit}`);
+  updateUI();
+}
 
-    document.getElementById('eventBtn').addEventListener('click',()=>{
-      const ev=EVENTS[Math.floor(Math.random()*EVENTS.length)];
-      profitScore+=ev.profitAdj; emissionScore+=ev.emissionAdj; foodScore+=ev.foodAdj;
-      logMsg('Event: '+ev.title+' — '+ev.text);
-      updateUI();
-    });
+renderCards();
+updateUI();
+log('Simulator ready.');
+</script>
 
-    document.getElementById('storyBtn').addEventListener('click',()=>{
-      storyMission=MISSIONS[round-1]; missionText.textContent=storyMission.text;
-      logMsg('Story mission started: '+storyMission.title);
-    });
-
-    document.getElementById('saveBtn').addEventListener('click',()=>{
-      localStorage.setItem('portfolio',JSON.stringify({cash,profitScore,emissionScore,foodScore}));
-      logMsg('Portfolio saved!');
-    });
-
-    document.getElementById('historyBtn').addEventListener('click',()=>{
-      alert('History:\n'+log.join('\n'));
-    });
-
-    document.getElementById('glossaryBtn').addEventListener('click',()=>{
-      const popup=document.getElementById('popup'); popup.style.display='block';
-      document.getElementById('popTitle').textContent='Glossary';
-      document.getElementById('popBody').textContent='💧 Water Recycling: Reduces emissions.\n🌞 Solar Energy: Long-term green infrastructure.\n🪙 Carbon Credits: Offset emissions.\n🥗 Plant-Based: Scalable sustainable diet.\n🚗 EVs: Electric mobility.';
-    });
-
-    document.getElementById('popClose').addEventListener('click',()=>document.getElementById('popup').style.display='none');
-
-    function init(){
-      makeInvestmentCards();
-      updateUI();
-    }
-
-    init();
-  </script>
 </body>
 </html>
