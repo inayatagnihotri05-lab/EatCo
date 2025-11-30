@@ -10,8 +10,6 @@
   --panel: #ffffff;
   --green: #2e7d32;
   --green-light: #66bb6a;
-  --orange: #ff9800;
-  --red: #e53935;
   --text-dark: #333;
   --text-muted: #666;
   --border: #ddd;
@@ -28,7 +26,7 @@ header{text-align:center;margin-bottom:24px;}
 
 .container{display:flex;flex-direction:column;gap:20px;width:90%;max-width:900px;transition:all 0.5s;}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;transition:all 0.5s;}
-.card{background: var(--panel);border-radius:12px;padding:16px;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,0.05);transition:transform 0.3s, box-shadow 0.3s;}
+.card{background: var(--panel);border-radius:12px;padding:16px;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,0.05);transition:transform 0.3s, box-shadow 0.3s;position:relative;}
 .card:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(0,0,0,0.1);}
 .card h3{color:var(--green);font-size:18px;margin-bottom:6px;}
 .card p{color:var(--text-muted);font-size:13px;margin-bottom:12px;}
@@ -52,6 +50,11 @@ header{text-align:center;margin-bottom:24px;}
 .popup button{margin-top:10px;}
 .close-row{ display:flex; justify-content:flex-end; margin-top:12px; }
 
+.fly-icon{position:absolute;font-size:18px;animation:flyUp 1s ease forwards;pointer-events:none;}
+@keyframes flyUp{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-40px);}}
+
+.rules-btn{margin-bottom:10px;align-self:flex-end;}
+
 @media(max-width:600px){.cards{grid-template-columns:1fr;}.meters{flex-direction:column;}}
 </style>
 </head>
@@ -61,6 +64,8 @@ header{text-align:center;margin-bottom:24px;}
   <div class="logo">EatCo</div>
   <div class="subtitle">Climate Finance Simulator - Story Mode</div>
 </header>
+
+<button class="btn secondary rules-btn" id="rulesBtn">📖 Rules</button>
 
 <div class="status">
   <div>Cash: <span id="cash">₹1000</span></div>
@@ -94,53 +99,48 @@ header{text-align:center;margin-bottom:24px;}
 
 <script>
 const MISSIONS = [
-  {
-    title: "Mission 1: Solar Challenge",
-    desc: "A sunny city wants to switch to renewable energy. Choose your investments wisely.",
-    options: [
-      {name:'Solar Panels', cost:200, profit:100, emissions:-20, food:0},
-      {name:'EV Fleet', cost:150, profit:80, emissions:-15, food:0},
-      {name:'Community Garden', cost:100, profit:50, emissions:-5, food:15}
-    ]
-  },
-  {
-    title: "Mission 2: Organic Farming Boom",
-    desc: "Farmers seek eco-friendly methods. Balance profit and food security.",
-    options: [
-      {name:'Organic Fertilizers', cost:220, profit:120, emissions:-10, food:25},
-      {name:'Plant-Based Foods', cost:180, profit:90, emissions:-25, food:20},
-      {name:'Tech Upgrade', cost:200, profit:100, emissions:-15, food:5}
-    ]
-  },
-  {
-    title: "Mission 3: City Green Upgrade",
-    desc: "Invest in city sustainability projects to reduce emissions and improve living.",
-    options: [
-      {name:'Urban Trees', cost:150, profit:60, emissions:-30, food:10},
-      {name:'Green Transport', cost:200, profit:120, emissions:-20, food:0},
-      {name:'Eco Education', cost:100, profit:40, emissions:-5, food:5}
-    ]
-  }
+  {title: "Mission 1: Solar Challenge", desc: "A sunny city wants to switch to renewable energy. Choose wisely.", options:[
+    {name:'Solar Panels', cost:200, profit:100, emissions:-20, food:0, icon:'⚡'},
+    {name:'EV Fleet', cost:150, profit:80, emissions:-15, food:0, icon:'🚗'},
+    {name:'Community Garden', cost:100, profit:50, emissions:-5, food:15, icon:'🌱'}
+  ]},
+  {title: "Mission 2: Organic Farming Boom", desc: "Farmers seek eco-friendly methods. Balance profit and food security.", options:[
+    {name:'Organic Fertilizers', cost:220, profit:120, emissions:-10, food:25, icon:'🌾'},
+    {name:'Plant-Based Foods', cost:180, profit:90, emissions:-25, food:20, icon:'🥬'},
+    {name:'Tech Upgrade', cost:200, profit:100, emissions:-15, food:5, icon:'💻'}
+  ]},
+  {title: "Mission 3: City Green Upgrade", desc: "Invest in city sustainability projects.", options:[
+    {name:'Urban Trees', cost:150, profit:60, emissions:-30, food:10, icon:'🌳'},
+    {name:'Green Transport', cost:200, profit:120, emissions:-20, food:0, icon:'🚌'},
+    {name:'Eco Education', cost:100, profit:40, emissions:-5, food:5, icon:'📚'}
+  ]}
 ];
 
-let state = {cash:1000, round:0, totalRounds:MISSIONS.length, profit:0, emission:100, food:50, xp:0};
+let state = {cash:1000, round:0, totalRounds:MISSIONS.length, profit:0, emission:100, food:50};
 
 function $(id){return document.getElementById(id);}
 function log(text){const area=$('logArea');const d=document.createElement('div');d.style.padding='4px 0';d.innerText=text;area.prepend(d);}
 function showPopup(title,body){$('popTitle').innerText=title;$('popBody').innerText=body;$('popup').style.display='block';}
 $('popClose').addEventListener('click',()=>{$('popup').style.display='none';});
 
+$('rulesBtn').addEventListener('click',()=>{
+  showPopup('Rules 📖', `
+- You start with ₹1000 cash.
+- Each mission lets you invest in eco-projects.
+- Each project affects Profit, Emissions, and Food Security.
+- Choose wisely to maximize profit & eco impact.
+- Complete all missions to earn badges (Novice → Intermediate → Eco Hero).`);
+});
+
 function renderMission(){
-  if(state.round>=MISSIONS.length){
-    endGame(); return;
-  }
+  if(state.round>=MISSIONS.length){endGame(); return;}
   const mission = MISSIONS[state.round];
   $('investGrid').innerHTML='';
   mission.options.forEach(opt=>{
     const card=document.createElement('div');card.className='card';
     card.innerHTML=`<h3>${opt.name}</h3><p>Cost: ₹${opt.cost}</p><button class="btn primary">Invest</button>`;
     card.querySelector('button').addEventListener('click',()=>{
-      invest(opt);
+      invest(opt, card);
     });
     $('investGrid').appendChild(card);
   });
@@ -153,40 +153,41 @@ function updateUI(){
   const profitPct=Math.min(Math.max(state.profit,0),100);
   const emisPct=Math.min(Math.max(100-state.emission,0),100);
   const foodPct=Math.min(Math.max(state.food,0),100);
-
-  // Animate bars smoothly
   $('profitBar').style.width = profitPct+'%';
-  $('profitBar').style.background = profitPct>70?varGreenLight:'#2e7d32';
+  $('profitBar').style.background = '#2e7d32';
   $('emissionBar').style.width = emisPct+'%';
-  $('emissionBar').style.background = emisPct>70?varGreenLight:'#2e7d32';
+  $('emissionBar').style.background = '#2e7d32';
   $('foodBar').style.width = foodPct+'%';
-  $('foodBar').style.background = foodPct>70?varGreenLight:'#2e7d32';
-
+  $('foodBar').style.background = '#2e7d32';
   let badge='Novice';
   if(state.profit>=150 && state.food>=70) badge='Eco Hero';
   else if(state.profit>=80) badge='Intermediate';
   $('badge').innerText=badge;
-
-  // Background color shift based on mission
   const colors=['#f9f9f9','#e8f5e9','#e0f7fa'];
   document.body.style.background = colors[state.round] || '#f9f9f9';
 }
 
-function invest(opt){
+function flyIcon(card, icon){
+  const span=document.createElement('div');span.className='fly-icon';span.innerText=icon;
+  card.appendChild(span);
+  setTimeout(()=>span.remove(),1000);
+}
+
+function invest(opt, card){
   if(state.cash<opt.cost){ log('Not enough cash for '+opt.name); return; }
   state.cash -= opt.cost;
   state.profit += opt.profit/10;
   state.emission += opt.emissions/10;
   state.food += opt.food/10;
-
   log(`Invested ₹${opt.cost} in ${opt.name} → Profit +${opt.profit}`);
+  flyIcon(card,opt.icon);
   state.round++;
   updateUI();
   renderMission();
 }
 
 function endGame(){
-  showPopup('All Missions Completed!','Final Cash: ₹'+state.cash+'\nProfit: '+state.profit+'\nFood Security: '+state.food+'\nBadge: '+$('badge').innerText);
+  showPopup('🎉 All Missions Completed!','Final Cash: ₹'+state.cash+'\nProfit: '+state.profit+'\nFood Security: '+state.food+'\nBadge: '+$('badge').innerText);
   log('Game finished! Refresh to play again.');
 }
 
