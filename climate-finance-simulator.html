@@ -47,6 +47,7 @@ header{text-align:center;margin-bottom:24px;}
 .popup{position: fixed; top:50%; left:50%; transform: translate(-50%,-50%); background: var(--panel); padding: 20px; border-radius: 12px; border: 1px solid var(--border); display: none; z-index: 999; width: 90%; max-width: 450px;}
 .popup h3{ color: var(--green); }
 .popup p{ color: var(--text-muted); margin-top:10px; }
+.popup button{margin-top:10px;}
 .close-row{ display:flex; justify-content:flex-end; margin-top:12px; }
 
 @media(max-width:600px){.cards{grid-template-columns:1fr;}.meters{flex-direction:column;}}
@@ -56,12 +57,12 @@ header{text-align:center;margin-bottom:24px;}
 
 <header>
   <div class="logo">EatCo</div>
-  <div class="subtitle">Climate Finance Simulator</div>
+  <div class="subtitle">Climate Finance Simulator - Story Mode</div>
 </header>
 
 <div class="status">
   <div>Cash: <span id="cash">₹1000</span></div>
-  <div>Round: <span id="round">1/5</span></div>
+  <div>Mission: <span id="round">1/3</span></div>
   <div>Badge: <span id="badge">Novice</span></div>
 </div>
 
@@ -80,7 +81,7 @@ header{text-align:center;margin-bottom:24px;}
     </div>
   </div>
 
-  <div class="log" id="logArea">Welcome agent — allocate wisely.</div>
+  <div class="log" id="logArea">Welcome agent — complete all missions to become Eco Hero.</div>
 </div>
 
 <div class="popup" id="popup">
@@ -90,47 +91,63 @@ header{text-align:center;margin-bottom:24px;}
 </div>
 
 <script>
-const INVESTMENTS = [
-  {id:'solar', name:'Solar Energy', baseCost:300, profit:180, emissions:-28, food:6, info:'Steady ROI from solar projects.'},
-  {id:'ev', name:'Electric Vehicles', baseCost:250, profit:120, emissions:-25, food:0, info:'Medium-term growth potential.'},
-  {id:'organic', name:'Organic Farming', baseCost:220, profit:110, emissions:-12, food:22, info:'Supports soil & yield.'},
-  {id:'plant', name:'Plant-Based Foods', baseCost:180, profit:95, emissions:-30, food:18, info:'Growing demand & sustainability.'}
+const MISSIONS = [
+  {
+    title: "Mission 1: Solar Challenge",
+    desc: "A sunny city wants to switch to renewable energy. Choose your investments wisely.",
+    options: [
+      {name:'Solar Panels', cost:200, profit:100, emissions:-20, food:0},
+      {name:'EV Fleet', cost:150, profit:80, emissions:-15, food:0},
+      {name:'Community Garden', cost:100, profit:50, emissions:-5, food:15}
+    ]
+  },
+  {
+    title: "Mission 2: Organic Farming Boom",
+    desc: "Farmers seek eco-friendly methods. Balance profit and food security.",
+    options: [
+      {name:'Organic Fertilizers', cost:220, profit:120, emissions:-10, food:25},
+      {name:'Plant-Based Foods', cost:180, profit:90, emissions:-25, food:20},
+      {name:'Tech Upgrade', cost:200, profit:100, emissions:-15, food:5}
+    ]
+  },
+  {
+    title: "Mission 3: City Green Upgrade",
+    desc: "Invest in city sustainability projects to reduce emissions and improve living.",
+    options: [
+      {name:'Urban Trees', cost:150, profit:60, emissions:-30, food:10},
+      {name:'Green Transport', cost:200, profit:120, emissions:-20, food:0},
+      {name:'Eco Education', cost:100, profit:40, emissions:-5, food:5}
+    ]
+  }
 ];
 
-const EVENTS = [
-  {text:'Tech breakthrough increases solar ROI!', profit:50, emissions:-5, food:0},
-  {text:'Market fluctuation reduces EV returns!', profit:-40, emissions:0, food:0},
-  {text:'Organic yield boost!', profit:20, emissions:-2, food:10},
-  {text:'Plant food demand drops!', profit:-15, emissions:0, food:-5}
-];
-
-let state = {cash:1000, round:1, totalRounds:5, profit:0, emission:100, food:50, xp:0};
+let state = {cash:1000, round:0, totalRounds:MISSIONS.length, profit:0, emission:100, food:50, xp:0};
 
 function $(id){return document.getElementById(id);}
 function log(text){const area=$('logArea');const d=document.createElement('div');d.style.padding='4px 0';d.innerText=text;area.prepend(d);}
 function showPopup(title,body){$('popTitle').innerText=title;$('popBody').innerText=body;$('popup').style.display='block';}
 $('popClose').addEventListener('click',()=>{$('popup').style.display='none';});
 
-function renderCards(){
-  const container = $('investGrid');
-  container.innerHTML='';
-  INVESTMENTS.forEach(inv=>{
+function renderMission(){
+  if(state.round>=MISSIONS.length){
+    endGame(); return;
+  }
+  const mission = MISSIONS[state.round];
+  $('investGrid').innerHTML='';
+  mission.options.forEach(opt=>{
     const card=document.createElement('div');card.className='card';
-    card.innerHTML=`<h3>${inv.name}</h3><p>Cost: ₹${inv.baseCost}</p>
-    <button class="btn primary" data-id="${inv.id}">Invest</button>
-    <button class="btn secondary" data-info="${inv.id}">Info</button>`;
-    container.appendChild(card);
+    card.innerHTML=`<h3>${opt.name}</h3><p>Cost: ₹${opt.cost}</p><button class="btn primary">Invest</button>`;
+    card.querySelector('button').addEventListener('click',()=>{
+      invest(opt);
+    });
+    $('investGrid').appendChild(card);
   });
-  document.querySelectorAll('.card .btn[data-id]').forEach(b=>b.addEventListener('click',e=>invest(e.currentTarget.dataset.id)));
-  document.querySelectorAll('.card .btn[data-info]').forEach(b=>b.addEventListener('click',e=>{
-    const inv=INVESTMENTS.find(x=>x.id===e.currentTarget.dataset.info);
-    showPopup(inv.name,inv.info);
-  }));
+  log(`Mission ${state.round+1}: ${mission.desc}`);
 }
 
 function updateUI(){
   $('cash').innerText='₹'+state.cash;
-  $('round').innerText=state.round+'/'+state.totalRounds;
+  $('round').innerText=(state.round+1)+'/'+state.totalRounds;
   const profitPct=Math.min(Math.max(state.profit,0),100);
   const emisPct=Math.min(Math.max(100-state.emission,0),100);
   const foodPct=Math.min(Math.max(state.food,0),100);
@@ -139,54 +156,32 @@ function updateUI(){
   $('emissionBar').style.width=emisPct+'%';
   $('foodBar').style.width=foodPct+'%';
 
-  // Update badge
   let badge='Novice';
   if(state.profit>=150 && state.food>=70) badge='Eco Hero';
   else if(state.profit>=80) badge='Intermediate';
   $('badge').innerText=badge;
 }
 
-function invest(id){
-  if(state.round>state.totalRounds){ log('Game over! Refresh to play again.'); return; }
-  const inv=INVESTMENTS.find(x=>x.id===id);
-  if(state.cash<inv.baseCost){ log('Not enough cash for '+inv.name); return; }
+function invest(opt){
+  if(state.cash<opt.cost){ log('Not enough cash for '+opt.name); return; }
+  state.cash -= opt.cost;
+  state.profit += opt.profit/10;
+  state.emission += opt.emissions/10;
+  state.food += opt.food/10;
 
-  // Deduct cost
-  state.cash -= inv.baseCost;
-
-  // Base returns
-  state.profit += inv.profit/10;
-  state.emission += inv.emissions/10;
-  state.food += inv.food/10;
-
-  log(`Round ${state.round}: Invested ₹${inv.baseCost} in ${inv.name} → Profit +${inv.profit}`);
-
-  // Random event chance
-  if(Math.random()<0.3){
-    const ev=EVENTS[Math.floor(Math.random()*EVENTS.length)];
-    state.profit += (ev.profit||0)/10;
-    state.emission += (ev.emissions||0)/10;
-    state.food += (ev.food||0)/10;
-    log('EVENT: '+ev.text);
-  }
-
+  log(`Invested ₹${opt.cost} in ${opt.name} → Profit +${opt.profit}`);
   state.round++;
   updateUI();
-
-  if(state.round>state.totalRounds){
-    endGame();
-  }
+  renderMission();
 }
 
 function endGame(){
-  const topInvest = INVESTMENTS.reduce((max,i)=>i.profit>max.profit?i:max,INVESTMENTS[0]);
-  showPopup('Game Over!','Final Cash: ₹'+state.cash+'\nProfit: '+state.profit+'\nFood Security: '+state.food+'\nTop Investment: '+topInvest.name);
-  log('Game finished! Final stats above.');
+  showPopup('All Missions Completed!','Final Cash: ₹'+state.cash+'\nProfit: '+state.profit+'\nFood Security: '+state.food+'\nBadge: '+$('badge').innerText);
+  log('Game finished! Refresh to play again.');
 }
 
-renderCards();
 updateUI();
-log('Simulator ready. Click investments to start.');
+renderMission();
 </script>
 
 </body>
