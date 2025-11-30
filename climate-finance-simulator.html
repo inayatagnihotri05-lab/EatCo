@@ -1,198 +1,197 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Climate Finance Simulator | EatCo</title>
 <style>
-:root {
-  --bg: #f9f9f9;
-  --panel: #ffffff;
-  --green: #2e7d32;
-  --green-light: #66bb6a;
-  --text-dark: #333;
-  --text-muted: #666;
-  --border: #ddd;
-  font-family: 'Inter', sans-serif;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text-dark);min-height:100vh;display:flex;flex-direction:column;align-items:center;font-size:14px;padding:20px 0;transition:background 0.5s;}
-header{text-align:center;margin-bottom:24px;}
-.logo{font-weight:700;font-size:28px;color:var(--green);}
-.subtitle{color:var(--text-muted);font-size:14px;margin-top:4px;}
+  /* ---------- THEME ---------- */
+  :root {
+    --bg: #f9f9f9;
+    --panel: #e8f5e9;
+    --accent: #2e7d32;
+    --muted: #555;
+    --border: #c8e6c9;
+    --danger: #c62828;
+    font-family: 'Inter', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:#111; }
+  h3 { margin:0; color:var(--accent); }
+  p { margin:0.25em 0; }
+  button { cursor:pointer; }
 
-.status{display:flex;justify-content:center;gap:20px;margin-bottom:20px;transition:all 0.5s;}
-.status div{background:var(--panel);border:1px solid var(--border);padding:6px 12px;border-radius:8px;font-weight:600;transition:all 0.3s;}
+  /* ---------- LAYOUT ---------- */
+  .container { max-width: 1000px; margin:20px auto; display:flex; gap:20px; flex-wrap:wrap; }
+  .panel { flex:1; min-width:280px; background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px; }
+  .panel h3 { margin-bottom:8px; }
+  .stats { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px; }
+  .stat { flex:1; background:#fff; padding:10px; border-radius:8px; text-align:center; border:1px solid var(--border);}
+  .stat .value { font-weight:700; font-size:1.2em; color:var(--accent); }
 
-.container{display:flex;flex-direction:column;gap:20px;width:90%;max-width:900px;transition:all 0.5s;}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;transition:all 0.5s;}
-.card{background: var(--panel);border-radius:12px;padding:16px;border:1px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,0.05);transition:transform 0.3s, box-shadow 0.3s;position:relative;}
-.card:hover{transform:translateY(-3px);box-shadow:0 4px 12px rgba(0,0,0,0.1);}
-.card h3{color:var(--green);font-size:18px;margin-bottom:6px;}
-.card p{color:var(--text-muted);font-size:13px;margin-bottom:12px;}
-.card .btn{padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600;margin-right:6px;transition:all 0.3s;}
-.btn.primary{background:var(--green);color:#fff;}
-.btn.primary:hover{background:var(--green-light);}
-.btn.secondary{background:#f0f0f0;color:var(--green);border:1px solid var(--green);}
-.btn.secondary:hover{background:#e8f5e9;}
+  /* ---------- INVESTMENTS ---------- */
+  .invest-grid { display:grid; gap:10px; }
+  .choice-card { background:#fff; border:1px solid var(--border); border-radius:10px; display:flex; justify-content:space-between; padding:12px; align-items:center; }
+  .choice-left { display:flex; flex-direction:column; }
+  .choice-left h4 { margin:0; font-size:15px; }
+  .choice-left p { font-size:13px; color:var(--muted); }
+  .btn { padding:6px 12px; border:none; border-radius:6px; background:var(--accent); color:#fff; font-weight:600; margin-left:4px; }
+  .btn.info { background:#81c784; }
 
-.meters{display:flex;flex-wrap:wrap;gap:10px;}
-.meter{flex:1;min-width:120px;}
-.meter h4{font-size:12px;color: var(--text-muted);margin-bottom:6px;}
-.bar{height:14px;background:#e0e0e0;border-radius:8px;overflow:hidden;transition:all 0.5s;}
-.bar i{display:block;height:100%;width:0%;transition:width 1s ease, background 0.5s ease;}
+  /* ---------- METERS ---------- */
+  .meters { margin:12px 0; }
+  .meter { margin-bottom:10px; }
+  .bar-bg { height:16px; background:#c8e6c9; border-radius:8px; overflow:hidden; }
+  .bar-fill { height:100%; width:0%; background:var(--accent); transition: width 0.8s ease; }
 
-.log{margin-top:16px;background:#f0f0f0;border-radius:12px;max-height:200px;overflow:auto;padding:10px;font-size:13px;color:var(--text-muted);transition:all 0.5s;}
+  /* ---------- LOG ---------- */
+  .log { max-height:120px; overflow:auto; font-size:13px; background:#fff; padding:8px; border-radius:8px; border:1px solid var(--border); margin-top:12px; }
 
-.popup{position: fixed; top:50%; left:50%; transform: translate(-50%,-50%); background: var(--panel); padding: 20px; border-radius: 12px; border: 1px solid var(--border); display: none; z-index: 999; width: 90%; max-width: 450px; transition: all 0.3s;}
-.popup h3{ color: var(--green); }
-.popup p{ color: var(--text-muted); margin-top:10px; }
-.popup button{margin-top:10px;}
-.close-row{ display:flex; justify-content:flex-end; margin-top:12px; }
+  /* ---------- MODAL ---------- */
+  .modal { display:none; position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); background:#fff; border:1px solid var(--border); border-radius:12px; padding:20px; max-width:90%; max-height:80%; overflow:auto; z-index:9999; }
+  .modal h3 { color:var(--accent); margin-bottom:10px; }
+  .modal p { color:#333; line-height:1.4em; }
+  .close-btn { margin-top:12px; background:var(--danger); color:#fff; padding:6px 12px; border:none; border-radius:6px; float:right; }
 
-.fly-icon{position:absolute;font-size:18px;animation:flyUp 1s ease forwards;pointer-events:none;}
-@keyframes flyUp{0%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-40px);}}
-
-.rules-btn{margin-bottom:10px;align-self:flex-end;}
-
-@media(max-width:600px){.cards{grid-template-columns:1fr;}.meters{flex-direction:column;}}
+  @media(max-width:700px){
+    .container { flex-direction:column; }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">EatCo</div>
-  <div class="subtitle">Climate Finance Simulator - Story Mode</div>
-</header>
-
-<button class="btn secondary rules-btn" id="rulesBtn">📖 Rules</button>
-
-<div class="status">
-  <div>Cash: <span id="cash">₹1000</span></div>
-  <div>Mission: <span id="round">1/3</span></div>
-  <div>Badge: <span id="badge">Novice</span></div>
-</div>
-
 <div class="container">
-  <div class="cards" id="investGrid"></div>
+  <!-- LEFT PANEL -->
+  <div class="panel">
+    <h3>Portfolio</h3>
+    <div class="stats">
+      <div class="stat"><div>Cash</div><div class="value" id="cash">₹1000</div></div>
+      <div class="stat"><div>Profit</div><div class="value" id="profit">0</div></div>
+      <div class="stat"><div>Emissions</div><div class="value" id="emission">100</div></div>
+      <div class="stat"><div>Food Sec</div><div class="value" id="food">50</div></div>
+    </div>
 
-  <div class="meters">
-    <div class="meter">
-      <h4>Profit</h4><div class="bar"><i id="profitBar"></i></div>
-    </div>
-    <div class="meter">
-      <h4>Emissions</h4><div class="bar"><i id="emissionBar"></i></div>
-    </div>
-    <div class="meter">
-      <h4>Food Security</h4><div class="bar"><i id="foodBar"></i></div>
-    </div>
+    <h3>Investments</h3>
+    <div class="invest-grid" id="investGrid"></div>
+
+    <div class="log" id="logArea">Welcome! Start investing to see results.</div>
+    <button class="btn" id="ruleBtn">View Rules</button>
   </div>
 
-  <div class="log" id="logArea">Welcome agent — complete all missions to become Eco Hero.</div>
+  <!-- RIGHT PANEL -->
+  <div class="panel">
+    <h3>Meters</h3>
+    <div class="meters">
+      <div class="meter">
+        <div>Profit</div>
+        <div class="bar-bg"><div class="bar-fill" id="profitBar"></div></div>
+      </div>
+      <div class="meter">
+        <div>Emissions (lower better)</div>
+        <div class="bar-bg"><div class="bar-fill" id="emissionBar"></div></div>
+      </div>
+      <div class="meter">
+        <div>Food Security</div>
+        <div class="bar-bg"><div class="bar-fill" id="foodBar"></div></div>
+      </div>
+    </div>
+    <h3>Badge</h3>
+    <div id="badge">Novice</div>
+  </div>
 </div>
 
-<div class="popup" id="popup">
-  <h3 id="popTitle">Title</h3>
-  <p id="popBody">Body</p>
-  <div class="close-row"><button class="btn secondary" id="popClose">Close</button></div>
+<!-- RULES MODAL -->
+<div class="modal" id="ruleModal">
+  <h3>Climate Finance Simulator - Rules</h3>
+  <p>1. You start with ₹1000 cash.</p>
+  <p>2. Invest in projects like Solar, EV, Organic, Water, Plant-based, and more.</p>
+  <p>3. Each investment affects Profit, Emissions, Food Security, and Sustainability.</p>
+  <p>4. You can trigger random events that impact your portfolio.</p>
+  <p>5. Complete missions and gain XP to earn badges.</p>
+  <p>6. Goal: maximize Profit, reduce Emissions, and improve Food Security.</p>
+  <p>7. Use diversification for best results. Watch your log for feedback!</p>
+  <button class="close-btn" id="closeRules">Close</button>
 </div>
 
 <script>
-const MISSIONS = [
-  {title: "Mission 1: Solar Challenge", desc: "A sunny city wants to switch to renewable energy. Choose wisely.", options:[
-    {name:'Solar Panels', cost:200, profit:100, emissions:-20, food:0, icon:'⚡'},
-    {name:'EV Fleet', cost:150, profit:80, emissions:-15, food:0, icon:'🚗'},
-    {name:'Community Garden', cost:100, profit:50, emissions:-5, food:15, icon:'🌱'}
-  ]},
-  {title: "Mission 2: Organic Farming Boom", desc: "Farmers seek eco-friendly methods. Balance profit and food security.", options:[
-    {name:'Organic Fertilizers', cost:220, profit:120, emissions:-10, food:25, icon:'🌾'},
-    {name:'Plant-Based Foods', cost:180, profit:90, emissions:-25, food:20, icon:'🥬'},
-    {name:'Tech Upgrade', cost:200, profit:100, emissions:-15, food:5, icon:'💻'}
-  ]},
-  {title: "Mission 3: City Green Upgrade", desc: "Invest in city sustainability projects.", options:[
-    {name:'Urban Trees', cost:150, profit:60, emissions:-30, food:10, icon:'🌳'},
-    {name:'Green Transport', cost:200, profit:120, emissions:-20, food:0, icon:'🚌'},
-    {name:'Eco Education', cost:100, profit:40, emissions:-5, food:5, icon:'📚'}
-  ]}
-];
+  // ---------- STATE ----------
+  let state = { cash:1000, profit:0, emission:100, food:50, sustain:0, xp:0, badge:'Novice' };
 
-let state = {cash:1000, round:0, totalRounds:MISSIONS.length, profit:0, emission:100, food:50};
+  const INVESTMENTS = [
+    {id:'solar', name:'Solar Energy', cost:300, profit:180, emission:-28, food:6},
+    {id:'ev', name:'Electric Vehicles', cost:250, profit:120, emission:-25, food:0},
+    {id:'organic', name:'Organic Farming', cost:220, profit:110, emission:-12, food:22},
+    {id:'water', name:'Water Recycling', cost:150, profit:90, emission:-8, food:20},
+    {id:'plant', name:'Plant-Based Foods', cost:180, profit:95, emission:-30, food:18}
+  ];
 
-function $(id){return document.getElementById(id);}
-function log(text){const area=$('logArea');const d=document.createElement('div');d.style.padding='4px 0';d.innerText=text;area.prepend(d);}
-function showPopup(title,body){$('popTitle').innerText=title;$('popBody').innerText=body;$('popup').style.display='block';}
-$('popClose').addEventListener('click',()=>{$('popup').style.display='none';});
+  const EVENTS = [
+    {name:'Drought', cash:-60, emission:6, food:-22},
+    {name:'Heatwave', cash:-40, emission:8, food:-12},
+    {name:'Market Boom', cash:50, emission:-4, food:5}
+  ];
 
-$('rulesBtn').addEventListener('click',()=>{
-  showPopup('Rules 📖', `
-- You start with ₹1000 cash.
-- Each mission lets you invest in eco-projects.
-- Each project affects Profit, Emissions, and Food Security.
-- Choose wisely to maximize profit & eco impact.
-- Complete all missions to earn badges (Novice → Intermediate → Eco Hero).`);
-});
+  const log = msg => {
+    const area = document.getElementById('logArea');
+    const div = document.createElement('div'); div.innerText=msg;
+    area.prepend(div);
+  };
 
-function renderMission(){
-  if(state.round>=MISSIONS.length){endGame(); return;}
-  const mission = MISSIONS[state.round];
-  $('investGrid').innerHTML='';
-  mission.options.forEach(opt=>{
-    const card=document.createElement('div');card.className='card';
-    card.innerHTML=`<h3>${opt.name}</h3><p>Cost: ₹${opt.cost}</p><button class="btn primary">Invest</button>`;
-    card.querySelector('button').addEventListener('click',()=>{
-      invest(opt, card);
+  function renderInvestments(){
+    const grid = document.getElementById('investGrid');
+    grid.innerHTML='';
+    INVESTMENTS.forEach(inv=>{
+      const card = document.createElement('div'); card.className='choice-card';
+      card.innerHTML = `<div class="choice-left"><h4>${inv.name}</h4><p>Cost: ₹${inv.cost}</p></div>
+        <div>
+          <button class="btn" onclick="invest('${inv.id}')">Invest</button>
+        </div>`;
+      grid.appendChild(card);
     });
-    $('investGrid').appendChild(card);
-  });
-  log(`Mission ${state.round+1}: ${mission.desc}`);
-}
+  }
 
-function updateUI(){
-  $('cash').innerText='₹'+state.cash;
-  $('round').innerText=(state.round+1)+'/'+state.totalRounds;
-  const profitPct=Math.min(Math.max(state.profit,0),100);
-  const emisPct=Math.min(Math.max(100-state.emission,0),100);
-  const foodPct=Math.min(Math.max(state.food,0),100);
-  $('profitBar').style.width = profitPct+'%';
-  $('profitBar').style.background = '#2e7d32';
-  $('emissionBar').style.width = emisPct+'%';
-  $('emissionBar').style.background = '#2e7d32';
-  $('foodBar').style.width = foodPct+'%';
-  $('foodBar').style.background = '#2e7d32';
-  let badge='Novice';
-  if(state.profit>=150 && state.food>=70) badge='Eco Hero';
-  else if(state.profit>=80) badge='Intermediate';
-  $('badge').innerText=badge;
-  const colors=['#f9f9f9','#e8f5e9','#e0f7fa'];
-  document.body.style.background = colors[state.round] || '#f9f9f9';
-}
+  function updateBars(){
+    document.getElementById('cash').innerText='₹'+state.cash;
+    document.getElementById('profit').innerText=state.profit;
+    document.getElementById('emission').innerText=state.emission;
+    document.getElementById('food').innerText=state.food;
 
-function flyIcon(card, icon){
-  const span=document.createElement('div');span.className='fly-icon';span.innerText=icon;
-  card.appendChild(span);
-  setTimeout(()=>span.remove(),1000);
-}
+    document.getElementById('profitBar').style.width = Math.min(state.profit/300*100,100)+'%';
+    document.getElementById('emissionBar').style.width = Math.min(100 - state.emission,100)+'%';
+    document.getElementById('foodBar').style.width = Math.min(state.food,100)+'%';
 
-function invest(opt, card){
-  if(state.cash<opt.cost){ log('Not enough cash for '+opt.name); return; }
-  state.cash -= opt.cost;
-  state.profit += opt.profit/10;
-  state.emission += opt.emissions/10;
-  state.food += opt.food/10;
-  log(`Invested ₹${opt.cost} in ${opt.name} → Profit +${opt.profit}`);
-  flyIcon(card,opt.icon);
-  state.round++;
-  updateUI();
-  renderMission();
-}
+    // Badge logic
+    if(state.profit>=150 && state.food>=70) state.badge='Eco Hero';
+    else if(state.profit>=80) state.badge='Intermediate';
+    else state.badge='Novice';
+    document.getElementById('badge').innerText=state.badge;
+  }
 
-function endGame(){
-  showPopup('🎉 All Missions Completed!','Final Cash: ₹'+state.cash+'\nProfit: '+state.profit+'\nFood Security: '+state.food+'\nBadge: '+$('badge').innerText);
-  log('Game finished! Refresh to play again.');
-}
+  function invest(id){
+    const inv = INVESTMENTS.find(i=>i.id===id);
+    if(state.cash<inv.cost){ log('Not enough cash for '+inv.name); return; }
+    state.cash -= inv.cost;
+    state.profit += inv.profit;
+    state.emission += inv.emission;
+    state.food += inv.food;
+    log(`Invested in ${inv.name}. Profit +${inv.profit}, Emission ${inv.emission}, Food +${inv.food}`);
+    // 30% chance for random event
+    if(Math.random()<0.3){
+      const ev = EVENTS[Math.floor(Math.random()*EVENTS.length)];
+      state.cash += ev.cash;
+      state.emission += ev.emission;
+      state.food += ev.food;
+      log(`Event: ${ev.name} — Cash ${ev.cash}, Emission ${ev.emission}, Food ${ev.food}`);
+    }
+    updateBars();
+  }
 
-updateUI();
-renderMission();
+  document.getElementById('ruleBtn').addEventListener('click', ()=>document.getElementById('ruleModal').style.display='block');
+  document.getElementById('closeRules').addEventListener('click', ()=>document.getElementById('ruleModal').style.display='none');
+
+  // INIT
+  renderInvestments();
+  updateBars();
 </script>
 
 </body>
